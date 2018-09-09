@@ -1,0 +1,94 @@
+##---------------------------------------------------------------------------##
+# Java Gradle CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-java/ for more details
+#
+# TO Revisit:
+# https://github.com/AnySoftKeyboard/AnySoftKeyboard/blob/master/circle.yml
+##---------------------------------------------------------------------------##
+version: 2
+jobs:
+  build:
+
+    working_directory: ~/tmp/workspace
+
+    environment:
+      _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
+#      LOCAL_REPO: ./StudentWork/Tools/local/repository
+      BASE_DIR: "./StudentWork/code"
+
+    docker:
+      - image: circleci/openjdk:8-jdk-browsers
+        environment:
+          LOCAL_REPO: ./StudentWork/Tools/local/repository
+          BASE_DIR: "./StudentWork/code"
+          _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
+          MAVEN_OPTS: "-Dmaven.repo.local=../../../Tools/local/repository"
+
+
+    steps:
+
+      - checkout
+
+      - run:
+          name: Initialize
+          command: |
+            set -xu
+            echo $CIRCLE_WORKING_DIRECTORY
+            mkdir -p ~/junit/
+            pwd
+            ls -la
+            ls -la ${BASE_DIR}
+            find . -maxdepth 2 -exec du -ms {} \; | sort -rn | head -n 15
+
+      - run:
+          name: Verify the Project
+          command: mvn verify
+          working_directory: ./StudentWork/code
+          # Does not seem to work:
+#          working_directory: $BASE_DIR
+
+      - run:
+          command: |
+            set -xu
+            pwd
+            ls -la ${LOCAL_REPO}
+            ls -la ${BASE_DIR}
+
+      - run:
+          name: Save test results
+          command: |
+            set -xu
+            find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/junit/ \;
+          when: always
+
+      - run:
+          name: Save Coverage results
+          command: |
+            set -xu
+            find . -type f -regex ".*/target/jacoco/.*xml" -exec cp {} ~/junit/ \;
+            bash <(curl -s https://codecov.io/bash)
+
+      - run:
+          name: listing after saving test results
+          command: |
+            set -xu
+            ls -la ~/junit
+
+      - store_test_results:
+          name: Storing test results
+          path: ~/junit
+
+      - run:
+          name: listing after Storing test results
+          command: |
+            set -xu
+            ls -la ~/junit
+
+      - store_artifacts:
+          name: Storing Artifacts
+          path: ~/junit
+
+
+## The End... ##
+##---------------------------------------------------------------------------##
