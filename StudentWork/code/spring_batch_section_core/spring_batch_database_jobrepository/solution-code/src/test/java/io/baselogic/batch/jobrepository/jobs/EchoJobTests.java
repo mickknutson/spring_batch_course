@@ -1,8 +1,8 @@
-package io.baselogic.batch.introduction.jobs;
+package io.baselogic.batch.jobrepository.jobs;
 
-import io.baselogic.batch.introduction.config.DatabaseConfig;
-import io.baselogic.batch.introduction.config.EchoJobConfig;
-import io.baselogic.batch.introduction.config.TestConfig;
+import io.baselogic.batch.jobrepository.config.DatabaseConfig;
+import io.baselogic.batch.jobrepository.config.EchoJobConfig;
+import io.baselogic.batch.jobrepository.config.TestConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;

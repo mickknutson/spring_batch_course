@@ -1,4 +1,4 @@
-package io.baselogic.batch.introduction.config;
+package io.baselogic.batch.jobrepository.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

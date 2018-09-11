@@ -1,4 +1,4 @@
-package io.baselogic.batch.introduction;
+package io.baselogic.batch.jobrepository;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

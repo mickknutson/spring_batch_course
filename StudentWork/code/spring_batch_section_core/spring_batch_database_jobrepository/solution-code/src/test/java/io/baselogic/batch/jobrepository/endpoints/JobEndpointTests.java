@@ -1,6 +1,6 @@
-package io.baselogic.batch.introduction.endpoints;
+package io.baselogic.batch.jobrepository.endpoints;
 
-import io.baselogic.batch.introduction.Application;
+import io.baselogic.batch.jobrepository.Application;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

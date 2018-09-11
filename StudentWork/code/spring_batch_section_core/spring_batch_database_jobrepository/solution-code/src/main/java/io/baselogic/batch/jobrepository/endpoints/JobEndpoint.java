@@ -1,4 +1,4 @@
-package io.baselogic.batch.introduction.endpoints;
+package io.baselogic.batch.jobrepository.endpoints;
 
 
 import org.slf4j.Logger;

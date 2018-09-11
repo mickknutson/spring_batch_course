@@ -40,7 +40,6 @@
 
     <modules>
         <module>spring_batch_section_core</module>
-        <module>spring_batch_tasklet</module>
         <module>spring_batch_file_handling</module>
     </modules>
 

@@ -1,4 +1,4 @@
-package io.baselogic.batch.introduction;
+package io.baselogic.batch.jobrepository;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
