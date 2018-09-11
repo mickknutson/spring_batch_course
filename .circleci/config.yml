@@ -36,10 +36,10 @@ jobs:
             set -xu
             echo $CIRCLE_WORKING_DIRECTORY
             mkdir -p ~/junit/
-            pwd
-            ls -la
-            ls -la ${BASE_DIR}
-            find . -maxdepth 2 -exec du -ms {} \; | sort -rn | head -n 15
+#            pwd
+#            ls -la
+#            ls -la ${BASE_DIR}
+#            find . -maxdepth 2 -exec du -ms {} \; | sort -rn | head -n 15
 
       - run:
           name: Verify the Project
@@ -51,9 +51,9 @@ jobs:
       - run:
           command: |
             set -xu
-            pwd
-            ls -la ${LOCAL_REPO}
-            ls -la ${BASE_DIR}
+#            pwd
+#            ls -la ${LOCAL_REPO}
+#            ls -la ${BASE_DIR}
 
       - run:
           name: Save test results
