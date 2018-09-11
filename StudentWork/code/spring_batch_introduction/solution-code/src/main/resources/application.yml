@@ -12,18 +12,44 @@ spring:
     name: batch-introduction
 
 
-serviceId: ${SERVICE_ID:batch-introduction}
+
+
 
 
 ##---------------------------------------------------------------------------##
+# BATCH CONFIGURATION
 
+  ## H2 Servlet setting (disabled for now)
+  ## connection URL: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+      path: /admin/h2
+
+  # Embedded Database
+#  datasource:
+#    type: com.zaxxer.hikari.HikariDataSource
+#    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+#    driver-class-name: org.h2.Driver
+#    schema: classpath:org/springframework/batch/core/schema-h2.sql
+#    drop: classpath:org/springframework/batch/core/schema-drop-h2.sql
+#    username: sa
+#    password: sa
+#    continue-on-error: true
+#
+#    initialization-mode: always
+
+
+serviceId: ${SERVICE_ID:batch-introduction}
+
+#spring.cloud.refresh.enabled: false
 
 ##---------------------------------------------------------------------------##
 # MODULE SPECIFIC PROPERTIES
-inputName: products.csv
-stepName: step1
-jobName: job1
 
+spring.batch.job.enabled: false
 
 
 ##---------------------------------------------------------------------------##
@@ -31,6 +57,7 @@ logging:
   level:
     root: 'INFO'
     org.springframework: 'INFO'
+    org.h2.jdbc.JdbcSQLException: 'ERROR'
 
 ##---------------------------------------------------------------------------##
 ## NOTE: Enable Management endpoints

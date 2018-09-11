@@ -19,14 +19,6 @@
 
     <dependencies>
         <!-- See 'spring_batch_parent' for dependencies -->
-
-        <!-- https://mvnrepository.com/artifact/com.opencsv/opencsv -->
-        <dependency>
-            <groupId>com.opencsv</groupId>
-            <artifactId>opencsv</artifactId>
-            <version>4.2</version>
-        </dependency>
-
     </dependencies>
 
     <build>

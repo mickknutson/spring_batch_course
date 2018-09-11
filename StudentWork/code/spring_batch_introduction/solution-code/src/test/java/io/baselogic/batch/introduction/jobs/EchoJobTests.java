@@ -1,5 +1,6 @@
 package io.baselogic.batch.introduction.jobs;
 
+import io.baselogic.batch.introduction.config.DatabaseConfig;
 import io.baselogic.batch.introduction.config.EchoJobConfig;
 import io.baselogic.batch.introduction.config.TestConfig;
 import org.junit.Test;
@@ -21,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {TestConfig.class, EchoJobConfig.class})
+@SpringBootTest(classes = {TestConfig.class, DatabaseConfig.class, EchoJobConfig.class})
 @TestExecutionListeners({
         DependencyInjectionTestExecutionListener.class,
         JobScopeTestExecutionListener.class,

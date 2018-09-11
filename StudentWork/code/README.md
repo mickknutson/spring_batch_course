@@ -1,3 +1,12 @@
-REVISIT
+General README details for Spring Batch Master Class
+----------------------------------------------------
 
-https://touk.pl/blog/2018/03/05/spring-boot-2-0-http-request-metrics-with-micrometer/
+[H2 Embedded Database admin console](http://localhost:8080/admin/h2/logout.do?jsessionid=d06adccac6d5f8590f806966ed7272ed)
+
+
+
+    //@SuppressWarnings("SpringJavaAutowiringInspection")
+    //@SuppressWarnings("SpringJavaAutowiredMembersInspection")
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
+    @Autowired
+    private MockMvc mockMvc;

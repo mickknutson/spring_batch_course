@@ -1,0 +1,44 @@
+allprojects  {
+  apply plugin: 'maven'
+
+  group = 'com.baselogic.batch'
+version = '1.0.0.RELEASE'
+}
+
+subprojects {
+  apply plugin: 'java'
+  sourceCompatibility = 1.8
+  targetCompatibility = 1.8
+  tasks.withType(JavaCompile) {
+  	options.encoding = 'UTF-8'
+  }
+
+  
+  repositories {
+    mavenLocal()
+    
+    maven { url "https://repo.spring.io/milestone" }
+    maven { url "http://repo.maven.apache.org/maven2" }
+  }
+
+  
+  dependencies {
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-batch', version:'2.1.0.M2'
+    compile group: 'org.springframework.batch', name: 'spring-batch-core', version:'4.1.0.M2'
+    compile(group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc', version:'2.1.0.M2') {
+        exclude(module: 'tomcat-jdbc')
+    }
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-webflux', version:'2.1.0.M2'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version:'2.1.0.M2'
+    compile group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version:'2.1.0.M2'
+    compile group: 'org.projectlombok', name: 'lombok', version:'1.18.2'
+    compile group: 'de.codecentric', name: 'spring-boot-admin-starter-client', version:'2.0.2'
+    runtime group: 'com.h2database', name: 'h2', version:'1.4.197'
+    runtime group: 'org.springframework.boot', name: 'spring-boot-devtools', version:'2.1.0.M2'
+    runtime group: 'org.springframework.boot', name: 'spring-boot-starter-logging', version:'2.1.0.M2'
+    testCompile group: 'org.springframework.batch', name: 'spring-batch-test', version:'4.1.0.M2'
+    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version:'2.1.0.M2'
+}
+
+  
+}

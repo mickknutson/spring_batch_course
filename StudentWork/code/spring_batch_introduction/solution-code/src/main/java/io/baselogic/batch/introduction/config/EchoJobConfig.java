@@ -3,6 +3,7 @@ package io.baselogic.batch.introduction.config;
 import io.baselogic.batch.introduction.steps.EchoTasklet;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
+import org.springframework.batch.core.configuration.annotation.DefaultBatchConfigurer;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
@@ -13,12 +14,12 @@ import org.springframework.batch.core.repository.support.MapJobRepositoryFactory
 import org.springframework.batch.support.transaction.ResourcelessTransactionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.context.annotation.Configuration;
 
 
-//@Configuration
+@Configuration
 @EnableBatchProcessing
-public class EchoJobConfig {
+public class EchoJobConfig extends DefaultBatchConfigurer {
 
     @Autowired
     private JobBuilderFactory jobBuilderFactory;
@@ -26,28 +27,31 @@ public class EchoJobConfig {
     @Autowired
     private StepBuilderFactory stepBuilderFactory;
 
+
     //---------------------------------------------------------------------------//
 
 
     @Bean
-    public PlatformTransactionManager transactionManager() {
-        return new ResourcelessTransactionManager();
+    public JobRepository jobRepository() throws Exception {
+        return new MapJobRepositoryFactoryBean(transactionManager()).getObject();
     }
 
     @Bean
-    public JobRepository jobRepository() throws Exception {
-        return new MapJobRepositoryFactoryBean(transactionManager())
-                .getObject();
+    public ResourcelessTransactionManager transactionManager() {
+        return new ResourcelessTransactionManager();
     }
 
-    @Bean @Autowired
+
+    //---------------------------------------------------------------------------//
+    @Bean
     public JobLauncher jobLauncher(JobRepository jobRepository) {
         final SimpleJobLauncher launcher = new SimpleJobLauncher();
         launcher.setJobRepository(jobRepository);
         return launcher;
     }
 
-    @Bean @Autowired
+    //---------------------------------------------------------------------------//
+    @Bean
     public Job job(final Step stepA, final Step stepB, final Step stepC) {
         return jobBuilderFactory.get("echoJob")
                 .flow(stepA).on("*").to(stepB)
@@ -55,6 +59,7 @@ public class EchoJobConfig {
                 .build();
     }
 
+    //---------------------------------------------------------------------------//
     @Bean
     public Step stepA() {
         return stepBuilderFactory.get("stepA")

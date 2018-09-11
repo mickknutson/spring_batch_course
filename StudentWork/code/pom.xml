@@ -29,9 +29,6 @@
         <spring-boot-admin.version>2.0.2</spring-boot-admin.version>
         <spring-cloud.version>Finchley.RELEASE</spring-cloud.version>
 
-        <!-- Cucumber properties -->
-        <selenium.version>3.12.0</selenium.version>
-
     </properties>
 
     <parent>
@@ -149,15 +146,41 @@
             <artifactId>spring-batch-core</artifactId>
         </dependency>
 
+        <!-- Database integration -->
+        <!--<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jpa</artifactId>
+        </dependency>-->
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.tomcat</groupId>
+                    <artifactId>tomcat-jdbc</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
+            <!--<scope>runtime</scope>-->
         </dependency>
+
+        <!-- Web integration -->
+        <!--<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>-->
+
 
         <dependency>
             <groupId>org.springframework.batch</groupId>
             <artifactId>spring-batch-test</artifactId>
-            <scope>compile</scope>
+            <scope>test</scope>
         </dependency>
 
 
