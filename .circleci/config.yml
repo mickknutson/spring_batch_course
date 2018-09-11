@@ -20,10 +20,10 @@ jobs:
     docker:
       - image: circleci/openjdk:8-jdk-browsers
         environment:
-          LOCAL_REPO: ./StudentWork/Tools/local/repository
+#          LOCAL_REPO: ./StudentWork/Tools/local/repository
           BASE_DIR: "./StudentWork/code"
           _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
-          MAVEN_OPTS: "-Dmaven.repo.local=../../../Tools/local/repository"
+#          MAVEN_OPTS: "-Dmaven.repo.local=../../../Tools/local/repository"
 
 
     steps:

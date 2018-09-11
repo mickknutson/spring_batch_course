@@ -5,8 +5,24 @@ General README details for Spring Batch Master Class
 
 
 
-    //@SuppressWarnings("SpringJavaAutowiringInspection")
-    //@SuppressWarnings("SpringJavaAutowiredMembersInspection")
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
-    private MockMvc mockMvc;
+    private DataSource dataSource;
+
+
+Maven
+-----
+
+To download sources and javadocs for the project
+
+    mvn dependency:sources dependency:resolve -Dclassifier=javadoc
+
+
+Gradle
+------
+To create Gradle scripts from the Maven scripts:
+
+    gradle init
+
+
+--- the end...

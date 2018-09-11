@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.springclass.batch</groupId>
+    <artifactId>spring_batch_database_jobrepository_solution</artifactId>
+    <version>1.0.0.RELEASE</version>
+    <packaging>jar</packaging>
+
+    <name>${project.artifactId}</name>
+    <description>Solution: ${project.artifactId}</description>
+
+    <parent>
+        <groupId>com.springclass.batch</groupId>
+        <artifactId>spring_batch_database_jobrepository</artifactId>
+        <version>1.0.0.RELEASE</version>
+    </parent>
+
+    <dependencies>
+        <!-- See 'spring_batch_parent' for dependencies -->
+    </dependencies>
+
+    <build>
+        <plugins>
+
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+            </plugin>
+
+        </plugins>
+    </build>
+
+
+</project>
