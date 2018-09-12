@@ -1,5 +1,7 @@
 package io.baselogic.batch.introduction.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -15,14 +17,16 @@ import org.springframework.transaction.PlatformTransactionManager;
 @EnableBatchProcessing
 public class HelloWorldConfig {
 
-    @Autowired
-    private JobBuilderFactory jobBuilderFactory;
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Autowired
-    private StepBuilderFactory stepBuilderFactory;
+//    @Autowired
+//    private JobBuilderFactory jobBuilderFactory;
 
-    @Autowired
-    private PlatformTransactionManager transactionManager;
+//    @Autowired
+//    private StepBuilderFactory stepBuilderFactory;
+//
+//    @Autowired
+//    private PlatformTransactionManager transactionManager;
 
     //---------------------------------------------------------------------------//
     // DataSource
@@ -40,9 +44,9 @@ public class HelloWorldConfig {
     // Jobs
 
     @Bean
-    public Job job() {
+    public Job job(JobBuilderFactory jobBuilderFactory, Step step1) {
         return jobBuilderFactory.get("helloWorldJob")
-                .start(step1())
+                .start(step1)
                 .build();
     }
 
@@ -50,11 +54,11 @@ public class HelloWorldConfig {
     // Steps
 
     @Bean
-    public Step step1() {
+    public Step step1(StepBuilderFactory stepBuilderFactory) {
         return stepBuilderFactory.get("step1")
                 .tasklet(
                         (contribution, chunkContext) -> {
-                            System.out.println("Hello World!");
+                            logger.info("Hello World!");
                             return RepeatStatus.FINISHED;
                         }
 
