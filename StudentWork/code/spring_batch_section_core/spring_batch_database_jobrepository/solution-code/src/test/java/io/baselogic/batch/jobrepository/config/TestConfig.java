@@ -7,7 +7,7 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
-@Configuration
+//@Configuration
 public class TestConfig {
 
     @Bean
@@ -25,5 +25,4 @@ public class TestConfig {
                 .continueOnError(true)
                 .build();
     }
-
-}
+} // The End...

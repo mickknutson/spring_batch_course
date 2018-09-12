@@ -6,28 +6,43 @@ debug: ${DEBUG_MODE:false}
 server:
   port: ${SERVER_PORT:8080}
 
+serviceId: ${SERVICE_ID:batch-tasklet}
+
 ##---------------------------------------------------------------------------##
 spring:
   application:
-    name: batch-introduction
-
-
-serviceId: ${SERVICE_ID:batch-introduction}
-
+    name: batch-tasklet
 
 ##---------------------------------------------------------------------------##
+# BATCH CONFIGURATION
+
+  ## H2 Servlet setting (disabled for now)
+  ## connection URL: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+      path: /admin/h2
 
 
 ##---------------------------------------------------------------------------##
 # MODULE SPECIFIC PROPERTIES
 
+spring.batch.job.enabled: ${BATCH_JOB_ENABLED:false}
 
 
 ##---------------------------------------------------------------------------##
+# Logging and Console
 logging:
   level:
     root: 'INFO'
     org.springframework: 'INFO'
+    org.h2.jdbc.JdbcSQLException: 'ERROR'
+
+spring.main.banner-mode: ${BANNER_MODE:off}
+#spring.main.banner-mode: ${BANNER_MODE:console}
+spring.output.ansi.enabled: ${SPRING_ANSI_ENABLED:ALWAYS}
 
 ##---------------------------------------------------------------------------##
 ## NOTE: Enable Management endpoints

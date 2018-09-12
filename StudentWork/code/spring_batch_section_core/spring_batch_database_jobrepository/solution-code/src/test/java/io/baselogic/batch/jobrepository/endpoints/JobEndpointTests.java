@@ -19,16 +19,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-/**
- *
- * @author Mick Knutson
- *
- */
-@DirtiesContext
 
 @RunWith(SpringRunner.class)
+@DirtiesContext
 @SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-
 @AutoConfigureMockMvc
 public class JobEndpointTests {
 
@@ -45,7 +39,7 @@ public class JobEndpointTests {
                 .perform(get("/launch"))
 
                 // Lets view the response first:
-                .andDo(print())
+//                .andDo(print())
 
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN))

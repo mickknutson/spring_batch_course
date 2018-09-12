@@ -1,6 +1,6 @@
 package io.baselogic.batch.introduction.jobs;
 
-import io.baselogic.batch.introduction.config.HelloWorldConfig;
+import io.baselogic.batch.introduction.config.BatchConfig;
 import io.baselogic.batch.introduction.config.TestConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,13 +21,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {TestConfig.class, HelloWorldConfig.class})
+@SpringBootTest(classes = {TestConfig.class, BatchConfig.class})
 @TestExecutionListeners({
         DependencyInjectionTestExecutionListener.class,
         JobScopeTestExecutionListener.class,
         StepScopeTestExecutionListener.class
 })
-public class HelloWorldJobTests {
+@SuppressWarnings("Duplicates")
+public class JobTests {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 

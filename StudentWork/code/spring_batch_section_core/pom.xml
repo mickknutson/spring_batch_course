@@ -20,6 +20,7 @@
     <modules>
         <module>spring_batch_introduction</module>
         <module>spring_batch_database_jobrepository</module>
+        <module>spring_batch_tasklet</module>
     </modules>
 
 </project>

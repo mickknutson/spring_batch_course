@@ -16,6 +16,7 @@ import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @RestController
+@SuppressWarnings("Duplicates")
 public class JobEndpoint {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -72,4 +73,4 @@ public class JobEndpoint {
 
         return sb.toString();
     }
-}
+} // The End...

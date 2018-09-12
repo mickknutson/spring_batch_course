@@ -13,7 +13,7 @@
 
     <parent>
         <groupId>com.baselogic.batch</groupId>
-        <artifactId>spring_batch_parent</artifactId>
+        <artifactId>spring_batch_section_core</artifactId>
         <version>1.0.0.RELEASE</version>
     </parent>
 

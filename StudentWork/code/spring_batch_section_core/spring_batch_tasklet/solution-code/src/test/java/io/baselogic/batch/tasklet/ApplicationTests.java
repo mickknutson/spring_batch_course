@@ -9,15 +9,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class ApplicationTests {
 
-    //@SuppressWarnings("SpringJavaAutowiringInspection")
-    //@SuppressWarnings("SpringJavaAutowiredMembersInspection")
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
-//    @Autowired
-//    private MockMvc mockMvc;
-
     @Test
-	public void contextLoads() {
+    public void contextLoads() {
         Application.main(new String[0]);
-	}
+    }
 
-}
+} // The End...

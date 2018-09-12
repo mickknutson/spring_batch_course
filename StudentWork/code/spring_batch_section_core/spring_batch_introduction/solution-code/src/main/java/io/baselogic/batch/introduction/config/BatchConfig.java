@@ -15,18 +15,10 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
 @EnableBatchProcessing
-public class HelloWorldConfig {
+@SuppressWarnings("Duplicates")
+public class BatchConfig {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
-
-//    @Autowired
-//    private JobBuilderFactory jobBuilderFactory;
-
-//    @Autowired
-//    private StepBuilderFactory stepBuilderFactory;
-//
-//    @Autowired
-//    private PlatformTransactionManager transactionManager;
 
     //---------------------------------------------------------------------------//
     // DataSource

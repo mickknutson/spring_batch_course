@@ -1,4 +1,4 @@
-package io.baselogic.batch.jobrepository.endpoints;
+package io.baselogic.batch.tasklet.endpoints;
 
 
 import org.slf4j.Logger;
@@ -74,4 +74,4 @@ public class JobEndpoint {
 
         return sb.toString();
     }
-} // The End...
+}

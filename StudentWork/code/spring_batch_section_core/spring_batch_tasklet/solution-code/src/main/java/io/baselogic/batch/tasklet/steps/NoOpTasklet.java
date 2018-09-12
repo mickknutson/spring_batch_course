@@ -6,12 +6,16 @@ import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
-import org.springframework.stereotype.Component;
 
-@Component
+/**
+ * FIXME: Investigate why @Component's are not found until after DefaultBatchConfigurer.class
+ */
+//@Component
 public class NoOpTasklet implements Tasklet {
 
-    private Logger logger = LoggerFactory.getLogger(NoOpTasklet.class);
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    //---------------------------------------------------------------------------//
 
     @Override
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
@@ -19,4 +23,4 @@ public class NoOpTasklet implements Tasklet {
         return RepeatStatus.FINISHED;
     }
 
-}
+} // The End...

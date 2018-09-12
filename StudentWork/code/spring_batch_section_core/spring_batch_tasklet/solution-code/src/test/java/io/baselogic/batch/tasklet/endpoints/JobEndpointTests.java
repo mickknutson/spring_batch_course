@@ -1,6 +1,7 @@
-package io.baselogic.batch.introduction.endpoints;
+package io.baselogic.batch.tasklet.endpoints;
 
-import io.baselogic.batch.introduction.Application;
+import io.baselogic.batch.tasklet.Application;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+/**
+ *
+ * @author Mick Knutson
+ *
+ */
 @RunWith(SpringRunner.class)
-@DirtiesContext
 @SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 public class JobEndpointTests {
@@ -38,7 +43,7 @@ public class JobEndpointTests {
                 .perform(get("/launch"))
 
                 // Lets view the response first:
-                .andDo(print())
+//                .andDo(print())
 
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN))

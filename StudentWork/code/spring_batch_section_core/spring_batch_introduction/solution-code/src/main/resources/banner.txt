@@ -1,0 +1,12 @@
+${AnsiColor.BRIGHT_BLACK}--------------------------------------------------------------------------
+${AnsiColor.BRIGHT_RED}
+BASE LOGIC.IO
+
+${AnsiColor.BRIGHT_BLACK}--------------------------------------------------------------------------
+${AnsiColor.BRIGHT_GREEN}:: Spring Boot ::             (${spring-boot.formatted-version})
+${AnsiColor.BRIGHT_BLACK}--------------------------------------------------------------------------
+Application Name : ${application.title}
+Application Version : ${application.formatted-version}
+${AnsiColor.BRIGHT_BLACK}--------------------------------------------------------------------------
+${AnsiColor.BRIGHT_RED}https://www.baselogic.io
+${AnsiColor.BRIGHT_BLACK}--------------------------------------------------------------------------

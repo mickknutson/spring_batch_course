@@ -6,15 +6,12 @@ debug: ${DEBUG_MODE:false}
 server:
   port: ${SERVER_PORT:8080}
 
+serviceId: ${SERVICE_ID:batch-introduction}
+
 ##---------------------------------------------------------------------------##
 spring:
   application:
     name: batch-introduction
-
-
-
-
-
 
 ##---------------------------------------------------------------------------##
 # BATCH CONFIGURATION
@@ -29,13 +26,10 @@ spring:
       path: /admin/h2
 
 
-
-serviceId: ${SERVICE_ID:batch-introduction}
-
-#spring.cloud.refresh.enabled: false
-
 ##---------------------------------------------------------------------------##
 # MODULE SPECIFIC PROPERTIES
+
+spring.batch.job.enabled: ${BATCH_JOB_ENABLED:false}
 
 
 ##---------------------------------------------------------------------------##
@@ -46,8 +40,9 @@ logging:
     org.springframework: 'INFO'
     org.h2.jdbc.JdbcSQLException: 'ERROR'
 
-#spring.main.banner-mode: off
-spring.output.ansi.enabled: ALWAYS
+spring.main.banner-mode: ${BANNER_MODE:off}
+#spring.main.banner-mode: ${BANNER_MODE:console}
+spring.output.ansi.enabled: ${SPRING_ANSI_ENABLED:ALWAYS}
 
 ##---------------------------------------------------------------------------##
 ## NOTE: Enable Management endpoints
