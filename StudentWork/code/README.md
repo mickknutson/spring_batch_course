@@ -15,7 +15,8 @@ Maven
 
 To download sources and javadocs for the project
 
-    mvn dependency:sources dependency:resolve -Dclassifier=javadoc
+    mvn dependency:sources
+    mvn dependency:resolve -Dclassifier=javadoc
 
 
 Gradle

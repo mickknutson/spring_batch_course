@@ -42,9 +42,12 @@
     <modules>
         <module>spring_batch_section_core</module>
         <module>spring_batch_section_inputs</module>
-        <!--<module>spring_batch_section_outputs</module>-->
-        <!--<module>spring_batch_section_flow</module>-->
-        <!--<module>spring_batch_file_handling</module>-->
+        <module>spring_batch_section_outputs</module>
+        <module>spring_batch_section_flow</module>
+        <!--<module>spring_batch_section_processing</module>-->
+        <!--<module>spring_batch_section_error_handling</module>-->
+        <!--<module>spring_batch_section_orchestration</module>-->
+        <!--<module>spring_batch_section_scaling</module>-->
     </modules>
 
     <build>

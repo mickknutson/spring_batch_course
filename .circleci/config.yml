@@ -49,9 +49,9 @@ jobs:
           # Does not seem to work:
 #          working_directory: ${BASE_DIR}
 
-      - run:
-          command: |
-            command: coveralls --verbose
+#      - run:
+#          command: |
+#            command: coveralls --verbose
 
       - run:
           command: |
