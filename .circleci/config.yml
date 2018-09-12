@@ -16,14 +16,15 @@ jobs:
       _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
 #      LOCAL_REPO: ./StudentWork/Tools/local/repository
       BASE_DIR: "./StudentWork/code"
+    
+    # Not sure if parallelism will work well for this project
+    parallelism: 3
 
     docker:
       - image: circleci/openjdk:8-jdk-browsers
         environment:
-#          LOCAL_REPO: ./StudentWork/Tools/local/repository
           BASE_DIR: "./StudentWork/code"
           _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
-#          MAVEN_OPTS: "-Dmaven.repo.local=../../../Tools/local/repository"
 
 
     steps:
@@ -46,7 +47,7 @@ jobs:
           command: mvn verify
           working_directory: ./StudentWork/code
           # Does not seem to work:
-#          working_directory: $BASE_DIR
+#          working_directory: ${BASE_DIR}
 
       - run:
           command: |
@@ -66,7 +67,7 @@ jobs:
           name: Save Coverage results
           command: |
             set -xu
-            find . -type f -regex ".*/target/jacoco/.*xml" -exec cp {} ~/junit/ \;
+            find . -type f -regex ".*/target/jacoco/jacoco.xml" -exec cp {} ~/junit/ \;
             bash <(curl -s https://codecov.io/bash)
 
       - run:

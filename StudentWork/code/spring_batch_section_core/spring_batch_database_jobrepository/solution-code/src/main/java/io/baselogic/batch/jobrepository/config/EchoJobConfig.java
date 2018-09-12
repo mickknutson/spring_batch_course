@@ -34,7 +34,6 @@ public class EchoJobConfig extends DefaultBatchConfigurer {
 
 
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
-
     @Autowired
     private DataSource dataSource;
 
@@ -70,7 +69,7 @@ public class EchoJobConfig extends DefaultBatchConfigurer {
 
 
     @Bean
-    @DependsOn({"dataSource", "transactionManager"})
+//    @DependsOn({"dataSource", "transactionManager"})
     @Override
     public JobRepository createJobRepository() throws Exception {
         JobRepositoryFactoryBean factory = new JobRepositoryFactoryBean();

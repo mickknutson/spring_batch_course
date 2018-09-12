@@ -25,4 +25,9 @@ To create Gradle scripts from the Maven scripts:
     gradle init
 
 
+Circle-CI
+    [Circle-ci blog](https://medium.com/@ayltai/all-you-need-to-know-about-circleci-2-0-with-firebase-test-lab-2a66785ff3c2)
+Need o investigate CCI workflows:
+https://circleci.com/docs/2.0/workflows/
+
 --- the end...
