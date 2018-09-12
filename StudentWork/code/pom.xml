@@ -22,7 +22,7 @@
         <maven-surefire-plugin.version>2.21.0</maven-surefire-plugin.version>
         <maven-resources-plugin.version>3.0.2</maven-resources-plugin.version>
         <versions-maven-plugin.version>2.6</versions-maven-plugin.version>
-        <jacoco-maven-plugin.version>0.8.1</jacoco-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.8.2</jacoco-maven-plugin.version>
 
         <!-- Spring properties -->
         <spring-cloud-netflix.version>2.0.1.RELEASE</spring-cloud-netflix.version>
@@ -40,7 +40,7 @@
 
     <modules>
         <module>spring_batch_section_core</module>
-        <module>spring_batch_file_handling</module>
+        <!--<module>spring_batch_file_handling</module>-->
     </modules>
 
     <build>
@@ -72,13 +72,16 @@
                     </configuration>
                 </plugin>
 
-                <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-surefire-plugin -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>${maven-surefire-plugin.version}</version>
                 </plugin>
 
+                <!--
+                Aggregate report:
+                mvn verify jacoco:report-aggregate -e
+                -->
                 <plugin>
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
@@ -116,8 +119,66 @@
                     <artifactId>spring-boot-maven-plugin</artifactId>
                 </plugin>
 
+                <!--
+                TODO: Need to get this to work in the overall project.
+                https://github.com/trautonen/coveralls-maven-plugin
+
+                to run:
+                mvn clean verify coveralls:report
+                mvn clean test jacoco:report coveralls:report
+                mvn coveralls:report
+                -->
+                <plugin>
+                    <groupId>org.eluder.coveralls</groupId>
+                    <artifactId>coveralls-maven-plugin</artifactId>
+                    <version>4.3.0</version>
+                    <configuration>
+                        <repoToken>R1gBL3SWjkDAGgse1GDMfJdthOa2S7eFe</repoToken>
+                    </configuration>
+                </plugin>
+
             </plugins>
         </pluginManagement>
+
+        <plugins>
+
+            <!--
+            TODO: Make aggregate reports work
+            https://www.eclemma.org/jacoco/trunk/doc/maven.html
+            https://github.com/jacoco/jacoco/wiki/MavenMultiModule
+            https://stackoverflow.com/questions/46194111/jacoco-maven-configuration-for-multi-module-project-when-some-modules-are-presen
+            https://www.eclemma.org/jacoco/trunk/doc/merge-mojo.html\
+            -->
+            <!--<plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>report-aggregate</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>report-aggregate</goal>
+                        </goals>
+                        <configuration>
+                            <title>JaCoCo</title>
+                            <footer>Aggregate Code Coverage Report for JaCoCo ${project.artifactId}:${project.version}</footer>
+                            <includes>
+                                <include>**/*.class</include>
+                            </includes>
+                            <excludes>
+                                <exclude>**/HelpMojo.class</exclude>
+                            </excludes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>-->
+
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
     </build>
 
     <dependencyManagement>
@@ -280,6 +341,30 @@
     </reporting>
 
     <repositories>
+        <repository>
+            <id>noop</id>
+            <name>dummy</name>
+            <url>http://simulation.tudelft.nl/maven/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+
+        <!--<repository>
+            <id>sonatype-nexus-snapshots</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <releases><enabled>false</enabled></releases>
+            <snapshots><enabled>true</enabled></snapshots>
+        </repository>-->
+
+        <repository>
+            <id>maven-central</id>
+            <name>Maven Central</name>
+            <url>https://repo1.maven.org/maven2</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
 
         <repository>
             <id>spring-milestones</id>
@@ -292,6 +377,31 @@
     </repositories>
 
     <pluginRepositories>
+        <pluginRepository>
+            <id>noop</id>
+            <name>dummy</name>
+            <url>http://simulation.tudelft.nl/maven/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+
+        <!--<pluginRepository>
+            <id>sonatype-nexus-snapshot</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <releases><enabled>false</enabled></releases>
+            <snapshots><enabled>true</enabled></snapshots>
+        </pluginRepository>-->
+
+        <pluginRepository>
+            <id>maven-central</id>
+            <name>Maven Central</name>
+            <url>https://repo1.maven.org/maven2</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+
         <pluginRepository>
             <id>spring-milestones</id>
             <name>Spring Milestones</name>
