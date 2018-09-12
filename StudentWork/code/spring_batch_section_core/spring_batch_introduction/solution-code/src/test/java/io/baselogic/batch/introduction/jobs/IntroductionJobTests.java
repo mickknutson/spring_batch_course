@@ -28,12 +28,13 @@ import static org.assertj.core.api.Assertions.assertThat;
         StepScopeTestExecutionListener.class
 })
 @SuppressWarnings("Duplicates")
-public class JobTests {
+public class IntroductionJobTests {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private JobLauncherTestUtils jobLauncherTestUtils;
+
 
     //---------------------------------------------------------------------------//
 

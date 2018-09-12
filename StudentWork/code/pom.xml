@@ -87,56 +87,47 @@
 
                 <!--
                 https://www.eclemma.org/jacoco/trunk/doc/maven.html
-                mvn jacoco:merge
-                mvn jacoco:report-aggregate
+                mvn verify
                 -->
                 <plugin>
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
                     <version>${jacoco-maven-plugin.version}</version>
-
                     <executions>
                         <execution>
-                            <id>pre-unit-test</id>
+                            <id>prepare-agent</id>
                             <goals>
                                 <goal>prepare-agent</goal>
                             </goals>
-                            <configuration>
-                                <destFile>${project.build.directory}/jacoco/jacoco.exec</destFile>
-                                <propertyName>surefireArgLine</propertyName>
-                            </configuration>
                         </execution>
-                        <!--<execution>
-                            <id>pre-integration-test</id>
-                            <goals>
-                                <goal>prepare-agent-integration</goal>
-                            </goals>
-                            <configuration>
-                                <destFile>${project.build.directory}/jacoco/jacoco-it.exec</destFile>
-                                <propertyName>testArgLine</propertyName>
-                            </configuration>
-                        </execution>
-
                         <execution>
-                            <id>post-integration-test</id>
-                            <phase>post-integration-test</phase>
-                            <goals>
-                                <goal>report</goal>
-                            </goals>
-                            <configuration>
-                                <dataFile>${project.build.directory}/jacoco/jacoco-it.exec</dataFile>
-                                <outputDirectory>${project.reporting.outputDirectory}/jacoco-it</outputDirectory>
-                            </configuration>
-                        </execution>-->
-                        <execution>
-                            <id>post-unit-test</id>
+                            <id>report</id>
                             <phase>prepare-package</phase>
                             <goals>
                                 <goal>report</goal>
                             </goals>
+                        </execution>
+                        <execution>
+                            <id>post-unit-test</id>
+                            <phase>test</phase>
+                            <goals>
+                                <goal>report</goal>
+                            </goals>
+                        </execution>
+
+                        <!-- aggregated unit test coverage report -->
+                        <execution>
+                            <id>aggregate-reports</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>report-aggregate</goal>
+                            </goals>
                             <configuration>
-                                <dataFile>${project.build.directory}/jacoco/jacoco.exec</dataFile>
-                                <outputDirectory>${project.reporting.outputDirectory}/jacoco</outputDirectory>
+                                <title>Maven Multi-module Coverage Demo: Coverage of Unit Tests</title>
+                                <outputDirectory>${project.reporting.outputDirectory}/jacoco-aggregate</outputDirectory>
+                                <dataFileExcludes>
+                                    <dataFileExclude>**/target/jacoco-it.exec</dataFileExclude>
+                                </dataFileExcludes>
                             </configuration>
                         </execution>
                         <execution>
@@ -150,11 +141,11 @@
                                     <fileSet>
                                         <directory>${project.build.directory}</directory>
                                         <includes>
-                                            <include>*.exec</include>
+                                            <include>**/jacoco.exec</include>
                                         </includes>
                                     </fileSet>
                                 </fileSets>
-                                <destFile>${project.build.directory}/aggregate.exec</destFile>
+                                <destFile>${project.build.directory}/jacoco/aggregate.exec</destFile>
                             </configuration>
                         </execution>
                         <execution>
@@ -164,52 +155,19 @@
                                 <goal>report</goal>
                             </goals>
                             <configuration>
-                                <dataFile>${project.build.directory}/aggregate.exec</dataFile>
-                                <outputDirectory>${project.reporting.outputDirectory}/jacoco-aggregate</outputDirectory>
+                                <dataFile>${project.build.directory}/jacoco/aggregate.exec</dataFile>
+                                <outputDirectory>${project.build.directory}/jacoco-aggregate</outputDirectory>
                             </configuration>
                         </execution>
 
-
-                        <!--<execution>
-                            <id>merge-all-jacoco</id>
-                            <goals><goal>merge</goal></goals>
-                            <phase>test</phase>
-                            <configuration>
-                                <destFile>target/jacoco/merged.exec</destFile>
-                                <fileSets>
-                                    <fileSet>
-                                        <directory>${project.build.directory}</directory>
-                                        <includes>
-                                            <include>*.exec</include>
-                                        </includes>
-                                    </fileSet>
-                                </fileSets>
-                            </configuration>
-                        </execution>-->
-                        <!-- aggregated unit test coverage report -->
-                        <!--<execution>
-                            <id>aggregate-reports</id>
-                            <phase>verify</phase>
-                            <goals>
-                                <goal>report-aggregate</goal>
-                            </goals>
-                            <configuration>
-                                <title>Maven Multi-module Coverage Demo: Coverage of Unit Tests</title>
-                                <outputDirectory>${project.reporting.outputDirectory}/jacoco-aggregate</outputDirectory>
-                                <dataFileExcludes>
-                                    <dataFileExclude>**/target/jacoco-it.exec</dataFileExclude>
-                                </dataFileExcludes>
-                            </configuration>
-                        </execution>-->
-
-
-
                     </executions>
+
                     <!--<configuration>
                         <dataFile>${project.build.directory}/jacoco.exec</dataFile>
                         <outputDirectory>${project.build.directory}/jacoco</outputDirectory>
                     </configuration>-->
                 </plugin>
+
 
                 <plugin>
                     <groupId>org.springframework.boot</groupId>
@@ -223,7 +181,6 @@
                 to run:
                 mvn clean verify coveralls:report
                 mvn clean test jacoco:report coveralls:report
-                mvn coveralls:report
                 -->
                 <plugin>
                     <groupId>org.eluder.coveralls</groupId>
@@ -237,13 +194,13 @@
                                 ${project.build.directory}/jacoco/jacoco.xml
                             </jacocoReport>
                         </jacocoReports>
-
                     </configuration>
                 </plugin>
 
             </plugins>
         </pluginManagement>
 
+<!--
         <plugins>
 
             <plugin>
@@ -252,6 +209,7 @@
             </plugin>
 
         </plugins>
+-->
     </build>
 
     <dependencyManagement>

@@ -37,11 +37,6 @@ public class JobConfig extends DefaultBatchConfigurer {
     // Launcher and Repository
 
 
-//    @Bean
-//    public PlatformTransactionManager transactionManager() {
-//        return new ResourcelessTransactionManager();
-//    }
-
     @Bean
     @Override
     @SuppressWarnings("Duplicates")

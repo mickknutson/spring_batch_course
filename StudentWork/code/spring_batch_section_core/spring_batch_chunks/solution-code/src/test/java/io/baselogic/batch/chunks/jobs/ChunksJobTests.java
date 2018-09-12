@@ -27,11 +27,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(classes = {TestConfig.class, TaskletConfig.class, DatabaseConfig.class, JobConfig.class})
 @TestExecutionListeners({
         DependencyInjectionTestExecutionListener.class,
-        DirtiesContextTestExecutionListener.class,
+//        DirtiesContextTestExecutionListener.class,
         JobScopeTestExecutionListener.class,
         StepScopeTestExecutionListener.class
 })
-@DirtiesContext
+//@DirtiesContext
 @SuppressWarnings("Duplicates")
 public class ChunksJobTests {
 
@@ -50,16 +50,15 @@ public class ChunksJobTests {
                 .toJobParameters();
     }
 
-    /**
-     * FIXME: Add StringBuilder and return data in this method:
-     * @param jobExecution
-     */
-    private void logJobExecution(JobExecution jobExecution){
-        for (StepExecution stepExecution : jobExecution.getStepExecutions()) {
-            logger.info("Processed: {}", stepExecution.getStepName());
+    private String logJobExecution(JobExecution jobExecution){
 
-        }
+        StringBuilder sb = new StringBuilder();
 
+        jobExecution.getStepExecutions().forEach((stepExecution) -> {
+            sb.append("Processed: ").append(stepExecution.getStepName()).append("\n");
+
+        });
+        return sb.toString();
     }
 
     //---------------------------------------------------------------------------//
@@ -71,19 +70,18 @@ public class ChunksJobTests {
 
         JobExecution jobExecution = jobLauncherTestUtils.launchJob();
 
-        for (StepExecution stepExecution : jobExecution.getStepExecutions()) {
+        jobExecution.getStepExecutions().forEach((stepExecution) -> {
             logger.info("Processed: " + stepExecution);
 
             if (stepExecution.getStepName().equals("stepA")) {
                 assertThat(stepExecution.getCommitCount()).isEqualTo(1);
             }
-        }
+        });
 
         assertThat(ExitStatus.COMPLETED).isEqualTo(jobExecution.getExitStatus());
         assertThat(jobExecution.getStepExecutions().size()).isEqualTo(3);
 
-        //logger.info(logJobExecution(jobExecution));
-        logJobExecution(jobExecution);
+        logger.info(logJobExecution(jobExecution));
 
 
         logger.info("<<<---------------------------------------------");

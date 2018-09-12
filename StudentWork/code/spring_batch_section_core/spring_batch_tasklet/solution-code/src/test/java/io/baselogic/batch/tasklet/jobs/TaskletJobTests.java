@@ -49,11 +49,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(classes = {TestConfig.class, TaskletConfig.class, DatabaseConfig.class, JobConfig.class})
 @TestExecutionListeners({
         DependencyInjectionTestExecutionListener.class,
-        DirtiesContextTestExecutionListener.class,
+//        DirtiesContextTestExecutionListener.class,
         JobScopeTestExecutionListener.class,
         StepScopeTestExecutionListener.class
 })
-@DirtiesContext
+//@DirtiesContext
 @SuppressWarnings("Duplicates")
 public class TaskletJobTests {
 
@@ -65,23 +65,15 @@ public class TaskletJobTests {
 
     //---------------------------------------------------------------------------//
 
-    public JobParameters getJobParameters() {
-        return new JobParametersBuilder()
-                .addLong("commit.interval", 2L)
-                .addLong("timestamp", System.currentTimeMillis())
-                .toJobParameters();
-    }
+    private String logJobExecution(JobExecution jobExecution){
 
-    /**
-     * FIXME: Add StringBuilder and return data in this method:
-     * @param jobExecution
-     */
-    private void logJobExecution(JobExecution jobExecution){
-        for (StepExecution stepExecution : jobExecution.getStepExecutions()) {
-            logger.info("Processed: {}", stepExecution.getStepName());
+        StringBuilder sb = new StringBuilder();
 
-        }
+        jobExecution.getStepExecutions().forEach((stepExecution) -> {
+            sb.append("Processed: ").append(stepExecution.getStepName()).append("\n");
 
+        });
+        return sb.toString();
     }
 
     //---------------------------------------------------------------------------//
@@ -93,19 +85,18 @@ public class TaskletJobTests {
 
         JobExecution jobExecution = jobLauncherTestUtils.launchJob();
 
-        for (StepExecution stepExecution : jobExecution.getStepExecutions()) {
+        jobExecution.getStepExecutions().forEach((stepExecution) -> {
             logger.info("Processed: " + stepExecution);
 
             if (stepExecution.getStepName().equals("stepA")) {
                 assertThat(stepExecution.getCommitCount()).isEqualTo(1);
             }
-        }
+        });
 
         assertThat(ExitStatus.COMPLETED).isEqualTo(jobExecution.getExitStatus());
         assertThat(jobExecution.getStepExecutions().size()).isEqualTo(3);
 
-        //logger.info(logJobExecution(jobExecution));
-        logJobExecution(jobExecution);
+        logger.info(logJobExecution(jobExecution));
 
 
         logger.info("<<<---------------------------------------------");
