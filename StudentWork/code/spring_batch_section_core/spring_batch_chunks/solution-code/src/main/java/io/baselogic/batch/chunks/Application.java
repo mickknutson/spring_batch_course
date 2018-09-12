@@ -1,11 +1,12 @@
 package io.baselogic.batch.chunks;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Profile;
 
 import java.util.Arrays;
 
@@ -13,26 +14,28 @@ import java.util.Arrays;
 @SuppressWarnings("Duplicates")
 public class Application {
 
-	public static void main(String[] args) {
+    private static final Logger logger = LoggerFactory.getLogger(Application.class);
+
+    public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
 
-    @Profile("trace")
+    //@Profile("trace")
     @Bean
     public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
         return args -> {
 
-            System.out.println("\n\n----------------------------------------");
-            System.out.println("Let's inspect the beans provided by Spring Boot:\n");
-            System.out.println("--------------------------------------------");
+            logger.debug("\n\n----------------------------------------");
+            logger.debug("Let's inspect the beans provided by Spring Boot:\n");
+            logger.debug("--------------------------------------------");
 
             String[] beanNames = ctx.getBeanDefinitionNames();
             Arrays.sort(beanNames);
             for (String beanName : beanNames) {
-                System.out.println(beanName);
+                logger.debug(beanName);
             }
 
-            System.out.println("----------------------------------------\n\n");
+            logger.debug("----------------------------------------\n\n");
         };
     }
 

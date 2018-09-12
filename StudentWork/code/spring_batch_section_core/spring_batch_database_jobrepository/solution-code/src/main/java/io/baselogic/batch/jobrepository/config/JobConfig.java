@@ -54,7 +54,6 @@ public class JobConfig extends DefaultBatchConfigurer {
 
     @Bean
     @Override
-    @SuppressWarnings("Duplicates")
     public JobLauncher createJobLauncher() throws Exception {
         SimpleJobLauncher jobLauncher = new SimpleJobLauncher();
         jobLauncher.setJobRepository(createJobRepository());
@@ -65,7 +64,6 @@ public class JobConfig extends DefaultBatchConfigurer {
 
     @Bean
     @Override
-    @SuppressWarnings("Duplicates")
     public JobRepository createJobRepository() throws Exception {
         JobRepositoryFactoryBean factory = new JobRepositoryFactoryBean();
         factory.setDataSource(dataSource);
@@ -82,8 +80,8 @@ public class JobConfig extends DefaultBatchConfigurer {
     // Jobs
 
     @Bean
-    public Job job(JobBuilderFactory jobBuilderFactory, Step stepA, final Step stepB, final Step stepC) {
-        return jobBuilderFactory.get("echoJob")
+    public Job job(JobBuilderFactory jobBuilderFactory, Step stepA, Step stepB, Step stepC) {
+        return jobBuilderFactory.get("taskletJob")
                 .flow(stepA).on("*").to(stepB)
                 .next(stepC).end()
                 .build();
