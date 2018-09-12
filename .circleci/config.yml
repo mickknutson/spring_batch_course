@@ -51,6 +51,10 @@ jobs:
 
       - run:
           command: |
+            command: coveralls --verbose
+
+      - run:
+          command: |
             set -xu
 #            pwd
 #            ls -la ${LOCAL_REPO}

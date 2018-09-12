@@ -39,11 +39,15 @@ serviceId: ${SERVICE_ID:batch-introduction}
 
 
 ##---------------------------------------------------------------------------##
+# Logging and Console
 logging:
   level:
     root: 'INFO'
     org.springframework: 'INFO'
     org.h2.jdbc.JdbcSQLException: 'ERROR'
+
+#spring.main.banner-mode: off
+spring.output.ansi.enabled: ALWAYS
 
 ##---------------------------------------------------------------------------##
 ## NOTE: Enable Management endpoints

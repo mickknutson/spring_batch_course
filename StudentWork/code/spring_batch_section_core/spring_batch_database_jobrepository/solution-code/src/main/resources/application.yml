@@ -59,6 +59,9 @@ logging:
     org.springframework: 'INFO'
     org.h2.jdbc.JdbcSQLException: 'ERROR'
 
+#spring.main.banner-mode: off
+spring.output.ansi.enabled: ALWAYS
+
 ##---------------------------------------------------------------------------##
 ## NOTE: Enable Management endpoints
 

@@ -23,6 +23,7 @@
         <maven-resources-plugin.version>3.0.2</maven-resources-plugin.version>
         <versions-maven-plugin.version>2.6</versions-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.2</jacoco-maven-plugin.version>
+        <coveralls-maven-plugin.version>4.3.0</coveralls-maven-plugin.version>
 
         <!-- Spring properties -->
         <spring-cloud-netflix.version>2.0.1.RELEASE</spring-cloud-netflix.version>
@@ -40,6 +41,9 @@
 
     <modules>
         <module>spring_batch_section_core</module>
+        <module>spring_batch_section_inputs</module>
+        <!--<module>spring_batch_section_outputs</module>-->
+        <!--<module>spring_batch_section_flow</module>-->
         <!--<module>spring_batch_file_handling</module>-->
     </modules>
 
@@ -78,10 +82,6 @@
                     <version>${maven-surefire-plugin.version}</version>
                 </plugin>
 
-                <!--
-                Aggregate report:
-                mvn verify jacoco:report-aggregate -e
-                -->
                 <plugin>
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
@@ -131,9 +131,16 @@
                 <plugin>
                     <groupId>org.eluder.coveralls</groupId>
                     <artifactId>coveralls-maven-plugin</artifactId>
-                    <version>4.3.0</version>
+                    <version>${coveralls-maven-plugin.version}</version>
                     <configuration>
-                        <repoToken>R1gBL3SWjkDAGgse1GDMfJdthOa2S7eFe</repoToken>
+                        <!-- @see $HOME/.m2/settings.xml for properties -->
+                        <repoToken>${coveralls.repoToken}</repoToken>
+                        <jacocoReports>
+                            <jacocoReport>
+                                ${project.build.directory}/jacoco/jacoco.xml
+                            </jacocoReport>
+                        </jacocoReports>
+
                     </configuration>
                 </plugin>
 
@@ -142,42 +149,11 @@
 
         <plugins>
 
-            <!--
-            TODO: Make aggregate reports work
-            https://www.eclemma.org/jacoco/trunk/doc/maven.html
-            https://github.com/jacoco/jacoco/wiki/MavenMultiModule
-            https://stackoverflow.com/questions/46194111/jacoco-maven-configuration-for-multi-module-project-when-some-modules-are-presen
-            https://www.eclemma.org/jacoco/trunk/doc/merge-mojo.html\
-            -->
-            <!--<plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>${jacoco-maven-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>report-aggregate</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>report-aggregate</goal>
-                        </goals>
-                        <configuration>
-                            <title>JaCoCo</title>
-                            <footer>Aggregate Code Coverage Report for JaCoCo ${project.artifactId}:${project.version}</footer>
-                            <includes>
-                                <include>**/*.class</include>
-                            </includes>
-                            <excludes>
-                                <exclude>**/HelpMojo.class</exclude>
-                            </excludes>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>-->
-
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
             </plugin>
+
         </plugins>
     </build>
 
@@ -341,6 +317,7 @@
     </reporting>
 
     <repositories>
+        <!-- required for coveralls -->
         <repository>
             <id>noop</id>
             <name>dummy</name>
@@ -377,6 +354,7 @@
     </repositories>
 
     <pluginRepositories>
+        <!-- required for coveralls -->
         <pluginRepository>
             <id>noop</id>
             <name>dummy</name>

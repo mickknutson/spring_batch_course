@@ -45,7 +45,7 @@ public class JobEndpointTests {
                 .perform(get("/launch"))
 
                 // Lets view the response first:
-                .andDo(print())
+//                .andDo(print())
 
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN))
@@ -67,7 +67,7 @@ public class JobEndpointTests {
                 )
 
                 // Lets view the response first:
-                .andDo(print())
+//                .andDo(print())
 
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN))
