@@ -476,9 +476,13 @@
                                 </goals>
                             </execution>
                         </executions>-->
-
                     </plugin>
 
+                    <!--
+                    SpotBugs Static Analysis
+                    https://spotbugs.github.io/spotbugs-maven-plugin/
+                    mvn spotbugs:gui
+                    -->
                     <plugin>
                         <groupId>com.github.spotbugs</groupId>
                         <artifactId>spotbugs-maven-plugin</artifactId>
@@ -490,6 +494,23 @@
                                 <version>${spotbugs.version}</version>
                             </dependency>
                         </dependencies>
+                        <configuration>
+                            <effort>Max</effort>
+                            <threshold>Low</threshold>
+                            <failOnError>true</failOnError>
+                            <!--<includeFilterFile>${session.executionRootDirectory}/spotbugs-security-include.xml</includeFilterFile>
+                            <excludeFilterFile>${session.executionRootDirectory}/spotbugs-security-exclude.xml</excludeFilterFile>-->
+                            <xmlOutput>true</xmlOutput>
+                            <!-- Optional directory to put spotbugs xdoc xml report -->
+                            <!--<xmlOutputDirectory>target/site</xmlOutputDirectory>-->
+                            <plugins>
+                                <plugin>
+                                    <groupId>com.h3xstream.findsecbugs</groupId>
+                                    <artifactId>findsecbugs-plugin</artifactId>
+                                    <version>LATEST</version> <!-- Auto-update to the latest stable -->
+                                </plugin>
+                            </plugins>
+                        </configuration>
                         <executions>
                             <execution>
                                 <id>spotbugs</id>
@@ -500,6 +521,7 @@
                             </execution>
                         </executions>
                     </plugin>
+
                 </plugins>
             </build>
         </profile>
