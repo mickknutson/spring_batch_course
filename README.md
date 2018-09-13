@@ -54,12 +54,10 @@ You will learn how Spring Batch can integrate with diverse enterprise technologi
 *   Programmers
 *   Anyone who wants to learn Spring Batch
 
-
 ---
 ## **Source Code Root**
 The root of the labs and solutions is located:
 https://github.com/mickknutson/spring_batch_course/tree/master/StudentWork/code
-
 
 ---
 ## **Available Soon**
@@ -78,5 +76,19 @@ On Udemy
 - **HTTP Reference Card:** [http://refcardz.dzone.com/refcardz/http-hypertext-transfer-0]
 - **VisualVM Reference Card:** [http://refcardz.dzone.com/refcardz/java-profiling-visualvm]
 
+
+---
+ ## Project Status
+ 
+![https://sonarcloud.io/images/project_badges/sonarcloud-orange.svg](https://sonarcloud.io/images/project_badges/sonarcloud-orange.svg)
+
+[![Bugs (%)](https://sonarcloud.io/api/project_badges/measure?project=mickknutson_spring_batch_course&metric=bugs)](https://sonarcloud.io/api/project_badges/measure?project=mickknutson_spring_batch_course&metric=bugs) [![Bugs (%)](https://sonarcloud.io/api/project_badges/measure?project=mickknutson_spring_batch_course&metric=sqale_rating)](https://sonarcloud.io/api/project_badges/measure?project=mickknutson_spring_batch_course&metric=sqale_rating) [![Bugs (%)](https://sonarcloud.io/api/project_badges/measure?project=mickknutson_spring_batch_course&metric=coverage)](https://sonarcloud.io/api/project_badges/measure?project=mickknutson_spring_batch_course&metric=coverage) [![Bugs (%)](https://sonarcloud.io/api/project_badges/measure?project=mickknutson_spring_batch_course&metric=ncloc)](https://sonarcloud.io/api/project_badges/measure?project=mickknutson_spring_batch_course&metric=ncloc) [![Bugs (%)](https://sonarcloud.io/api/project_badges/measure?project=mickknutson_spring_batch_course&metric=reliability_rating)](https://sonarcloud.io/api/project_badges/measure?project=mickknutson_spring_batch_course&metric=reliability_rating) [![Bugs (%)](https://sonarcloud.io/api/project_badges/measure?project=mickknutson_spring_batch_course&metric=security_rating)](https://sonarcloud.io/api/project_badges/measure?project=mickknutson_spring_batch_course&metric=security_rating) [![Bugs (%)](https://sonarcloud.io/api/project_badges/measure?project=mickknutson_spring_batch_course&metric=sqale_index)](https://sonarcloud.io/api/project_badges/measure?project=mickknutson_spring_batch_course&metric=sqale_index) [![Bugs (%)](https://sonarcloud.io/api/project_badges/measure?project=mickknutson_spring_batch_course&metric=vulnerabilities)](https://sonarcloud.io/api/project_badges/measure?project=mickknutson_spring_batch_course&metric=vulnerabilities)
+
+
+
+[![CircleCI](https://circleci.com/gh/mickknutson/spring_batch_course.svg?style=svg)](https://circleci.com/gh/mickknutson/spring_batch_course)
+ 
+ [![codecov](https://codecov.io/gh/mickknutson/spring_batch_course/branch/master/graph/badge.svg)](https://codecov.io/gh/mickknutson/spring_batch_course)
+ [![Coverage Status](https://coveralls.io/repos/github/mickknutson/spring_batch_course/badge.svg?branch=master)](https://coveralls.io/github/mickknutson/spring_batch_course?branch=master)
 
 ---
