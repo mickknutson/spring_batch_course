@@ -82,15 +82,10 @@ public class JobConfig extends DefaultBatchConfigurer {
     @Bean
     public Job job(JobBuilderFactory jobBuilderFactory, Step stepA, Step stepB, Step stepC) {
         return jobBuilderFactory.get("taskletJob")
-                .start(stepA).next(stepB)
+                .start(stepA)
+                .next(stepB)
                 .next(stepC)
                 .build();
-
-
-//        return jobBuilderFactory.get("taskletJob")
-//                .flow(stepA).on("*").to(stepB)
-//                .next(stepC).end()
-//                .build();
     }
 
     //---------------------------------------------------------------------------//

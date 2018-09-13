@@ -50,10 +50,6 @@ jobs:
 #          working_directory: ${BASE_DIR}
 
       - run:
-          command: |
-            mvn sonar:sonar -Dsonar.projectKey=mickknutson_spring_batch_course
-
-      - run:
           name: Save test results
           command: |
             set -xu

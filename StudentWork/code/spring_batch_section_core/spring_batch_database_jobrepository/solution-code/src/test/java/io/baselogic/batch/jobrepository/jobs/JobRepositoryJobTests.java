@@ -57,27 +57,27 @@ public class JobRepositoryJobTests {
 
         StringBuilder sb = new StringBuilder();
 
-        sb.append("------------------------------------------------");
-        sb.append("Processed: ").append(stepExecution);
-        sb.append("------------------------------------------------");
-        sb.append("stepName: ").append(stepExecution.getStepName());
-        sb.append("status: ").append(stepExecution.getStatus());
-        sb.append("readCount: ").append(stepExecution.getReadCount());
-        sb.append("writeCount: ").append(stepExecution.getWriteCount());
-        sb.append("commitCount: ").append(stepExecution.getCommitCount());
-        sb.append("rollbackCount: ").append(stepExecution.getRollbackCount());
-        sb.append("readSkipCount: ").append(stepExecution.getReadSkipCount());
-        sb.append("processSkipCount: ").append(stepExecution.getProcessSkipCount());
-        sb.append("writeSkipCount: ").append(stepExecution.getWriteSkipCount());
-        sb.append("startTime: ").append(stepExecution.getStartTime());
-        sb.append("endTime: ").append(stepExecution.getEndTime());
-        sb.append("lastUpdated: ").append(stepExecution.getLastUpdated());
-        sb.append("executionContext: ").append(stepExecution.getExecutionContext());
-        sb.append("exitStatus: ").append(stepExecution.getExitStatus());
-        sb.append("terminateOnly: ").append(stepExecution.isTerminateOnly());
-        sb.append("filterCount: ").append(stepExecution.getFilterCount());
-        sb.append("failureExceptions: ").append(stepExecution.getFailureExceptions());
-        sb.append("------------------------------------------------");
+        sb.append("------------------------------------------------\n");
+        sb.append("Processed: ").append(stepExecution).append("\n");
+        sb.append("------------------------------------------------\n");
+        sb.append("stepName: ").append(stepExecution.getStepName()).append("\n");
+        sb.append("status: ").append(stepExecution.getStatus()).append("\n");
+        sb.append("readCount: ").append(stepExecution.getReadCount()).append("\n");
+        sb.append("writeCount: ").append(stepExecution.getWriteCount()).append("\n");
+        sb.append("commitCount: ").append(stepExecution.getCommitCount()).append("\n");
+        sb.append("rollbackCount: ").append(stepExecution.getRollbackCount()).append("\n");
+        sb.append("readSkipCount: ").append(stepExecution.getReadSkipCount()).append("\n");
+        sb.append("processSkipCount: ").append(stepExecution.getProcessSkipCount()).append("\n");
+        sb.append("writeSkipCount: ").append(stepExecution.getWriteSkipCount()).append("\n");
+        sb.append("startTime: ").append(stepExecution.getStartTime()).append("\n");
+        sb.append("endTime: ").append(stepExecution.getEndTime()).append("\n");
+        sb.append("lastUpdated: ").append(stepExecution.getLastUpdated()).append("\n");
+        sb.append("executionContext: ").append(stepExecution.getExecutionContext()).append("\n");
+        sb.append("exitStatus: ").append(stepExecution.getExitStatus()).append("\n");
+        sb.append("terminateOnly: ").append(stepExecution.isTerminateOnly()).append("\n");
+        sb.append("filterCount: ").append(stepExecution.getFilterCount()).append("\n");
+        sb.append("failureExceptions: ").append(stepExecution.getFailureExceptions()).append("\n");
+        sb.append("------------------------------------------------\n");
 
         return sb.toString();
     }
