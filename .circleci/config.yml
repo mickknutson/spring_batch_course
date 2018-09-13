@@ -51,7 +51,7 @@ jobs:
       - run:
           name: Sonar Cloud Scan
           command: mvn sonar:sonar -Dsonar.login=$SONAR_LOGIN
-          working_directory: ${BASE_DIR}
+          working_directory: ./StudentWork/code
 
       - run:
           name: Save test results
