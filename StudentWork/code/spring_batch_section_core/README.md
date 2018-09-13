@@ -1,20 +1,14 @@
-# Spring Batch Master Class
+# *Spring Batch Master Class*
 
-## Section: Core Concepts
+##  *Section: Core Concepts*
 
-Learn the basics of Spring Batch and how to create your first batch jobs
+**Learn how to design and develop robust batch applications with the power of the Spring Batch framework with JavaConfig**
+ ---
 
+ ### *Modules in this section:*
+ - [Batch Introduction](https://github.com/mickknutson/spring_batch_course/tree/master/StudentWork/code/spring_batch_section_core/spring_batch_introduction)
+ - [Database JobRepository](https://github.com/mickknutson/spring_batch_course/tree/master/StudentWork/code/spring_batch_section_core/spring_batch_database_jobrepository)
+ - [Tasklets](https://github.com/mickknutson/spring_batch_course/tree/master/StudentWork/code/spring_batch_section_core/spring_batch_tasklet)
+ - [Chunks](https://github.com/mickknutson/spring_batch_course/tree/master/StudentWork/code/spring_batch_section_core/spring_batch_chunks)
 
-## **Instructor References:**
-
-- **Udemy.com Instructor Profile:** [https://www.udemy.com/user/mickknutson/]
-- **BASE Logic YouTube Channel:** [https://www.youtube.com/c/BASELogic]
-- **Spring Security 3rd Edition:** [https://packtpub.com/application-development/spring-security-third-edition]
-- **Spring Cloud Config Video:** [https://udemy.com/distributed-configuration-with-spring-cloud-config]
-- **Java EE6 Cookbook:** [http://packtpub.com/java-ee6-securing-tuning-extending-enterprise-applications-cookbook/book]
-- **HTTP Reference Card:** [http://refcardz.dzone.com/refcardz/http-hypertext-transfer-0]
-- **VisualVM Reference Card:** [http://refcardz.dzone.com/refcardz/java-profiling-visualvm]
-
-
-
-
+ ---

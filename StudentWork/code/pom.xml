@@ -24,6 +24,8 @@
         <versions-maven-plugin.version>2.6</versions-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.2</jacoco-maven-plugin.version>
         <coveralls-maven-plugin.version>4.3.0</coveralls-maven-plugin.version>
+        <spotbugs-maven-plugin.version>3.1.6</spotbugs-maven-plugin.version>
+        <spotbugs.version>3.1.6</spotbugs.version>
 
         <!-- Spring properties -->
         <spring-cloud-netflix.version>2.0.1.RELEASE</spring-cloud-netflix.version>
@@ -161,7 +163,6 @@
                         </execution>
 
                     </executions>
-
                     <!--<configuration>
                         <dataFile>${project.build.directory}/jacoco.exec</dataFile>
                         <outputDirectory>${project.build.directory}/jacoco</outputDirectory>
@@ -195,6 +196,19 @@
                             </jacocoReport>
                         </jacocoReports>
                     </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>com.github.spotbugs</groupId>
+                    <artifactId>spotbugs-maven-plugin</artifactId>
+                    <version>${spotbugs-maven-plugin.version}</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>com.github.spotbugs</groupId>
+                            <artifactId>spotbugs</artifactId>
+                            <version>${spotbugs.version}</version>
+                        </dependency>
+                    </dependencies>
                 </plugin>
 
             </plugins>
@@ -367,6 +381,11 @@
                 <artifactId>maven-surefire-report-plugin</artifactId>
                 <version>${maven-surefire-plugin.version}</version>
             </plugin>
+            <plugin>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
+                <version>${spotbugs-maven-plugin.version}</version>
+            </plugin>
         </plugins>
 
     </reporting>
@@ -381,13 +400,6 @@
                 <enabled>false</enabled>
             </snapshots>
         </repository>
-
-        <!--<repository>
-            <id>sonatype-nexus-snapshots</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-            <releases><enabled>false</enabled></releases>
-            <snapshots><enabled>true</enabled></snapshots>
-        </repository>-->
 
         <repository>
             <id>maven-central</id>
@@ -418,13 +430,6 @@
                 <enabled>false</enabled>
             </snapshots>
         </pluginRepository>
-
-        <!--<pluginRepository>
-            <id>sonatype-nexus-snapshot</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-            <releases><enabled>false</enabled></releases>
-            <snapshots><enabled>true</enabled></snapshots>
-        </pluginRepository>-->
 
         <pluginRepository>
             <id>maven-central</id>
