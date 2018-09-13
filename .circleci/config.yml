@@ -14,7 +14,6 @@ jobs:
 
     environment:
       _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
-#      LOCAL_REPO: ./StudentWork/Tools/local/repository
       BASE_DIR: "./StudentWork/code"
     
     # Not sure if parallelism will work well for this project
@@ -48,6 +47,10 @@ jobs:
           working_directory: ./StudentWork/code
           # Does not seem to work:
 #          working_directory: ${BASE_DIR}
+
+      - run:
+          name: Sonar Cloud Scan
+          command: mvn sonar:sonar -Dsonar.login=$SONAR_LOGIN
 
       - run:
           name: Save test results

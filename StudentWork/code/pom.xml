@@ -23,7 +23,13 @@
         <maven-resources-plugin.version>3.0.2</maven-resources-plugin.version>
         <versions-maven-plugin.version>2.6</versions-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.2</jacoco-maven-plugin.version>
+
+        <sonar-maven-plugin.version>3.3.0.603</sonar-maven-plugin.version>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+        <sonar.organization>mickknutson-github</sonar.organization>
+
         <coveralls-maven-plugin.version>4.3.0</coveralls-maven-plugin.version>
+
         <spotbugs-maven-plugin.version>3.1.6</spotbugs-maven-plugin.version>
         <spotbugs.version>3.1.6</spotbugs.version>
 
@@ -37,8 +43,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.0.M2</version>
-        <!--<version>2.0.4.RELEASE</version>-->
+        <version>2.1.0.M3</version>
     </parent>
 
     <modules>
@@ -163,10 +168,6 @@
                         </execution>
 
                     </executions>
-                    <!--<configuration>
-                        <dataFile>${project.build.directory}/jacoco.exec</dataFile>
-                        <outputDirectory>${project.build.directory}/jacoco</outputDirectory>
-                    </configuration>-->
                 </plugin>
 
 
@@ -189,13 +190,33 @@
                     <version>${coveralls-maven-plugin.version}</version>
                     <configuration>
                         <!-- @see $HOME/.m2/settings.xml for properties -->
-                        <repoToken>${coveralls.repoToken}</repoToken>
+                        <repoToken>${COVERALLS_REPOTOKEN}</repoToken>
                         <jacocoReports>
                             <jacocoReport>
                                 ${project.build.directory}/jacoco/jacoco.xml
                             </jacocoReport>
                         </jacocoReports>
                     </configuration>
+                </plugin>
+
+                <!--<plugin>
+                    <groupId>org.sonarsource.scanner.maven</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>${sonar-maven-plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>sonar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>-->
+
+                <plugin>
+                    <groupId>org.sonarsource.scanner.maven</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>${sonar-maven-plugin.version}</version>
                 </plugin>
 
                 <plugin>

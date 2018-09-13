@@ -3,14 +3,17 @@ package io.baselogic.batch.jobrepository.jobs;
 import io.baselogic.batch.jobrepository.config.DatabaseConfig;
 import io.baselogic.batch.jobrepository.config.JobConfig;
 import io.baselogic.batch.jobrepository.config.TestConfig;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.*;
 import org.springframework.batch.test.JobLauncherTestUtils;
+import org.springframework.batch.test.JobRepositoryTestUtils;
 import org.springframework.batch.test.JobScopeTestExecutionListener;
 import org.springframework.batch.test.StepScopeTestExecutionListener;
+import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
@@ -23,14 +26,7 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = {TestConfig.class, DatabaseConfig.class, JobConfig.class})
-//@SpringBootTest(classes = {TestConfig.class, DatabaseConfig.class, JobConfig.class})
-@TestExecutionListeners({
-        DependencyInjectionTestExecutionListener.class,
-//        DirtiesContextTestExecutionListener.class,
-        JobScopeTestExecutionListener.class,
-        StepScopeTestExecutionListener.class
-})
-//@DirtiesContext
+@SpringBatchTest
 @SuppressWarnings("Duplicates")
 public class JobRepositoryJobTests {
 
@@ -38,6 +34,15 @@ public class JobRepositoryJobTests {
 
     @Autowired
     private JobLauncherTestUtils jobLauncherTestUtils;
+
+    @Autowired
+    private JobRepositoryTestUtils jobRepositoryTestUtils;
+
+
+    @Before
+    public void clearMetadata() {
+        jobRepositoryTestUtils.removeJobExecutions();
+    }
 
     //---------------------------------------------------------------------------//
 
@@ -87,10 +92,15 @@ public class JobRepositoryJobTests {
     //---------------------------------------------------------------------------//
     //---------------------------------------------------------------------------//
 
-
     @Test
     public void test_echo_job() throws Exception {
-        JobExecution jobExecution = jobLauncherTestUtils.launchJob();
+        // given
+        JobParameters jobParameters =
+                jobLauncherTestUtils.getUniqueJobParameters();
+
+        // when
+        JobExecution jobExecution =
+                jobLauncherTestUtils.launchJob(jobParameters);
 
         jobExecution.getStepExecutions().forEach((stepExecution) -> {
             logger.info(logStepExecution(stepExecution));
@@ -98,7 +108,8 @@ public class JobRepositoryJobTests {
 
         assertSoftly(
                 softAssertions -> {
-                    assertThat(ExitStatus.COMPLETED).isEqualTo(jobExecution.getExitStatus());
+                    assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
+                    assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
                     assertThat(jobExecution.getStepExecutions().size()).isEqualTo(3);
                 }
         );
@@ -124,7 +135,7 @@ public class JobRepositoryJobTests {
         assertSoftly(
                 softAssertions -> {
                     assertThat(jobExecution.getStepExecutions().size()).isEqualTo(1);
-                    assertThat(ExitStatus.COMPLETED).isEqualTo(jobExecution.getExitStatus());
+                    assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
                 }
         );
 

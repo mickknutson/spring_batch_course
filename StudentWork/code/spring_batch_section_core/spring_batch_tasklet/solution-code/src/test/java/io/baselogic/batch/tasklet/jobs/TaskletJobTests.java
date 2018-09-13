@@ -93,7 +93,7 @@ public class TaskletJobTests {
             }
         });
 
-        assertThat(ExitStatus.COMPLETED).isEqualTo(jobExecution.getExitStatus());
+        assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
         assertThat(jobExecution.getStepExecutions().size()).isEqualTo(3);
 
         logger.info(logJobExecution(jobExecution));
