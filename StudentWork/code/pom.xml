@@ -27,6 +27,7 @@
         <sonar-maven-plugin.version>3.3.0.603</sonar-maven-plugin.version>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.organization>mickknutson-github</sonar.organization>
+        <sonar.java.spotbugs.reportPaths>./target/spotbugsXml.xml</sonar.java.spotbugs.reportPaths>
 
         <coveralls-maven-plugin.version>4.3.0</coveralls-maven-plugin.version>
 
@@ -244,16 +245,18 @@
             </plugins>
         </pluginManagement>
 
-<!--
         <plugins>
 
-            <plugin>
+            <!--<plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
+            </plugin>-->
+            <plugin>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
             </plugin>
 
         </plugins>
--->
     </build>
 
     <dependencyManagement>

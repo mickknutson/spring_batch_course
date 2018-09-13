@@ -50,7 +50,7 @@ jobs:
 
       - run:
           name: Sonar Cloud Scan
-          command: mvn sonar:sonar -Dsonar.login=$SONAR_LOGIN
+          command: mvn sonar:sonar -Dsonar.projectKey=mickknutson_spring_batch_course -Dsonar.login=$SONAR_LOGIN
           working_directory: ./StudentWork/code
 
       - run:
