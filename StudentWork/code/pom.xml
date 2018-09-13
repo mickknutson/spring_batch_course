@@ -209,6 +209,15 @@
                             <version>${spotbugs.version}</version>
                         </dependency>
                     </dependencies>
+                    <executions>
+                    <execution>
+                        <id>find-bugs</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>spotbugs</goal>
+                        </goals>
+                    </execution>
+                    </executions>
                 </plugin>
 
             </plugins>
@@ -259,18 +268,7 @@
         </dependency>
 
 
-        <!-- JDBC/JPA integration -->
-        <!--<dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jpa</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.tomcat</groupId>
-                    <artifactId>tomcat-jdbc</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>-->
-
+        <!-- JDBC integration -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jdbc</artifactId>
@@ -296,13 +294,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
-        <!-- H2 admin console does not work with WebFlux -->
-        <!--<dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webflux</artifactId>
-        </dependency>-->
-
 
 
 

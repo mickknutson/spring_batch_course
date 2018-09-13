@@ -49,16 +49,9 @@ jobs:
           # Does not seem to work:
 #          working_directory: ${BASE_DIR}
 
-#      - run:
-#          command: |
-#            command: coveralls --verbose
-
       - run:
           command: |
-            set -xu
-#            pwd
-#            ls -la ${LOCAL_REPO}
-#            ls -la ${BASE_DIR}
+            mvn sonar:sonar -Dsonar.projectKey=mickknutson_spring_batch_course
 
       - run:
           name: Save test results

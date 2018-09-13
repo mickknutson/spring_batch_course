@@ -68,8 +68,8 @@ On Udemy
 
 ## **Instructor References:**
 
+- **YouTube Channel:** [https://www.youtube.com/c/BASELogic]
 - **Udemy.com Instructor Profile:** [https://www.udemy.com/user/mickknutson/]
-- **BASE Logic YouTube Channel:** [https://www.youtube.com/c/BASELogic]
 - **Spring Security 3rd Edition:** [https://packtpub.com/application-development/spring-security-third-edition]
 - **Spring Cloud Config Video:** [https://udemy.com/distributed-configuration-with-spring-cloud-config]
 - **Java EE6 Cookbook:** [http://packtpub.com/java-ee6-securing-tuning-extending-enterprise-applications-cookbook/book]
