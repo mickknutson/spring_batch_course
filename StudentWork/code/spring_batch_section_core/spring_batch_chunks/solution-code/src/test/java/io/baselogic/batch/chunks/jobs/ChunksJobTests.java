@@ -21,6 +21,7 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 
 @RunWith(SpringRunner.class)
@@ -40,7 +41,52 @@ public class ChunksJobTests {
     @Autowired
     private JobLauncherTestUtils jobLauncherTestUtils;
 
+    //---------------------------------------------------------------------------//
 
+    private String logJobExecution(JobExecution jobExecution) {
+
+        StringBuilder sb = new StringBuilder();
+
+        jobExecution.getStepExecutions().forEach((stepExecution) -> {
+            sb.append("Processed: ").append(stepExecution.getStepName()).append("\n");
+
+        });
+
+        return sb.toString();
+    }
+
+    protected String logStepExecution(StepExecution stepExecution) {
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("------------------------------------------------");
+        sb.append("Processed: ").append(stepExecution);
+        sb.append("------------------------------------------------");
+        sb.append("stepName: ").append(stepExecution.getStepName());
+        sb.append("status: ").append(stepExecution.getStatus());
+        sb.append("readCount: ").append(stepExecution.getReadCount());
+        sb.append("writeCount: ").append(stepExecution.getWriteCount());
+        sb.append("commitCount: ").append(stepExecution.getCommitCount());
+        sb.append("rollbackCount: ").append(stepExecution.getRollbackCount());
+        sb.append("readSkipCount: ").append(stepExecution.getReadSkipCount());
+        sb.append("processSkipCount: ").append(stepExecution.getProcessSkipCount());
+        sb.append("writeSkipCount: ").append(stepExecution.getWriteSkipCount());
+        sb.append("startTime: ").append(stepExecution.getStartTime());
+        sb.append("endTime: ").append(stepExecution.getEndTime());
+        sb.append("lastUpdated: ").append(stepExecution.getLastUpdated());
+        sb.append("executionContext: ").append(stepExecution.getExecutionContext());
+        sb.append("exitStatus: ").append(stepExecution.getExitStatus());
+        sb.append("terminateOnly: ").append(stepExecution.isTerminateOnly());
+        sb.append("filterCount: ").append(stepExecution.getFilterCount());
+        sb.append("failureExceptions: ").append(stepExecution.getFailureExceptions());
+
+        sb.append("------------------------------------------------");
+
+        return sb.toString();
+    }
+
+    //---------------------------------------------------------------------------//
+    //---------------------------------------------------------------------------//
     //---------------------------------------------------------------------------//
 
     public JobParameters getJobParameters() {
@@ -50,41 +96,23 @@ public class ChunksJobTests {
                 .toJobParameters();
     }
 
-    private String logJobExecution(JobExecution jobExecution){
-
-        StringBuilder sb = new StringBuilder();
-
-        jobExecution.getStepExecutions().forEach((stepExecution) -> {
-            sb.append("Processed: ").append(stepExecution.getStepName()).append("\n");
-
-        });
-        return sb.toString();
-    }
-
     //---------------------------------------------------------------------------//
 
 
     @Test
-    public void test_tasklet_job__all_steps() throws Exception {
-        logger.info("--------------------------------------------->>>");
-
+    public void test_job__all_steps() throws Exception {
         JobExecution jobExecution = jobLauncherTestUtils.launchJob();
 
         jobExecution.getStepExecutions().forEach((stepExecution) -> {
-            logger.info("Processed: " + stepExecution);
-
-            if (stepExecution.getStepName().equals("stepA")) {
-                assertThat(stepExecution.getCommitCount()).isEqualTo(1);
-            }
+            logger.info(logStepExecution(stepExecution));
         });
 
-        assertThat(ExitStatus.COMPLETED).isEqualTo(jobExecution.getExitStatus());
-        assertThat(jobExecution.getStepExecutions().size()).isEqualTo(3);
-
-        logger.info(logJobExecution(jobExecution));
-
-
-        logger.info("<<<---------------------------------------------");
+        assertSoftly(
+                softAssertions -> {
+                    assertThat(ExitStatus.COMPLETED).isEqualTo(jobExecution.getExitStatus());
+                    assertThat(jobExecution.getStepExecutions().size()).isEqualTo(3);
+                }
+        );
     }
 
 

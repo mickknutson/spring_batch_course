@@ -18,6 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 
 @RunWith(SpringRunner.class)
@@ -41,14 +42,14 @@ public class IntroductionJobTests {
 
     @Test
     public void test_hello_world_job() throws Exception {
-        logger.info("--------------------------------------------->>>");
-
         JobExecution jobExecution = jobLauncherTestUtils.launchJob();
 
-        assertThat(ExitStatus.COMPLETED).isEqualTo(jobExecution.getExitStatus());
-        assertThat(jobExecution.getStepExecutions().size()).isEqualTo(1);
-
-        logger.info("<<<---------------------------------------------");
+        assertSoftly(
+                softAssertions -> {
+                    assertThat(ExitStatus.COMPLETED).isEqualTo(jobExecution.getExitStatus());
+                    assertThat(jobExecution.getStepExecutions().size()).isEqualTo(1);
+                }
+        );
     }
 
 

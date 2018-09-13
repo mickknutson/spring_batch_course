@@ -102,6 +102,13 @@ public class JobConfig extends DefaultBatchConfigurer {
                 .tasklet(new EchoTasklet("** STEP C")).build();
     }
 
+    @Bean
+    public Step endStep(StepBuilderFactory stepBuilderFactory) {
+        return stepBuilderFactory.get("endStep")
+                .tasklet((contribution, chunkContext) -> null)
+                .build();
+    }
+
 
 
 } // The End...
