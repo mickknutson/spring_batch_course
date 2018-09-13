@@ -32,9 +32,11 @@ public class JobRepositoryJobTests {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     private JobLauncherTestUtils jobLauncherTestUtils;
 
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     private JobRepositoryTestUtils jobRepositoryTestUtils;
 
@@ -77,11 +79,12 @@ public class JobRepositoryJobTests {
         sb.append("startTime: ").append(stepExecution.getStartTime()).append("\n");
         sb.append("endTime: ").append(stepExecution.getEndTime()).append("\n");
         sb.append("lastUpdated: ").append(stepExecution.getLastUpdated()).append("\n");
-        sb.append("executionContext: ").append(stepExecution.getExecutionContext()).append("\n");
         sb.append("exitStatus: ").append(stepExecution.getExitStatus()).append("\n");
         sb.append("terminateOnly: ").append(stepExecution.isTerminateOnly()).append("\n");
         sb.append("filterCount: ").append(stepExecution.getFilterCount()).append("\n");
         sb.append("failureExceptions: ").append(stepExecution.getFailureExceptions()).append("\n");
+        sb.append("------------------------------------------------\n");
+        sb.append("executionContext: ").append(stepExecution.getExecutionContext()).append("\n");
         sb.append("------------------------------------------------\n");
 
         return sb.toString();

@@ -4,17 +4,21 @@ import io.baselogic.batch.tasklet.config.DatabaseConfig;
 import io.baselogic.batch.tasklet.config.JobConfig;
 import io.baselogic.batch.tasklet.config.TaskletConfig;
 import io.baselogic.batch.tasklet.config.TestConfig;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.*;
 import org.springframework.batch.test.JobLauncherTestUtils;
+import org.springframework.batch.test.JobRepositoryTestUtils;
 import org.springframework.batch.test.JobScopeTestExecutionListener;
 import org.springframework.batch.test.StepScopeTestExecutionListener;
+import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
@@ -46,22 +50,26 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {TestConfig.class, TaskletConfig.class, DatabaseConfig.class, JobConfig.class})
-@TestExecutionListeners({
-        DependencyInjectionTestExecutionListener.class,
-//        DirtiesContextTestExecutionListener.class,
-        JobScopeTestExecutionListener.class,
-        StepScopeTestExecutionListener.class
-})
-//@DirtiesContext
+@ContextConfiguration(classes = {TestConfig.class, TaskletConfig.class, DatabaseConfig.class, JobConfig.class})
+@SpringBatchTest
 @SuppressWarnings("Duplicates")
 public class TaskletJobTests {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     private JobLauncherTestUtils jobLauncherTestUtils;
 
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
+    @Autowired
+    private JobRepositoryTestUtils jobRepositoryTestUtils;
+
+
+    @Before
+    public void clearMetadata() {
+        jobRepositoryTestUtils.removeJobExecutions();
+    }
 
     //---------------------------------------------------------------------------//
 
@@ -81,8 +89,6 @@ public class TaskletJobTests {
 
     @Test
     public void test_tasklet_job__all_steps() throws Exception {
-        logger.info("--------------------------------------------->>>");
-
         JobExecution jobExecution = jobLauncherTestUtils.launchJob();
 
         jobExecution.getStepExecutions().forEach((stepExecution) -> {
@@ -97,9 +103,6 @@ public class TaskletJobTests {
         assertThat(jobExecution.getStepExecutions().size()).isEqualTo(3);
 
         logger.info(logJobExecution(jobExecution));
-
-
-        logger.info("<<<---------------------------------------------");
     }
 
 

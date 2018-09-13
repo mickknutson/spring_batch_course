@@ -7,7 +7,8 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
 /**
- * TODO: EmbeddedDatabaseFactory
+ * Create an EmbeddedDatabase.
+ * This can be changed to any valid javax.sql.DataSource
  */
 @Configuration
 public class DatabaseConfig {
