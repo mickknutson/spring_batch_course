@@ -29,7 +29,8 @@ public class JobEndpoint {
     //---------------------------------------------------------------------------//
 
     @GetMapping("/launch")
-    public String launchJob(@RequestParam(value = "launchJob", required = false, defaultValue="true") boolean launchJob) throws Exception {
+    public String launchJob(@RequestParam(value = "launchJob", required = false, defaultValue="true") boolean launchJob)
+            throws JobExecutionException {
         enabled.set(launchJob);
         return startSimpleJob();
     }
