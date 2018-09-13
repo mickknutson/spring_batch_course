@@ -1,7 +1,6 @@
 package io.baselogic.batch.introduction.jobs;
 
-import io.baselogic.batch.introduction.config.BatchConfig;
-import io.baselogic.batch.introduction.config.TestConfig;
+import io.baselogic.batch.introduction.config.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -13,6 +12,7 @@ import org.springframework.batch.test.JobScopeTestExecutionListener;
 import org.springframework.batch.test.StepScopeTestExecutionListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
@@ -22,12 +22,20 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {TestConfig.class, BatchConfig.class})
+@ContextConfiguration(classes = {
+        TestConfig.class,
+        DatabaseConfig.class,
+        BatchConfig.class,
+        JobConfig.class,
+        StepConfig.class
+})
 @TestExecutionListeners({
         DependencyInjectionTestExecutionListener.class,
         JobScopeTestExecutionListener.class,
         StepScopeTestExecutionListener.class
 })
+//@SpringBatchTest
+@SpringBootTest
 @SuppressWarnings("Duplicates")
 public class IntroductionJobTests {
 

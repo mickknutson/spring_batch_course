@@ -17,11 +17,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-/**
- *
- * @author Mick Knutson
- *
- */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
@@ -55,7 +50,7 @@ public class JobEndpointTests {
 
 
     @Test
-    public void test_batch_job_endpoint__launch_job_diabled() throws Exception {
+    public void test_batch_job_endpoint__launch_job_disabled() throws Exception {
         MvcResult result = mockMvc
                 .perform(get("/launch")
                         .param("launchJob", "false")

@@ -19,61 +19,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 import javax.sql.DataSource;
 
 @Configuration
-@EnableBatchProcessing
 @SuppressWarnings("Duplicates")
-public class JobConfig extends DefaultBatchConfigurer {
-
-    @Autowired
-    private PlatformTransactionManager transactionManager;
-
-
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
-    @Autowired
-    private DataSource dataSource;
-
-    //---------------------------------------------------------------------------//
-    // DataSource
-
-    /*@Bean
-    public DataSource dataSource(){
-        return new EmbeddedDatabaseBuilder()
-                .setType(EmbeddedDatabaseType.H2)
-                .addScript("classpath:org/springframework/batch/core/schema-drop-h2.sql")
-                .addScript("classpath:org/springframework/batch/core/schema-h2.sql")
-                .ignoreFailedDrops(true)
-                .continueOnError(true)
-                .build();
-    }*/
-
-
-
-
-
-    //---------------------------------------------------------------------------//
-    // Launcher and Repository
-
-    @Bean
-    @Override
-    public JobLauncher createJobLauncher() throws Exception {
-        SimpleJobLauncher jobLauncher = new SimpleJobLauncher();
-        jobLauncher.setJobRepository(createJobRepository());
-        jobLauncher.afterPropertiesSet();
-        return jobLauncher;
-    }
-
-
-    @Bean
-    @Override
-    public JobRepository createJobRepository() throws Exception {
-        JobRepositoryFactoryBean factory = new JobRepositoryFactoryBean();
-        factory.setDataSource(dataSource);
-        factory.setTransactionManager(transactionManager);
-        factory.setIsolationLevelForCreate("ISOLATION_SERIALIZABLE");
-        factory.setTablePrefix("BATCH_");
-        factory.setMaxVarCharLength(1_000);
-        factory.afterPropertiesSet();
-        return factory.getObject();
-    }
+public class JobConfig {
 
 
     //---------------------------------------------------------------------------//
@@ -88,25 +35,5 @@ public class JobConfig extends DefaultBatchConfigurer {
                 .build();
     }
 
-    //---------------------------------------------------------------------------//
-    // Steps
-
-    @Bean
-    public Step stepA(StepBuilderFactory stepBuilderFactory) {
-        return stepBuilderFactory.get("stepA")
-                .tasklet(new EchoTasklet("stepA: job parameter message")).build();
-    }
-
-    @Bean
-    public Step stepB(StepBuilderFactory stepBuilderFactory) {
-        return stepBuilderFactory.get("stepB")
-                .tasklet(new EchoTasklet("stepB: job parameter message")).build();
-    }
-
-    @Bean
-    public Step stepC(StepBuilderFactory stepBuilderFactory) {
-        return stepBuilderFactory.get("stepC")
-                .tasklet(new EchoTasklet("stepC: job parameter message")).build();
-    }
 
 } // The End...

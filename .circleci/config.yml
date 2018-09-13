@@ -42,11 +42,9 @@ jobs:
 #            find . -maxdepth 2 -exec du -ms {} \; | sort -rn | head -n 15
 
       - run:
-          name: Verify the Project
-          command: mvn verify
+          name: Verify the Project with codeQuality
+          command: mvn verify -PcodeQuality
           working_directory: ./StudentWork/code
-          # Does not seem to work:
-#          working_directory: ${BASE_DIR}
 
       - run:
           name: Sonar Cloud Scan

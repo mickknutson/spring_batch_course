@@ -11,6 +11,7 @@
     <description>Spring Batch Course</description>
 
     <properties>
+        <ansi.color>true</ansi.color>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -93,169 +94,16 @@
                     <version>${maven-surefire-plugin.version}</version>
                 </plugin>
 
-                <!--
-                https://www.eclemma.org/jacoco/trunk/doc/maven.html
-                mvn verify
-                -->
-                <plugin>
-                    <groupId>org.jacoco</groupId>
-                    <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>${jacoco-maven-plugin.version}</version>
-                    <executions>
-                        <execution>
-                            <id>prepare-agent</id>
-                            <goals>
-                                <goal>prepare-agent</goal>
-                            </goals>
-                        </execution>
-                        <execution>
-                            <id>report</id>
-                            <phase>prepare-package</phase>
-                            <goals>
-                                <goal>report</goal>
-                            </goals>
-                        </execution>
-                        <execution>
-                            <id>post-unit-test</id>
-                            <phase>test</phase>
-                            <goals>
-                                <goal>report</goal>
-                            </goals>
-                        </execution>
-
-                        <!-- aggregated unit test coverage report -->
-                        <execution>
-                            <id>aggregate-reports</id>
-                            <phase>verify</phase>
-                            <goals>
-                                <goal>report-aggregate</goal>
-                            </goals>
-                            <configuration>
-                                <title>Maven Multi-module Coverage Demo: Coverage of Unit Tests</title>
-                                <outputDirectory>${project.reporting.outputDirectory}/jacoco-aggregate</outputDirectory>
-                                <dataFileExcludes>
-                                    <dataFileExclude>**/target/jacoco-it.exec</dataFileExclude>
-                                </dataFileExcludes>
-                            </configuration>
-                        </execution>
-                        <execution>
-                            <id>merge-results</id>
-                            <phase>verify</phase>
-                            <goals>
-                                <goal>merge</goal>
-                            </goals>
-                            <configuration>
-                                <fileSets>
-                                    <fileSet>
-                                        <directory>${project.build.directory}</directory>
-                                        <includes>
-                                            <include>**/jacoco.exec</include>
-                                        </includes>
-                                    </fileSet>
-                                </fileSets>
-                                <destFile>${project.build.directory}/jacoco/aggregate.exec</destFile>
-                            </configuration>
-                        </execution>
-                        <execution>
-                            <id>post-merge-report</id>
-                            <phase>verify</phase>
-                            <goals>
-                                <goal>report</goal>
-                            </goals>
-                            <configuration>
-                                <dataFile>${project.build.directory}/jacoco/aggregate.exec</dataFile>
-                                <outputDirectory>${project.build.directory}/jacoco-aggregate</outputDirectory>
-                            </configuration>
-                        </execution>
-
-                    </executions>
-                </plugin>
-
-
-                <plugin>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-maven-plugin</artifactId>
-                </plugin>
-
-                <!--
-                TODO: Need to get this to work in the overall project.
-                https://github.com/trautonen/coveralls-maven-plugin
-
-                to run:
-                mvn clean verify coveralls:report
-                mvn clean test jacoco:report coveralls:report
-                -->
-                <plugin>
-                    <groupId>org.eluder.coveralls</groupId>
-                    <artifactId>coveralls-maven-plugin</artifactId>
-                    <version>${coveralls-maven-plugin.version}</version>
-                    <configuration>
-                        <!-- @see $HOME/.m2/settings.xml for properties -->
-                        <repoToken>${COVERALLS_REPOTOKEN}</repoToken>
-                        <jacocoReports>
-                            <jacocoReport>
-                                ${project.build.directory}/jacoco/jacoco.xml
-                            </jacocoReport>
-                        </jacocoReports>
-                    </configuration>
-                </plugin>
-
-                <!--<plugin>
-                    <groupId>org.sonarsource.scanner.maven</groupId>
-                    <artifactId>sonar-maven-plugin</artifactId>
-                    <version>${sonar-maven-plugin.version}</version>
-                    <executions>
-                        <execution>
-                            <phase>verify</phase>
-                            <goals>
-                                <goal>sonar</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>-->
-
                 <plugin>
                     <groupId>org.sonarsource.scanner.maven</groupId>
                     <artifactId>sonar-maven-plugin</artifactId>
                     <version>${sonar-maven-plugin.version}</version>
-                </plugin>
-
-                <plugin>
-                    <groupId>com.github.spotbugs</groupId>
-                    <artifactId>spotbugs-maven-plugin</artifactId>
-                    <version>${spotbugs-maven-plugin.version}</version>
-                    <dependencies>
-                        <dependency>
-                            <groupId>com.github.spotbugs</groupId>
-                            <artifactId>spotbugs</artifactId>
-                            <version>${spotbugs.version}</version>
-                        </dependency>
-                    </dependencies>
-                    <executions>
-                    <execution>
-                        <id>find-bugs</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>spotbugs</goal>
-                        </goals>
-                    </execution>
-                    </executions>
                 </plugin>
 
             </plugins>
         </pluginManagement>
 
         <plugins>
-
-            <!--<plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-            </plugin>-->
-            <plugin>
-                <groupId>com.github.spotbugs</groupId>
-                <artifactId>spotbugs-maven-plugin</artifactId>
-            </plugin>
-
         </plugins>
     </build>
 
@@ -396,11 +244,7 @@
                 <artifactId>maven-surefire-report-plugin</artifactId>
                 <version>${maven-surefire-plugin.version}</version>
             </plugin>
-            <plugin>
-                <groupId>com.github.spotbugs</groupId>
-                <artifactId>spotbugs-maven-plugin</artifactId>
-                <version>${spotbugs-maven-plugin.version}</version>
-            </plugin>
+
         </plugins>
 
     </reporting>
@@ -465,4 +309,199 @@
         </pluginRepository>
     </pluginRepositories>
 
+    <profiles>
+
+        <!--
+        mvn clean verify -PcodeQuality
+        -->
+        <profile>
+            <id>codeQuality</id>
+            <!--
+                Active by default. use `-P-codeQuality` to deactivate it.
+                Note the prefix `-` which disables the `codeQuality` profile
+                Combine it with other profiles using CVS. Example: `-P-codeQuality,autoInstallPackage`
+            -->
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <!--
+                    log in color, if terminal supports ANSI escape sequences
+                    see: https://confluence.atlassian.com/clover/using-test-optimization-in-maven-170492714.html
+                  -->
+                <ansi.color>true</ansi.color>
+            </properties>
+
+            <!-- Code Quality Reporting -->
+            <reporting>
+                <plugins>
+
+                    <plugin>
+                        <groupId>com.github.spotbugs</groupId>
+                        <artifactId>spotbugs-maven-plugin</artifactId>
+                        <configuration>
+                            <xmlOutput>true</xmlOutput>
+                            <trace>true</trace>
+                        </configuration>
+                        <reportSets>
+                            <reportSet>
+                                <reports>
+                                    <report>spotbugs</report>
+                                </reports>
+                            </reportSet>
+                        </reportSets>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-jxr-plugin</artifactId>
+                        <version>2.5</version>
+                    </plugin>
+                </plugins>
+            </reporting>
+
+            <!-- Code Quality Execution -->
+            <build>
+                <plugins>
+
+                    <!--
+                    https://www.eclemma.org/jacoco/trunk/doc/maven.html
+                    mvn verify
+                    -->
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <version>${jacoco-maven-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>prepare-agent</id>
+                                <goals>
+                                    <goal>prepare-agent</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>report</id>
+                                <phase>prepare-package</phase>
+                                <goals>
+                                    <goal>report</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>post-unit-test</id>
+                                <phase>test</phase>
+                                <goals>
+                                    <goal>report</goal>
+                                </goals>
+                            </execution>
+
+                            <!-- aggregated unit test coverage report -->
+                            <execution>
+                                <id>aggregate-reports</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>report-aggregate</goal>
+                                </goals>
+                                <configuration>
+                                    <title>Maven Multi-module Coverage Demo: Coverage of Unit Tests</title>
+                                    <outputDirectory>${project.reporting.outputDirectory}/jacoco-aggregate</outputDirectory>
+                                    <dataFileExcludes>
+                                        <dataFileExclude>**/target/jacoco-it.exec</dataFileExclude>
+                                    </dataFileExcludes>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>merge-results</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>merge</goal>
+                                </goals>
+                                <configuration>
+                                    <fileSets>
+                                        <fileSet>
+                                            <directory>${project.build.directory}</directory>
+                                            <includes>
+                                                <include>**/jacoco.exec</include>
+                                            </includes>
+                                        </fileSet>
+                                    </fileSets>
+                                    <destFile>${project.build.directory}/jacoco/aggregate.exec</destFile>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>post-merge-report</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>report</goal>
+                                </goals>
+                                <configuration>
+                                    <dataFile>${project.build.directory}/jacoco/aggregate.exec</dataFile>
+                                    <outputDirectory>${project.build.directory}/jacoco-aggregate</outputDirectory>
+                                </configuration>
+                            </execution>
+
+                        </executions>
+                    </plugin>
+
+
+                    <!--
+                    TODO: Need to get this to work in the overall project.
+                    https://github.com/trautonen/coveralls-maven-plugin
+
+                    to run:
+                    mvn clean verify coveralls:report
+                    mvn clean test jacoco:report coveralls:report
+                    -->
+                    <plugin>
+                        <groupId>org.eluder.coveralls</groupId>
+                        <artifactId>coveralls-maven-plugin</artifactId>
+                        <version>${coveralls-maven-plugin.version}</version>
+                        <configuration>
+                            <!-- @see $HOME/.m2/settings.xml for properties -->
+                            <repoToken>${COVERALLS_REPOTOKEN}</repoToken>
+                            <jacocoReports>
+                                <jacocoReport>
+                                    ${project.build.directory}/jacoco/jacoco.xml
+                                </jacocoReport>
+                            </jacocoReports>
+                        </configuration>
+                        <!-- build fails with empty SECTIONS.
+                        Disable execution until they are completed.
+                        -->
+                        <!--<executions>
+                            <execution>
+                                <id>coveralls</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>report</goal>
+                                </goals>
+                            </execution>
+                        </executions>-->
+
+                    </plugin>
+
+                    <plugin>
+                        <groupId>com.github.spotbugs</groupId>
+                        <artifactId>spotbugs-maven-plugin</artifactId>
+                        <version>${spotbugs-maven-plugin.version}</version>
+                        <dependencies>
+                            <dependency>
+                                <groupId>com.github.spotbugs</groupId>
+                                <artifactId>spotbugs</artifactId>
+                                <version>${spotbugs.version}</version>
+                            </dependency>
+                        </dependencies>
+                        <executions>
+                            <execution>
+                                <id>spotbugs</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>spotbugs</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

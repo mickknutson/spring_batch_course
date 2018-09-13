@@ -2,47 +2,23 @@ package io.baselogic.batch.introduction.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
-import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+
 @Configuration
 @SuppressWarnings("Duplicates")
-public class BatchConfig {
+public class StepConfig {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     //---------------------------------------------------------------------------//
-    // DataSource
-
-    // using the default MapJobRepositoryFactoryBean
-
-
-    //---------------------------------------------------------------------------//
-    // Launcher and Repository
-
-    // using the default Launcher and Repository
-
-
-    //---------------------------------------------------------------------------//
-    // Jobs
-
-//    @Bean
-    public Job job(JobBuilderFactory jobBuilderFactory, Step step1) {
-        return jobBuilderFactory.get("helloWorldJob")
-                .start(step1)
-                .build();
-    }
-
-    //---------------------------------------------------------------------------//
     // Steps
 
-//    @Bean
+    @Bean
     public Step step1(StepBuilderFactory stepBuilderFactory) {
         return stepBuilderFactory.get("step1")
                 .tasklet(
@@ -53,5 +29,11 @@ public class BatchConfig {
 
                 ).build();
     }
+
+    //---------------------------------------------------------------------------//
+    // Tasklets
+
+
+
 
 } // The End...

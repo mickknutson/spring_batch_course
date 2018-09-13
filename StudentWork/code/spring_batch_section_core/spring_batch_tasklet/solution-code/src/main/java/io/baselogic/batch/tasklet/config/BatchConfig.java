@@ -21,24 +21,44 @@ import javax.sql.DataSource;
 
 @Configuration
 @SuppressWarnings("Duplicates")
-public class JobConfig {
+public class BatchConfig extends DefaultBatchConfigurer {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    @Autowired
+    private PlatformTransactionManager transactionManager;
+
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
+    @Autowired
+    private DataSource dataSource;
 
 
     //---------------------------------------------------------------------------//
-    // Jobs
+    // Launcher and Repository
+
 
     @Bean
-    public Job job(JobBuilderFactory jobBuilderFactory, Step noOpStep, Step stepA, Step stepB, Step stepC) {
-        return jobBuilderFactory.get("taskletJob")
-                .flow(noOpStep).on("*").to(stepB)
-                .from(stepA).on("*").to(stepB)
-                .next(stepC).end()
-                .build();
+    @Override
+    public JobLauncher createJobLauncher() throws Exception {
+        SimpleJobLauncher jobLauncher = new SimpleJobLauncher();
+        jobLauncher.setJobRepository(createJobRepository());
+        jobLauncher.afterPropertiesSet();
+        return jobLauncher;
     }
 
+
+    @Bean
+    @Override
+    public JobRepository createJobRepository() throws Exception {
+        JobRepositoryFactoryBean factory = new JobRepositoryFactoryBean();
+        factory.setDataSource(dataSource);
+        factory.setTransactionManager(transactionManager);
+        factory.setIsolationLevelForCreate("ISOLATION_SERIALIZABLE");
+        factory.setTablePrefix("BATCH_");
+        factory.setMaxVarCharLength(1_000);
+        factory.afterPropertiesSet();
+        return factory.getObject();
+    }
 
 
 } // The End...

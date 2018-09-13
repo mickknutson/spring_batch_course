@@ -2,44 +2,46 @@ package io.baselogic.batch.chunks.jobs;
 
 import io.baselogic.batch.chunks.config.DatabaseConfig;
 import io.baselogic.batch.chunks.config.JobConfig;
-import io.baselogic.batch.chunks.config.TaskletConfig;
+import io.baselogic.batch.chunks.config.StepConfig;
 import io.baselogic.batch.chunks.config.TestConfig;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.*;
 import org.springframework.batch.test.JobLauncherTestUtils;
-import org.springframework.batch.test.JobScopeTestExecutionListener;
-import org.springframework.batch.test.StepScopeTestExecutionListener;
+import org.springframework.batch.test.JobRepositoryTestUtils;
+import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 
+@ContextConfiguration(classes = {TestConfig.class, DatabaseConfig.class, JobConfig.class, StepConfig.class})
+@SpringBatchTest
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {TestConfig.class, TaskletConfig.class, DatabaseConfig.class, JobConfig.class})
-@TestExecutionListeners({
-        DependencyInjectionTestExecutionListener.class,
-//        DirtiesContextTestExecutionListener.class,
-        JobScopeTestExecutionListener.class,
-        StepScopeTestExecutionListener.class
-})
-//@DirtiesContext
 @SuppressWarnings("Duplicates")
 public class ChunksJobTests {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     private JobLauncherTestUtils jobLauncherTestUtils;
+
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
+    @Autowired
+    private JobRepositoryTestUtils jobRepositoryTestUtils;
+
+
+    @Before
+    public void clearMetadata() {
+        jobRepositoryTestUtils.removeJobExecutions();
+    }
 
     //---------------------------------------------------------------------------//
 
@@ -59,28 +61,28 @@ public class ChunksJobTests {
 
         StringBuilder sb = new StringBuilder();
 
-        sb.append("------------------------------------------------");
-        sb.append("Processed: ").append(stepExecution);
-        sb.append("------------------------------------------------");
-        sb.append("stepName: ").append(stepExecution.getStepName());
-        sb.append("status: ").append(stepExecution.getStatus());
-        sb.append("readCount: ").append(stepExecution.getReadCount());
-        sb.append("writeCount: ").append(stepExecution.getWriteCount());
-        sb.append("commitCount: ").append(stepExecution.getCommitCount());
-        sb.append("rollbackCount: ").append(stepExecution.getRollbackCount());
-        sb.append("readSkipCount: ").append(stepExecution.getReadSkipCount());
-        sb.append("processSkipCount: ").append(stepExecution.getProcessSkipCount());
-        sb.append("writeSkipCount: ").append(stepExecution.getWriteSkipCount());
-        sb.append("startTime: ").append(stepExecution.getStartTime());
-        sb.append("endTime: ").append(stepExecution.getEndTime());
-        sb.append("lastUpdated: ").append(stepExecution.getLastUpdated());
-        sb.append("executionContext: ").append(stepExecution.getExecutionContext());
-        sb.append("exitStatus: ").append(stepExecution.getExitStatus());
-        sb.append("terminateOnly: ").append(stepExecution.isTerminateOnly());
-        sb.append("filterCount: ").append(stepExecution.getFilterCount());
-        sb.append("failureExceptions: ").append(stepExecution.getFailureExceptions());
-
-        sb.append("------------------------------------------------");
+        sb.append("------------------------------------------------\n");
+        sb.append("Processed: ").append(stepExecution).append("\n");
+        sb.append("------------------------------------------------\n");
+        sb.append("stepName: ").append(stepExecution.getStepName()).append("\n");
+        sb.append("status: ").append(stepExecution.getStatus()).append("\n");
+        sb.append("readCount: ").append(stepExecution.getReadCount()).append("\n");
+        sb.append("writeCount: ").append(stepExecution.getWriteCount()).append("\n");
+        sb.append("commitCount: ").append(stepExecution.getCommitCount()).append("\n");
+        sb.append("rollbackCount: ").append(stepExecution.getRollbackCount()).append("\n");
+        sb.append("readSkipCount: ").append(stepExecution.getReadSkipCount()).append("\n");
+        sb.append("processSkipCount: ").append(stepExecution.getProcessSkipCount()).append("\n");
+        sb.append("writeSkipCount: ").append(stepExecution.getWriteSkipCount()).append("\n");
+        sb.append("startTime: ").append(stepExecution.getStartTime()).append("\n");
+        sb.append("endTime: ").append(stepExecution.getEndTime()).append("\n");
+        sb.append("lastUpdated: ").append(stepExecution.getLastUpdated()).append("\n");
+        sb.append("exitStatus: ").append(stepExecution.getExitStatus()).append("\n");
+        sb.append("terminateOnly: ").append(stepExecution.isTerminateOnly()).append("\n");
+        sb.append("filterCount: ").append(stepExecution.getFilterCount()).append("\n");
+        sb.append("failureExceptions: ").append(stepExecution.getFailureExceptions()).append("\n");
+        sb.append("------------------------------------------------\n");
+        sb.append("executionContext: ").append(stepExecution.getExecutionContext()).append("\n");
+        sb.append("------------------------------------------------\n");
 
         return sb.toString();
     }
@@ -102,6 +104,8 @@ public class ChunksJobTests {
     @Test
     public void test_job__all_steps() throws Exception {
         JobExecution jobExecution = jobLauncherTestUtils.launchJob();
+
+        logger.info(logJobExecution(jobExecution));
 
         jobExecution.getStepExecutions().forEach((stepExecution) -> {
             logger.info(logStepExecution(stepExecution));

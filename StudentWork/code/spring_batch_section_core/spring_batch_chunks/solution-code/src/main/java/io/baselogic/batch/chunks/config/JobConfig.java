@@ -1,13 +1,10 @@
 package io.baselogic.batch.chunks.config;
 
-import io.baselogic.batch.chunks.steps.EchoTasklet;
-import io.baselogic.batch.chunks.steps.NoOpTasklet;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.DefaultBatchConfigurer;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
-import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.launch.support.SimpleJobLauncher;
 import org.springframework.batch.core.repository.JobRepository;
@@ -23,41 +20,7 @@ import javax.sql.DataSource;
 @Configuration
 @EnableBatchProcessing
 @SuppressWarnings("Duplicates")
-public class JobConfig extends DefaultBatchConfigurer {
-
-    @Autowired
-    private PlatformTransactionManager transactionManager;
-
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
-    @Autowired
-    private DataSource dataSource;
-
-
-    //---------------------------------------------------------------------------//
-    // Launcher and Repository
-
-    @Bean
-    @Override
-    public JobLauncher createJobLauncher() throws Exception {
-        SimpleJobLauncher jobLauncher = new SimpleJobLauncher();
-        jobLauncher.setJobRepository(createJobRepository());
-        jobLauncher.afterPropertiesSet();
-        return jobLauncher;
-    }
-
-
-    @Bean
-    @Override
-    public JobRepository createJobRepository() throws Exception {
-        JobRepositoryFactoryBean factory = new JobRepositoryFactoryBean();
-        factory.setDataSource(dataSource);
-        factory.setTransactionManager(transactionManager);
-        factory.setIsolationLevelForCreate("ISOLATION_SERIALIZABLE");
-        factory.setTablePrefix("BATCH_");
-        factory.setMaxVarCharLength(1_000);
-        factory.afterPropertiesSet();
-        return factory.getObject();
-    }
+public class JobConfig {
 
     //---------------------------------------------------------------------------//
     // Jobs
@@ -71,33 +34,6 @@ public class JobConfig extends DefaultBatchConfigurer {
                 .build();
     }
 
-
-
-    //---------------------------------------------------------------------------//
-    // Steps
-    @Bean
-    public Step noOpStep(StepBuilderFactory stepBuilderFactory, NoOpTasklet noOpTasklet) {
-        return stepBuilderFactory.get("noOpStep").tasklet(noOpTasklet).build();
-    }
-
-
-    @Bean
-    public Step stepA(StepBuilderFactory stepBuilderFactory) {
-        return stepBuilderFactory.get("stepA")
-                .tasklet(new EchoTasklet("** STEP A")).build();
-    }
-
-    @Bean
-    public Step stepB(StepBuilderFactory stepBuilderFactory) {
-        return stepBuilderFactory.get("stepB")
-                .tasklet(new EchoTasklet("** STEP B")).build();
-    }
-
-    @Bean
-    public Step stepC(StepBuilderFactory stepBuilderFactory) {
-        return stepBuilderFactory.get("stepC")
-                .tasklet(new EchoTasklet("** STEP C")).build();
-    }
 
 
 

@@ -2,6 +2,7 @@ package io.baselogic.batch.jobrepository.jobs;
 
 import io.baselogic.batch.jobrepository.config.DatabaseConfig;
 import io.baselogic.batch.jobrepository.config.JobConfig;
+import io.baselogic.batch.jobrepository.config.StepConfig;
 import io.baselogic.batch.jobrepository.config.TestConfig;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +26,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = {TestConfig.class, DatabaseConfig.class, JobConfig.class})
+@ContextConfiguration(classes = {
+        TestConfig.class,
+        DatabaseConfig.class,
+        JobConfig.class,
+        StepConfig.class
+})
 @SpringBatchTest
 @SuppressWarnings("Duplicates")
 public class JobRepositoryJobTests {
@@ -111,7 +117,6 @@ public class JobRepositoryJobTests {
 
         assertSoftly(
                 softAssertions -> {
-                    assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
                     assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
                     assertThat(jobExecution.getStepExecutions().size()).isEqualTo(3);
                 }
