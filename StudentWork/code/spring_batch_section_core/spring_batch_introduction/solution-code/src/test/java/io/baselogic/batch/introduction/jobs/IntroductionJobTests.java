@@ -1,6 +1,7 @@
 package io.baselogic.batch.introduction.jobs;
 
 import io.baselogic.batch.introduction.config.*;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -36,10 +37,9 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 })
 //@SpringBatchTest
 @SpringBootTest
+@Slf4j
 @SuppressWarnings("Duplicates")
 public class IntroductionJobTests {
-
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private JobLauncherTestUtils jobLauncherTestUtils;

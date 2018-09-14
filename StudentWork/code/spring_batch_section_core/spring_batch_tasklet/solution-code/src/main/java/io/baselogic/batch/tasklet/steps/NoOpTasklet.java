@@ -1,5 +1,6 @@
 package io.baselogic.batch.tasklet.steps;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.StepContribution;
@@ -12,15 +13,14 @@ import org.springframework.batch.repeat.RepeatStatus;
  */
 //@Component
 //@StepScope
+@Slf4j
 public class NoOpTasklet implements Tasklet {
-
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     //---------------------------------------------------------------------------//
 
     @Override
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
-        logger.info("NoOp Tasklet processing...");
+        log.info("NoOp Tasklet processing...");
         return RepeatStatus.FINISHED;
     }
 

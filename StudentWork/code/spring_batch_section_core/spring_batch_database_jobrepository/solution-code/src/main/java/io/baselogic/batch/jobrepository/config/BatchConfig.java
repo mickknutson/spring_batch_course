@@ -1,5 +1,6 @@
 package io.baselogic.batch.jobrepository.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.configuration.annotation.DefaultBatchConfigurer;
@@ -16,10 +17,9 @@ import javax.sql.DataSource;
 
 
 @Configuration
+@Slf4j
 @SuppressWarnings("Duplicates")
 public class BatchConfig extends DefaultBatchConfigurer {
-
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private PlatformTransactionManager transactionManager;

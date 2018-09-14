@@ -1,6 +1,7 @@
 package io.baselogic.batch.tasklet.jobs;
 
 import io.baselogic.batch.tasklet.config.*;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -52,10 +53,9 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
         StepConfig.class
 })
 @SpringBatchTest
+@Slf4j
 @SuppressWarnings("Duplicates")
 public class TaskletJobTests {
-
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
@@ -135,7 +135,7 @@ public class TaskletJobTests {
         JobExecution jobExecution = jobLauncherTestUtils.launchJob();
 
         jobExecution.getStepExecutions().forEach((stepExecution) -> {
-            logger.info("Processed: " + stepExecution);
+            log.info("Processed: " + stepExecution);
 
             if (stepExecution.getStepName().equals("stepA")) {
                 assertThat(stepExecution.getCommitCount()).isEqualTo(1);
@@ -145,7 +145,7 @@ public class TaskletJobTests {
         assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
         assertThat(jobExecution.getStepExecutions().size()).isEqualTo(3);
 
-        logger.info(logJobExecution(jobExecution));
+        log.info(logJobExecution(jobExecution));
     }
 
 
@@ -157,10 +157,10 @@ public class TaskletJobTests {
 
         JobExecution jobExecution = jobLauncherTestUtils.launchStep("stepA");
 
-        logger.info(logJobExecution(jobExecution));
+        log.info(logJobExecution(jobExecution));
 
         jobExecution.getStepExecutions().forEach((stepExecution) -> {
-            logger.info(logStepExecution(stepExecution));
+            log.info(logStepExecution(stepExecution));
 
         });
 
