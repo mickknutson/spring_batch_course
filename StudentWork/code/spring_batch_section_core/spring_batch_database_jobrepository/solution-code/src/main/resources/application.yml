@@ -47,14 +47,12 @@ spring.batch.job.enabled: ${BATCH_JOB_ENABLED:false}
 
 
 ##---------------------------------------------------------------------------##
-logging:
-  level:
-    root: 'INFO'
-    org.springframework: 'INFO'
-    org.h2.jdbc.JdbcSQLException: 'ERROR'
+# Logging and Console
 
 spring.main.banner-mode: ${BANNER_MODE:off}
+#spring.main.banner-mode: ${BANNER_MODE:console}
 spring.output.ansi.enabled: ${SPRING_ANSI_ENABLED:ALWAYS}
+
 
 ##---------------------------------------------------------------------------##
 ## NOTE: Enable Management endpoints
