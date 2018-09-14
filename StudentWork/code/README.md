@@ -14,6 +14,13 @@
  - **Orchestration**
  - **Job Partitioning and Scaling**
  - **Summary**
- 
+---
 
 **The code in this course is based on Maven, Java and Spring Boot 2**
+---
+
+#### Lomok annotation processor is used. You can setup your IDE specifically:
+- https://projectlombok.org/setup/eclipse
+- https://projectlombok.org/setup/intellij
+
+---

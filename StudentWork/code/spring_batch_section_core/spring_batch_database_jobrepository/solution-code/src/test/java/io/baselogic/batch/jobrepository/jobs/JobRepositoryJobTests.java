@@ -4,6 +4,7 @@ import io.baselogic.batch.jobrepository.config.DatabaseConfig;
 import io.baselogic.batch.jobrepository.config.JobConfig;
 import io.baselogic.batch.jobrepository.config.StepConfig;
 import io.baselogic.batch.jobrepository.config.TestConfig;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,10 +32,9 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
         StepConfig.class
 })
 @SpringBatchTest
+@Slf4j
 @SuppressWarnings("Duplicates")
 public class JobRepositoryJobTests {
-
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
@@ -110,7 +110,7 @@ public class JobRepositoryJobTests {
                 jobLauncherTestUtils.launchJob(jobParameters);
 
         jobExecution.getStepExecutions().forEach((stepExecution) -> {
-            logger.info(logStepExecution(stepExecution));
+            log.info(logStepExecution(stepExecution));
         });
 
         assertSoftly(
@@ -120,7 +120,7 @@ public class JobRepositoryJobTests {
                 }
         );
 
-        logger.info(logJobExecution(jobExecution));
+        log.info(logJobExecution(jobExecution));
     }
 
     //---------------------------------------------------------------------------//
@@ -131,10 +131,10 @@ public class JobRepositoryJobTests {
 
         JobExecution jobExecution = jobLauncherTestUtils.launchStep("stepA");
 
-        logger.info(logJobExecution(jobExecution));
+        log.info(logJobExecution(jobExecution));
 
         jobExecution.getStepExecutions().forEach((stepExecution) -> {
-            logger.info(logStepExecution(stepExecution));
+            log.info(logStepExecution(stepExecution));
 
         });
 

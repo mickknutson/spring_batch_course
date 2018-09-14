@@ -1,6 +1,7 @@
 package io.baselogic.batch.chunks.endpoints;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.*;
@@ -14,10 +15,9 @@ import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @RestController
+@Slf4j
 @SuppressWarnings("Duplicates")
 public class JobEndpoint {
-
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private JobLauncher jobLauncher;
@@ -44,7 +44,7 @@ public class JobEndpoint {
 
         if (enabled.get()) {
 
-            logger.info("launching jobExecution...");
+            log.info("launching jobExecution...");
 
             JobExecution jobExecution = jobLauncher
                     .run(job,
@@ -55,8 +55,8 @@ public class JobEndpoint {
 
             result = getJobExecutionDetails(jobExecution);
 
-            logger.info("...jobExecution completed");
-            logger.info(result);
+            log.info("...jobExecution completed");
+            log.info(result);
 
         }
         return result;

@@ -1,54 +1,107 @@
 package io.baselogic.batch.chunks.config;
 
-import io.baselogic.batch.chunks.steps.EchoTasklet;
-import io.baselogic.batch.chunks.steps.NoOpTasklet;
+import io.baselogic.batch.chunks.domain.TextLineItem;
+import io.baselogic.batch.chunks.listeners.ChunkAuditor;
+import io.baselogic.batch.chunks.steps.ConsoleItemWriter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.StepScope;
+import org.springframework.batch.item.file.FlatFileItemReader;
+import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
+import org.springframework.batch.item.file.mapping.DefaultLineMapper;
+import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
 
 
 @Configuration
+@Slf4j
 @SuppressWarnings("Duplicates")
 public class StepConfig {
 
+    @Value("products.csv")
+    private ClassPathResource inputResource;
 
     //---------------------------------------------------------------------------//
     // Steps
-    @Bean
-    public Step noOpStep(StepBuilderFactory stepBuilderFactory, NoOpTasklet noOpTasklet) {
-        return stepBuilderFactory.get("noOpStep").tasklet(noOpTasklet).build();
-    }
 
 
     @Bean
-    public Step stepA(StepBuilderFactory stepBuilderFactory) {
-        return stepBuilderFactory.get("stepA")
-                .tasklet(new EchoTasklet("** STEP A")).build();
+    @SuppressWarnings("unchecked")
+    public Step stepFileAuditor(StepBuilderFactory stepBuilderFactory,
+                                ConsoleItemWriter writer,
+                                FlatFileItemReader reader,
+                                ChunkAuditor chunkAuditor) {
+        return stepBuilderFactory.get("stepFileReadAndAudit")
+                .<TextLineItem, TextLineItem> chunk(2)
+                .reader(reader)
+                .writer(writer)
+                .listener(chunkAuditor)
+                .build();
     }
 
-    @Bean
-    public Step stepB(StepBuilderFactory stepBuilderFactory) {
-        return stepBuilderFactory.get("stepB")
-                .tasklet(new EchoTasklet("** STEP B")).build();
-    }
-
-    @Bean
-    public Step stepC(StepBuilderFactory stepBuilderFactory) {
-        return stepBuilderFactory.get("stepC")
-                .tasklet(new EchoTasklet("** STEP C")).build();
-    }
 
     //---------------------------------------------------------------------------//
     // Tasklets
 
-    /**
-     * Creating Tasklet manually, could not Autowire Tasklet with @Component
-     * @return
-     */
+
+
+
+    //---------------------------------------------------------------------------//
+    // Readers
+
     @Bean
-    public NoOpTasklet noOpTasklet(){
-        return new NoOpTasklet();
+    public ConsoleItemWriter<String> writer() {
+        return new ConsoleItemWriter<>();
+    }
+
+
+    @Bean
+    @StepScope
+    public FlatFileItemReader<TextLineItem> reader() {
+        FlatFileItemReader<TextLineItem> reader = new FlatFileItemReader<>();
+        reader.setResource(inputResource);
+        reader.setLinesToSkip(0);
+
+        DefaultLineMapper<TextLineItem> lineMapper = new DefaultLineMapper<>();
+        DelimitedLineTokenizer tokenizer = new DelimitedLineTokenizer();
+        tokenizer.setNames("id");
+
+        BeanWrapperFieldSetMapper<TextLineItem> fieldSetMapper = new BeanWrapperFieldSetMapper<>();
+        fieldSetMapper.setTargetType(TextLineItem.class);
+
+        lineMapper.setFieldSetMapper(fieldSetMapper);
+        lineMapper.setLineTokenizer(tokenizer);
+        reader.setLineMapper(lineMapper);
+
+        return reader;
+    }
+
+
+
+    //---------------------------------------------------------------------------//
+    // Processors
+
+
+
+    //---------------------------------------------------------------------------//
+    // Writers
+
+    @Bean
+    public ConsoleItemWriter consoleItemWriter(){
+        return new ConsoleItemWriter();
+    }
+
+
+    //---------------------------------------------------------------------------//
+    // Listeners
+
+    @Bean
+    public ChunkAuditor chunkAuditor(){
+        return new ChunkAuditor();
     }
 
 

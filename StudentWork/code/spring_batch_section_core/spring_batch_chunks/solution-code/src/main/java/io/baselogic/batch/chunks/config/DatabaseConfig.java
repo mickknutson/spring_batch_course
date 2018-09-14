@@ -1,5 +1,6 @@
 package io.baselogic.batch.chunks.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
@@ -11,6 +12,7 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
  * This can be changed to any valid javax.sql.DataSource
  */
 @Configuration
+@Slf4j
 public class DatabaseConfig {
 
     //---------------------------------------------------------------------------//

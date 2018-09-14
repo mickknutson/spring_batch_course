@@ -1,9 +1,7 @@
 package io.baselogic.batch.chunks.jobs;
 
-import io.baselogic.batch.chunks.config.DatabaseConfig;
-import io.baselogic.batch.chunks.config.JobConfig;
-import io.baselogic.batch.chunks.config.StepConfig;
-import io.baselogic.batch.chunks.config.TestConfig;
+import io.baselogic.batch.chunks.config.*;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,13 +19,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 
-@ContextConfiguration(classes = {TestConfig.class, DatabaseConfig.class, JobConfig.class, StepConfig.class})
+@ContextConfiguration(classes = {TestConfig.class, DatabaseConfig.class, BatchConfig.class, JobConfig.class, StepConfig.class})
 @SpringBatchTest
 @RunWith(SpringRunner.class)
+@Slf4j
 @SuppressWarnings("Duplicates")
 public class ChunksJobTests {
-
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
@@ -61,6 +58,7 @@ public class ChunksJobTests {
 
         StringBuilder sb = new StringBuilder();
 
+        sb.append("\n\n");
         sb.append("------------------------------------------------\n");
         sb.append("Processed: ").append(stepExecution).append("\n");
         sb.append("------------------------------------------------\n");
@@ -83,17 +81,20 @@ public class ChunksJobTests {
         sb.append("------------------------------------------------\n");
         sb.append("executionContext: ").append(stepExecution.getExecutionContext()).append("\n");
         sb.append("------------------------------------------------\n");
+        sb.append("\n\n");
 
         return sb.toString();
     }
 
+
     //---------------------------------------------------------------------------//
     //---------------------------------------------------------------------------//
     //---------------------------------------------------------------------------//
 
+
     public JobParameters getJobParameters() {
         return new JobParametersBuilder()
-                .addLong("commit.interval", 2L)
+                .addLong("commit.interval", 1L)
                 .addLong("timestamp", System.currentTimeMillis())
                 .toJobParameters();
     }
@@ -105,18 +106,50 @@ public class ChunksJobTests {
     public void test_job__all_steps() throws Exception {
         JobExecution jobExecution = jobLauncherTestUtils.launchJob();
 
-        logger.info(logJobExecution(jobExecution));
+        log.info(logJobExecution(jobExecution));
 
         jobExecution.getStepExecutions().forEach((stepExecution) -> {
-            logger.info(logStepExecution(stepExecution));
+            log.info(logStepExecution(stepExecution));
+
+            assertSoftly(
+                    softAssertions -> {
+                        assertThat(stepExecution.getReadCount()).isEqualTo(10);
+                        assertThat(stepExecution.getWriteCount()).isEqualTo(10);
+                        assertThat(stepExecution.getCommitCount()).isEqualTo(6);
+                    }
+            );
+
         });
 
         assertSoftly(
                 softAssertions -> {
                     assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
-                    assertThat(jobExecution.getStepExecutions().size()).isEqualTo(3);
+                    assertThat(jobExecution.getStepExecutions().size()).isEqualTo(1);
                 }
         );
+    }
+
+
+
+    @Test
+    public void test_job__reader_EXCEPTION() throws Exception {
+        JobExecution jobExecution = jobLauncherTestUtils.launchJob();
+
+        log.info(logJobExecution(jobExecution));
+
+        jobExecution.getStepExecutions().forEach((stepExecution) -> {
+            log.info(logStepExecution(stepExecution));
+
+            assertSoftly(
+                    softAssertions -> {
+                        assertThat(stepExecution.getReadCount()).isEqualTo(10);
+                        assertThat(stepExecution.getWriteCount()).isEqualTo(10);
+                        assertThat(stepExecution.getCommitCount()).isEqualTo(6);
+                    }
+            );
+
+        });
+
     }
 
 
