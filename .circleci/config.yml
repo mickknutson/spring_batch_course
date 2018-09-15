@@ -71,7 +71,7 @@ workflows:
   build_and_test:
     jobs:
 #    - INIT_PROJECT
-    - CORE:
+    - CORE
 #        requires:
 #        - INIT_PROJECT
 
