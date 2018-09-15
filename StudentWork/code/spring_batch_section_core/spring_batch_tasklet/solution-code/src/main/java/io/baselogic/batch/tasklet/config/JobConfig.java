@@ -20,9 +20,10 @@ public class JobConfig {
     @Bean
     public Job job(JobBuilderFactory jobBuilderFactory, Step noOpStep, Step stepA, Step stepB, Step stepC) {
         return jobBuilderFactory.get("taskletJob")
-                .flow(noOpStep).on("*").to(stepB)
-                .from(stepA).on("*").to(stepB)
-                .next(stepC).end()
+                .start(noOpStep)
+                .next(stepA)
+                .next(stepB)
+                .next(stepC)
                 .build();
     }
 

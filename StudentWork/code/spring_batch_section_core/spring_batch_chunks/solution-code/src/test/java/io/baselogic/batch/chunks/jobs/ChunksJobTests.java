@@ -40,7 +40,7 @@ public class ChunksJobTests {
 
     //---------------------------------------------------------------------------//
 
-    private String logJobExecution(JobExecution jobExecution) {
+    protected String logJobExecution(JobExecution jobExecution) {
 
         StringBuilder sb = new StringBuilder();
 

@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Configuration;
 @SuppressWarnings("Duplicates")
 public class JobConfig {
 
+    // CommandLineJobRunner
 
     //---------------------------------------------------------------------------//
     // Jobs

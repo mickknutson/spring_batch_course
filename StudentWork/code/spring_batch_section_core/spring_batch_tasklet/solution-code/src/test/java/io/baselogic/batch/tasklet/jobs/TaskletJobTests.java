@@ -5,10 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.batch.core.ExitStatus;
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.JobExecution;
-import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.*;
 import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.batch.test.JobRepositoryTestUtils;
 import org.springframework.batch.test.context.SpringBatchTest;
@@ -72,7 +69,7 @@ public class TaskletJobTests {
 
     //---------------------------------------------------------------------------//
 
-    private String logJobExecution(JobExecution jobExecution) {
+    protected String logJobExecution(JobExecution jobExecution) {
 
         StringBuilder sb = new StringBuilder();
 
@@ -88,6 +85,7 @@ public class TaskletJobTests {
 
         StringBuilder sb = new StringBuilder();
 
+        sb.append("\n\n");
         sb.append("------------------------------------------------\n");
         sb.append("Processed: ").append(stepExecution).append("\n");
         sb.append("------------------------------------------------\n");
@@ -110,15 +108,28 @@ public class TaskletJobTests {
         sb.append("------------------------------------------------\n");
         sb.append("executionContext: ").append(stepExecution.getExecutionContext()).append("\n");
         sb.append("------------------------------------------------\n");
+        sb.append("\n\n");
 
         return sb.toString();
     }
 
 
+
     //---------------------------------------------------------------------------//
     //---------------------------------------------------------------------------//
     //---------------------------------------------------------------------------//
 
+    //---------------------------------------------------------------------------//
+
+    public JobParameters getJobParameters() {
+        return new JobParametersBuilder()
+                .addLong("commit.interval", 2L)
+                .addLong("timestamp", System.currentTimeMillis())
+                .addString("inputResource", "products.csv")
+
+                .addString("message", "job parameter message ZZZ")
+                .toJobParameters();
+    }
 
     /*public StepExecution getStepExecution() {
         StepExecution execution = MetaDataInstanceFactory.createStepExecution();
@@ -130,7 +141,8 @@ public class TaskletJobTests {
 
     @Test
     public void test_tasklet_job__all_steps() throws Exception {
-        JobExecution jobExecution = jobLauncherTestUtils.launchJob();
+//        JobExecution jobExecution = jobLauncherTestUtils.launchJob();
+        JobExecution jobExecution = jobLauncherTestUtils.launchJob(getJobParameters());
 
         jobExecution.getStepExecutions().forEach((stepExecution) -> {
             log.info("Processed: " + stepExecution);
@@ -141,7 +153,7 @@ public class TaskletJobTests {
         });
 
         assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
-        assertThat(jobExecution.getStepExecutions().size()).isEqualTo(3);
+        assertThat(jobExecution.getStepExecutions().size()).isEqualTo(4);
 
         log.info(logJobExecution(jobExecution));
     }

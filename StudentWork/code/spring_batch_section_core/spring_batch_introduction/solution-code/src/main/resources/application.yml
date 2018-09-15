@@ -12,6 +12,9 @@ serviceId: ${SERVICE_ID:batch-introduction}
 spring:
   application:
     name: batch-introduction
+#    admin:
+#      enabled: true
+
 
 ##---------------------------------------------------------------------------##
 # BATCH CONFIGURATION
@@ -35,9 +38,14 @@ spring.batch.job.enabled: ${BATCH_JOB_ENABLED:false}
 ##---------------------------------------------------------------------------##
 # Logging and Console
 
-#spring.main.banner-mode: ${BANNER_MODE:off}
-spring.main.banner-mode: ${BANNER_MODE:console}
+spring.main.banner-mode: ${BANNER_MODE:off}
+#spring.main.banner-mode: ${BANNER_MODE:console}
 spring.output.ansi.enabled: ${SPRING_ANSI_ENABLED:ALWAYS}
+
+#spring.banner.image.width:
+#spring.banner.image.height:
+#spring.banner.image.margin:
+spring.banner.image.invert: true
 
 ##---------------------------------------------------------------------------##
 ## NOTE: Enable Management endpoints

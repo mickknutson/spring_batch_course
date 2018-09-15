@@ -11,7 +11,6 @@
     <description>Spring Batch Course</description>
 
     <properties>
-        <ansi.color>true</ansi.color>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -104,8 +103,6 @@
             </plugins>
         </pluginManagement>
 
-        <plugins>
-        </plugins>
     </build>
 
     <dependencyManagement>

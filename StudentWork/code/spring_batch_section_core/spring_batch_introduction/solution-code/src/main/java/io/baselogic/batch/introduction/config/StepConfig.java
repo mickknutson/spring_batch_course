@@ -19,12 +19,10 @@ public class StepConfig {
     @Bean
     public Step step1(StepBuilderFactory stepBuilderFactory) {
         return stepBuilderFactory.get("step1")
-                .tasklet(
-                        (contribution, chunkContext) -> {
+                .tasklet((contribution, chunkContext) -> {
                             log.info("Hello World!");
                             return RepeatStatus.FINISHED;
                         }
-
                 ).build();
     }
 
