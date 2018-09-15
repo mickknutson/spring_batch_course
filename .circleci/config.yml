@@ -53,8 +53,8 @@ jobs:
             - ~/circleci-demo-workflows/vendor/bundle
 
   ##---------------------------------------------------------------------------##
-  workflows:
-    version: 2
+workflows:
+  version: 2.0
     build-and-deploy:
       jobs:
         - batch_section_core
