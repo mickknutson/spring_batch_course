@@ -36,6 +36,18 @@ jobs:
             mkdir -p ~/junit/
             pwd
             ls -la
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "./StudentWork/code/pom.xml" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+      - run: mvn dependency:go-offline
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: v1-dependencies-{{ checksum "./StudentWork/code/pom.xml" }}
+
 
 ##---------------------------------------------------------------------------##
 
@@ -60,9 +72,15 @@ jobs:
           command: |
             set -xu
             echo $CIRCLE_WORKING_DIRECTORY
-            mkdir -p ~/junit/
+#            mkdir -p ~/junit/
             ls -la
             find . -maxdepth 2 -exec du -ms {} \; | sort -rn | head -n 15
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "./StudentWork/code/pom.xml" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
       - run:
           name: Verify the SECTION CORE with codeQuality
           command: mvn verify -PcodeQuality
@@ -108,7 +126,7 @@ jobs:
       - run:
           name: Verify the SECTION CORE with codeQuality
           command: mvn verify -PcodeQuality
-          working_directory: ./StudentWork/code/spring_batch_section_core
+          working_directory: ./StudentWork/code/spring_batch_section_flows
       - run:
           name: Save test results
           command: |
@@ -151,7 +169,7 @@ jobs:
       - run:
           name: Verify the SECTION CORE with codeQuality
           command: mvn verify -PcodeQuality
-          working_directory: ./StudentWork/code/spring_batch_section_core
+          working_directory: ./StudentWork/code/spring_batch_section_scaling
       - run:
           name: Save test results
           command: |
