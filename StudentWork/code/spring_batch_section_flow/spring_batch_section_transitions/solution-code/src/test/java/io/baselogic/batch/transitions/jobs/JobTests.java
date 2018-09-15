@@ -1,6 +1,6 @@
-package io.baselogic.batch.split.jobs;
+package io.baselogic.batch.transitions.jobs;
 
-import io.baselogic.batch.split.config.*;
+import io.baselogic.batch.transitions.config.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;

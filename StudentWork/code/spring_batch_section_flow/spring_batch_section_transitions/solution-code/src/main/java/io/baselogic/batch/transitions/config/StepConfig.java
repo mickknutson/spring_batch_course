@@ -1,8 +1,8 @@
-package io.baselogic.batch.split.config;
+package io.baselogic.batch.transitions.config;
 
-import io.baselogic.batch.split.listeners.ChunkAuditor;
-import io.baselogic.batch.split.steps.ConsoleItemWriter;
-import io.baselogic.batch.split.steps.EchoTasklet;
+import io.baselogic.batch.transitions.listeners.ChunkAuditor;
+import io.baselogic.batch.transitions.steps.ConsoleItemWriter;
+import io.baselogic.batch.transitions.steps.EchoTasklet;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;

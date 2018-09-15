@@ -1,6 +1,6 @@
-package io.baselogic.batch.split.endpoints;
+package io.baselogic.batch.transitions.endpoints;
 
-import io.baselogic.batch.split.Application;
+import io.baselogic.batch.transitions.Application;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

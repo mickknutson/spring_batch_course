@@ -1,4 +1,4 @@
-package io.baselogic.batch.split;
+package io.baselogic.batch.transitions;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

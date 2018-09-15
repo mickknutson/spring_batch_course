@@ -1,4 +1,4 @@
-package io.baselogic.batch.split.endpoints;
+package io.baselogic.batch.transitions.endpoints;
 
 
 import lombok.extern.slf4j.Slf4j;
