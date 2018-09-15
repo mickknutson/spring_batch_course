@@ -21,9 +21,14 @@ public class EchoTasklet implements Tasklet{
     //---------------------------------------------------------------------------//
 
     @Override
-    public RepeatStatus execute(final StepContribution contribution,
+    public RepeatStatus execute(final StepContribution stepContribution,
                                 final ChunkContext chunkContext) throws Exception {
-        log.info("--> STEP message [{}] processing!", message);
+        log.info("--> Processing STEP [{}] !", message);
+        log.info("\t id: [{}], name: [{}]",
+                chunkContext.getStepContext().getId(),
+                chunkContext.getStepContext().getStepName()
+        );
+
 
         return RepeatStatus.FINISHED;
     }

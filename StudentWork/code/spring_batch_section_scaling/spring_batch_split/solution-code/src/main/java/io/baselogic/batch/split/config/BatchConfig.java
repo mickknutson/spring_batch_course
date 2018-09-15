@@ -1,4 +1,4 @@
-package io.baselogic.batch.chunks.config;
+package io.baselogic.batch.split.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.configuration.annotation.DefaultBatchConfigurer;
@@ -9,6 +9,8 @@ import org.springframework.batch.core.repository.support.JobRepositoryFactoryBea
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.task.TaskExecutor;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
@@ -19,7 +21,6 @@ import javax.sql.DataSource;
 @SuppressWarnings("Duplicates")
 public class BatchConfig extends DefaultBatchConfigurer {
 
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     private PlatformTransactionManager transactionManager;
 
@@ -54,6 +55,20 @@ public class BatchConfig extends DefaultBatchConfigurer {
         factory.afterPropertiesSet();
         return factory.getObject();
     }
+
+    //---------------------------------------------------------------------------//
+    // Executor
+
+    @Bean
+    public TaskExecutor taskExecutor() {
+        ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
+        taskExecutor.setCorePoolSize(4);
+        taskExecutor.setMaxPoolSize(4);
+        taskExecutor.setQueueCapacity(4);
+        taskExecutor.afterPropertiesSet();
+        return taskExecutor;
+    }
+
 
 
 } // The End...

@@ -1,11 +1,10 @@
-package io.baselogic.batch.jobrepository.steps;
+package io.baselogic.batch.split.steps;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
-
 
 @Slf4j
 public class EchoTasklet implements Tasklet{
@@ -36,4 +35,4 @@ public class EchoTasklet implements Tasklet{
 
     //---------------------------------------------------------------------------//
 
-}
+} // The End...

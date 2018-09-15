@@ -4,12 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.baselogic.batch</groupId>
-    <artifactId>spring_batch_section_inputs</artifactId>
+    <artifactId>spring_batch_section_error_handling</artifactId>
     <version>1.0.0.RELEASE</version>
     <packaging>pom</packaging>
 
-    <name>BATCH SECTION INPUTS</name>
-    <description>${project.name}</description>
+    <name>BATCH SECTION ERROR HANDLING</name>
+    <description>${project.name} - ${project.artifactId}</description>
 
     <parent>
         <groupId>com.baselogic.batch</groupId>

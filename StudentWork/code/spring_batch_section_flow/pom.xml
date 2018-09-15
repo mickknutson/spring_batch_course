@@ -9,7 +9,7 @@
     <packaging>pom</packaging>
 
     <name>BATCH SECTION FLOW</name>
-    <description>${project.name} - ${project.artifactId}</description>
+    <description>${project.name}</description>
 
     <parent>
         <groupId>com.baselogic.batch</groupId>

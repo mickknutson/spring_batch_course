@@ -4,12 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.baselogic.batch</groupId>
-    <artifactId>spring_batch_section_inputs</artifactId>
+    <artifactId>spring_batch_section_scaling</artifactId>
     <version>1.0.0.RELEASE</version>
     <packaging>pom</packaging>
 
-    <name>BATCH SECTION INPUTS</name>
-    <description>${project.name}</description>
+    <name>BATCH SECTION SCALING</name>
+    <description>${project.name} - ${project.artifactId}</description>
 
     <parent>
         <groupId>com.baselogic.batch</groupId>
@@ -18,7 +18,7 @@
     </parent>
 
     <modules>
-        <!--<module>spring_batch_TBD</module>-->
+        <module>spring_batch_split</module>
     </modules>
 
 </project>
