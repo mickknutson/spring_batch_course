@@ -36,8 +36,6 @@ jobs:
             mkdir -p ~/junit/
             pwd
             ls -la
-#            ls -la ${BASE_DIR}
-            find . -maxdepth 2 -exec du -ms {} \; | sort -rn | head -n 15
 
 ##---------------------------------------------------------------------------##
 
@@ -107,7 +105,6 @@ jobs:
             echo $CIRCLE_WORKING_DIRECTORY
             mkdir -p ~/junit/
             ls -la
-            find . -maxdepth 2 -exec du -ms {} \; | sort -rn | head -n 15
       - run:
           name: Verify the SECTION CORE with codeQuality
           command: mvn verify -PcodeQuality
@@ -150,7 +147,7 @@ jobs:
             echo $CIRCLE_WORKING_DIRECTORY
             mkdir -p ~/junit/
             ls -la
-            find . -maxdepth 2 -exec du -ms {} \; | sort -rn | head -n 15
+#            find . -maxdepth 2 -exec du -ms {} \; | sort -rn | head -n 15
       - run:
           name: Verify the SECTION CORE with codeQuality
           command: mvn verify -PcodeQuality
