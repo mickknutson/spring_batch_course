@@ -94,7 +94,7 @@ workflows:
     - INIT
     - CORE
       requires:
-      - INIT
+        - INIT
     - POST
 
 
