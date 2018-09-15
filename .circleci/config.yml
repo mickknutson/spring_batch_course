@@ -72,9 +72,9 @@ jobs:
           command: |
             set -xu
             echo $CIRCLE_WORKING_DIRECTORY
-#            mkdir -p ~/junit/
+            mkdir -p ~/junit/
             ls -la
-            find . -maxdepth 2 -exec du -ms {} \; | sort -rn | head -n 15
+#            find . -maxdepth 2 -exec du -ms {} \; | sort -rn | head -n 15
       # Download and cache dependencies
       - restore_cache:
           keys:
