@@ -10,7 +10,6 @@
 ##---------------------------------------------------------------------------##
 version: 2.0
 
-##---------------------------------------------------------------------------##
 jobs:
 
 ##---------------------------------------------------------------------------##
@@ -34,7 +33,12 @@ jobs:
             echo $CIRCLE_WORKING_DIRECTORY
             mkdir -p ~/junit/
 
-      # Download and cache dependencies
+  bundle_dependencies:
+    docker:
+      - image: circleci/ruby:2.4-node-jessie
+      - image: circleci/postgres:9.4.12-alpine
+    working_directory: ~/circleci-demo-workflows
+    steps:
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "pom.xml" }}
@@ -44,9 +48,9 @@ jobs:
       - run: mvn dependency:go-offline
 
       - save_cache:
+          key: v1-bundle-{{ checksum "Gemfile.lock" }}
           paths:
-            - ~/.m2
-          key: v1-dependencies-{{ checksum "pom.xml" }}
+            - ~/circleci-demo-workflows/vendor/bundle
 
   ##---------------------------------------------------------------------------##
   workflows:
