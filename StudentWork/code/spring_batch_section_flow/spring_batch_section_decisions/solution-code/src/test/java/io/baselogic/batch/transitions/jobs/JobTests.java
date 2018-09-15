@@ -1,20 +1,19 @@
 package io.baselogic.batch.transitions.jobs;
 
-import io.baselogic.batch.transitions.config.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.batch.core.*;
 import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.batch.test.JobRepositoryTestUtils;
 import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
+
 
 @ContextConfiguration(classes = {TestConfig.class, DatabaseConfig.class, BatchConfig.class, JobConfig.class, StepConfig.class})
 @SpringBatchTest
@@ -37,97 +36,7 @@ public class JobTests {
         jobRepositoryTestUtils.removeJobExecutions();
     }
 
-    //---------------------------------------------------------------------------//
-    // Jobs
 
-    @Autowired
-    @Qualifier("job")
-    private Job job;
-
-    @Autowired
-    @Qualifier("continueOnExitStatusJob")
-    private Job continueOnExitStatusJob;
-
-    @Autowired
-    @Qualifier("failingJob")
-    private Job failingJob;
-
-    //---------------------------------------------------------------------------//
-
-
-    public JobParameters getJobParameters() {
-        return new JobParametersBuilder()
-                .addLong("commit.interval", 1L)
-                .addLong("timestamp", System.currentTimeMillis())
-                .toJobParameters();
-    }
-
-    //---------------------------------------------------------------------------//
-
-
-    @Test
-    public void test__job__all_steps() throws Exception {
-
-        jobLauncherTestUtils.setJob(job);
-        JobExecution jobExecution = jobLauncherTestUtils.launchJob();
-
-        if(log.isDebugEnabled()) {
-            log.debug(logJobExecution(jobExecution));
-
-            jobExecution.getStepExecutions().forEach((stepExecution) -> {
-                log.debug(logStepExecution(stepExecution));
-
-            });
-        }
-
-        assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
-        assertThat(jobExecution.getStepExecutions().size()).isEqualTo(4);
-    }
-
-    //---------------------------------------------------------------------------//
-
-    @Test
-    public void test__continueOnExitStatusJob__all_steps() throws Exception {
-        jobLauncherTestUtils.setJob(continueOnExitStatusJob);
-        JobExecution jobExecution = jobLauncherTestUtils.launchJob();
-
-        if(log.isDebugEnabled()) {
-            log.debug(logJobExecution(jobExecution));
-
-            jobExecution.getStepExecutions().forEach((stepExecution) -> {
-                log.debug(logStepExecution(stepExecution));
-
-            });
-        }
-
-        assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
-        assertThat(jobExecution.getStepExecutions().size()).isEqualTo(5);
-    }
-
-
-    //---------------------------------------------------------------------------//
-
-    @Test
-    public void test_failingJob__all_steps() throws Exception {
-        jobLauncherTestUtils.setJob(failingJob);
-        JobExecution jobExecution = jobLauncherTestUtils.launchJob();
-
-        if(log.isDebugEnabled()) {
-            log.debug(logJobExecution(jobExecution));
-
-            jobExecution.getStepExecutions().forEach((stepExecution) -> {
-                log.debug(logStepExecution(stepExecution));
-
-            });
-        }
-
-        assertThat(jobExecution.getExitStatus().getExitCode())
-                .isEqualTo(ExitStatus.FAILED.getExitCode());
-        assertThat(jobExecution.getStepExecutions().size()).isEqualTo(1);
-    }
-
-    //---------------------------------------------------------------------------//
-    //---------------------------------------------------------------------------//
     //---------------------------------------------------------------------------//
 
     protected String logJobExecution(JobExecution jobExecution) {
@@ -173,5 +82,41 @@ public class JobTests {
 
         return sb.toString();
     }
+
+
+    //---------------------------------------------------------------------------//
+    //---------------------------------------------------------------------------//
+    //---------------------------------------------------------------------------//
+
+
+    public JobParameters getJobParameters() {
+        return new JobParametersBuilder()
+                .addLong("commit.interval", 1L)
+                .addLong("timestamp", System.currentTimeMillis())
+                .toJobParameters();
+    }
+
+    //---------------------------------------------------------------------------//
+
+
+    @Test
+    public void test_job__all_steps() throws Exception {
+        JobExecution jobExecution = jobLauncherTestUtils.launchJob();
+
+        log.info(logJobExecution(jobExecution));
+
+        jobExecution.getStepExecutions().forEach((stepExecution) -> {
+            log.info(logStepExecution(stepExecution));
+
+        });
+
+        assertSoftly(
+                softAssertions -> {
+                    assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
+                    assertThat(jobExecution.getStepExecutions().size()).isEqualTo(4);
+                }
+        );
+    }
+
 
 } // The End...

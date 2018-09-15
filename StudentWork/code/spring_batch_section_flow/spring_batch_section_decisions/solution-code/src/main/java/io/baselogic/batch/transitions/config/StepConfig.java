@@ -1,9 +1,8 @@
 package io.baselogic.batch.transitions.config;
 
+import io.baselogic.batch.transitions.steps.ConsoleItemWriter;
 import io.baselogic.batch.transitions.steps.EchoTasklet;
-import io.baselogic.batch.transitions.steps.StatusTasklet;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -50,29 +49,15 @@ public class StepConfig {
     }
 
     @Bean
-    public Step completedStep(StepBuilderFactory stepBuilderFactory) {
-        return stepBuilderFactory.get("completedStep")
-                .tasklet(new StatusTasklet(ExitStatus.COMPLETED))
+    public Step endStep(StepBuilderFactory stepBuilderFactory) {
+        return stepBuilderFactory.get("endStep")
+                .tasklet((contribution, chunkContext) -> null)
                 .build();
     }
-
-    @Bean
-    public Step executingStep(StepBuilderFactory stepBuilderFactory) {
-        return stepBuilderFactory.get("finishedStep")
-                .tasklet(new StatusTasklet(ExitStatus.EXECUTING))
-                .build();
-    }
-
-    @Bean
-    public Step failedStep(StepBuilderFactory stepBuilderFactory) {
-        return stepBuilderFactory.get("failedStep")
-                .tasklet(new StatusTasklet(ExitStatus.FAILED))
-                .build();
-    }
-
 
     //---------------------------------------------------------------------------//
     // Tasklets
+
 
 
 
@@ -88,6 +73,10 @@ public class StepConfig {
     //---------------------------------------------------------------------------//
     // Writers
 
+    @Bean
+    public ConsoleItemWriter consoleItemWriter(){
+        return new ConsoleItemWriter();
+    }
 
 
     //---------------------------------------------------------------------------//

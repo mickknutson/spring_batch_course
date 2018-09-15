@@ -1,24 +1,20 @@
 package io.baselogic.batch.transitions.steps;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 
 @Slf4j
-public class StatusTasklet implements Tasklet{
-
-    private ExitStatus exitStatus;
+public class EchoTasklet implements Tasklet{
 
     private String message;
 
     //---------------------------------------------------------------------------//
 
-    public StatusTasklet(ExitStatus exitStatus){
-        this.exitStatus = exitStatus;
-        this.message = exitStatus.getExitCode();
+    public EchoTasklet(String message){
+        this.message = message;
     }
 
 
@@ -33,7 +29,6 @@ public class StatusTasklet implements Tasklet{
                 chunkContext.getStepContext().getStepName()
         );
 
-        stepContribution.setExitStatus(exitStatus);
 
         return RepeatStatus.FINISHED;
     }

@@ -1,4 +1,4 @@
-package io.baselogic.batch.split;
+package io.baselogic.batch.transitions;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;

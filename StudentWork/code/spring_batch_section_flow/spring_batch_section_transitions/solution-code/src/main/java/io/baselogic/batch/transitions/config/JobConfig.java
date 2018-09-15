@@ -4,18 +4,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
-import org.springframework.batch.core.job.builder.FlowBuilder;
-import org.springframework.batch.core.job.flow.Flow;
-import org.springframework.batch.core.job.flow.support.SimpleFlow;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.task.SimpleAsyncTaskExecutor;
-
 
 @Configuration
 @Slf4j
 @SuppressWarnings("Duplicates")
 public class JobConfig {
+
 
     //---------------------------------------------------------------------------//
     // Jobs
@@ -24,22 +20,37 @@ public class JobConfig {
     @Bean
     public Job job(JobBuilderFactory jobBuilderFactory,
                    Step stepA, Step stepB, Step stepC, Step stepD) {
-        Flow flow1 = new FlowBuilder<SimpleFlow>("flow1")
-                .start(stepA)
-                .next(stepB)
+        return jobBuilderFactory.get("defaultJob")
+                .flow(stepA).on("*").to(stepB) // stepB will always get Executed
+                .from(stepB).on("*").to(stepC) // stepC will always get Executed if stepB is Executed
+                .next(stepD).end()
                 .build();
-        Flow flow2 = new FlowBuilder<SimpleFlow>("flow2")
-                .start(stepC)
-                .build();
+    }
 
-        return jobBuilderFactory.get("job")
-                .start(flow1)
-                .split(new SimpleAsyncTaskExecutor())
-                .add(flow2)
-                .next(stepD)
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
+    @Bean
+    public Job continueOnExitStatusJob(JobBuilderFactory jobBuilderFactory,
+                              Step completedStep,
+                              Step stepA, Step stepB, Step stepC, Step stepD) {
+        return jobBuilderFactory.get("continueOnExitStatusJob")
+                .flow(completedStep).on("COMPLETED").to(stepA)
+                .from(stepA).on("*").to(stepB)
+                .from(stepB).on("*").to(stepC)
+                .next(stepD).end()
+                .build();
+    }
+
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
+    @Bean
+    public Job failingJob(JobBuilderFactory jobBuilderFactory,
+                          Step failedStep) {
+        return jobBuilderFactory.get("failingJob")
+                .flow(failedStep).on("FAILED").fail()
                 .end()
                 .build();
     }
+
+
 
 
 } // The End...
