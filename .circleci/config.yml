@@ -10,8 +10,6 @@
 ##---------------------------------------------------------------------------##
 version: 2
 
-
-
 ##---------------------------------------------------------------------------##
 jobs:
 
@@ -57,7 +55,7 @@ jobs:
       environment:
         # Customize the JVM maximum heap limit
         MAVEN_OPTS: -Xmx3200m
-        BASE_DIR: "./StudentWork/code/spring_batch_section_core"
+        BASE_DIR: "./StudentWork/code"
         _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
 
       docker:
@@ -78,7 +76,7 @@ jobs:
 
         - save_cache:
             paths:
-            - ~/.m2
+              - ~/.m2
             key: v1-dependencies-{{ checksum "pom.xml" }}
 
         - run:
@@ -90,7 +88,7 @@ jobs:
         - run:
             name: Verify the CORE Module
             command: mvn verify
-            working_directory: ./StudentWork/code
+            working_directory: ./StudentWork/code/spring_batch_section_core
         - run:
             name: Save test results
             command: |
