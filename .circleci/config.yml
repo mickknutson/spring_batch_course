@@ -87,6 +87,43 @@ jobs:
           name: Storing Artifacts
           path: ~/junit
 
+##---------------------------------------------------------------------------##
+  build_core:
+
+    working_directory: ~/tmp/workspace
+
+    environment:
+      _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
+      BASE_DIR: "./StudentWork/code"
+    
+    docker:
+      - image: circleci/openjdk:8-jdk-browsers
+        environment:
+          BASE_DIR: "./StudentWork/code"
+          _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
+
+    steps:
+
+      - checkout
+
+      - run:
+          name: Initialize
+          command: |
+            set -xu
+            echo $CIRCLE_WORKING_DIRECTORY
+            mkdir -p ~/junit/
+
+
+
+##---------------------------------------------------------------------------##
+workflows:
+  version: 2
+  build_each_module:
+    jobs:
+      - build
+      - build_core:
+          requires:
+            - build
 
 ## The End... ##
 ##---------------------------------------------------------------------------##
