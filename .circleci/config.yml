@@ -10,6 +10,8 @@
 ##---------------------------------------------------------------------------##
 version: 2
 jobs:
+##---------------------------------------------------------------------------##
+
   build:
 
     working_directory: ~/tmp/workspace
@@ -17,9 +19,6 @@ jobs:
     environment:
       _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
       BASE_DIR: "./StudentWork/code"
-    
-    # Not sure if parallelism will work well for this project
-    parallelism: 3
 
     docker:
       - image: circleci/openjdk:8-jdk-browsers
@@ -27,11 +26,8 @@ jobs:
           BASE_DIR: "./StudentWork/code"
           _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
 
-
     steps:
-
       - checkout
-
       - run:
           name: Initialize
           command: |
@@ -42,52 +38,22 @@ jobs:
 #            ls -la
 #            ls -la ${BASE_DIR}
 #            find . -maxdepth 2 -exec du -ms {} \; | sort -rn | head -n 15
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "pom.xml" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
 
-      - run:
-          name: Verify the Project with codeQuality
-          command: mvn verify -PcodeQuality
-          working_directory: ./StudentWork/code
+      - run: mvn dependency:go-offline
 
-      - run:
-          name: Sonar Cloud Scan
-          command: mvn sonar:sonar -Dsonar.projectKey=mickknutson_spring_batch_course -Dsonar.login=$SONAR_LOGIN
-          working_directory: ./StudentWork/code
-
-      - run:
-          name: Save test results
-          command: |
-            set -xu
-            find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/junit/ \;
-          when: always
-
-      - run:
-          name: Save Coverage results
-          command: |
-            set -xu
-            find . -type f -regex ".*/target/jacoco/jacoco.xml" -exec cp {} ~/junit/ \;
-            bash <(curl -s https://codecov.io/bash)
-
-      - run:
-          name: listing after saving test results
-          command: |
-            set -xu
-            ls -la ~/junit
-
-      - store_test_results:
-          name: Storing test results
-          path: ~/junit
-
-      - run:
-          name: listing after Storing test results
-          command: |
-            set -xu
-            ls -la ~/junit
-
-      - store_artifacts:
-          name: Storing Artifacts
-          path: ~/junit
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: v1-dependencies-{{ checksum "pom.xml" }}
 
 ##---------------------------------------------------------------------------##
+
   build_core:
 
     working_directory: ~/tmp/workspace
@@ -103,16 +69,100 @@ jobs:
           _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
 
     steps:
-
       - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "pom.xml" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      - run: mvn dependency:go-offline
+
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: v1-dependencies-{{ checksum "pom.xml" }}
+      - run:
+          name: Verify the Project with codeQuality
+          command: mvn verify -PcodeQuality
+          working_directory: ./StudentWork/code/spring_batch_section_core
 
       - run:
-          name: Initialize
+          name: Save test results
           command: |
             set -xu
-            echo $CIRCLE_WORKING_DIRECTORY
-            mkdir -p ~/junit/
+            find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/junit/ \;
+          when: always
 
+      - run:
+          name: Save Coverage results
+          command: |
+            set -xu
+            find . -type f -regex ".*/target/jacoco/jacoco.xml" -exec cp {} ~/junit/ \;
+            bash <(curl -s https://codecov.io/bash)
+
+##---------------------------------------------------------------------------##
+  build_flows:
+
+    working_directory: ~/tmp/workspace
+
+    environment:
+      _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
+      BASE_DIR: "./StudentWork/code"
+    
+    docker:
+      - image: circleci/openjdk:8-jdk-browsers
+        environment:
+          BASE_DIR: "./StudentWork/code"
+          _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
+
+    steps:
+      - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "pom.xml" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      - run: mvn dependency:go-offline
+
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: v1-dependencies-{{ checksum "pom.xml" }}
+
+##---------------------------------------------------------------------------##
+  build_scaling:
+
+    working_directory: ~/tmp/workspace
+
+    environment:
+      _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
+      BASE_DIR: "./StudentWork/code"
+    
+    docker:
+      - image: circleci/openjdk:8-jdk-browsers
+        environment:
+          BASE_DIR: "./StudentWork/code"
+          _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
+
+    steps:
+      - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "pom.xml" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      - run: mvn dependency:go-offline
+
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: v1-dependencies-{{ checksum "pom.xml" }}
 
 
 ##---------------------------------------------------------------------------##
@@ -124,6 +174,13 @@ workflows:
       - build_core:
           requires:
             - build
+      - build_flows:
+          requires:
+            - build
+      - build_scaling:
+          requires:
+            - build
 
+##---------------------------------------------------------------------------##
 ## The End... ##
 ##---------------------------------------------------------------------------##
