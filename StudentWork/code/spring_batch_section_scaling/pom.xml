@@ -19,6 +19,16 @@
 
     <modules>
         <module>spring_batch_split</module>
+        <!--<module>spring_batch_partition</module>-->
+        <!--
+        Scaling: Multithreaded Steps
+        AsyncItemProcessor
+        Scaling: Parallel Steps
+        Scaling: Remote Chunking
+        Partitioning
+        Scaling: MultiResourcePartitioner
+        Scaling: StepExecutionSplitter
+        -->
     </modules>
 
 </project>
