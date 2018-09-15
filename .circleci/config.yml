@@ -54,56 +54,55 @@ jobs:
 
       working_directory: ~/tmp/workspace
 
+      environment:
+        # Customize the JVM maximum heap limit
+        MAVEN_OPTS: -Xmx3200m
+        BASE_DIR: "./StudentWork/code/spring_batch_section_core"
+        _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
+
       docker:
         # specify the version you desire here
         - image: circleci/openjdk:8-jdk
 
+      steps:
+        - checkout
 
-        environment:
-          # Customize the JVM maximum heap limit
-          MAVEN_OPTS: -Xmx3200m
-          BASE_DIR: "./StudentWork/code/spring_batch_section_core"
-          _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
+        # Download and cache dependencies
+        - restore_cache:
+            keys:
+            - v1-dependencies-{{ checksum "pom.xml" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
 
-        steps:
-          - checkout
+        - run: mvn dependency:go-offline
 
-          # Download and cache dependencies
-          - restore_cache:
-              keys:
-              - v1-dependencies-{{ checksum "pom.xml" }}
-              # fallback to using the latest cache if no exact match is found
-              - v1-dependencies-
+        - save_cache:
+            paths:
+            - ~/.m2
+            key: v1-dependencies-{{ checksum "pom.xml" }}
 
-          - run: mvn dependency:go-offline
+        - run:
+            name: Initialize JUnit Dir
+            command: |
+              set -xu
+              echo $CIRCLE_WORKING_DIRECTORY
+              mkdir -p ~/junit/
+        - run:
+            name: Verify the CORE Module
+            command: mvn verify
+            working_directory: ./StudentWork/code
+        - run:
+            name: Save test results
+            command: |
+              set -xu
+              find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/junit/ \;
+            when: always
 
-          - save_cache:
-              paths:
-              - ~/.m2
-              key: v1-dependencies-{{ checksum "pom.xml" }}
-
-          - run:
-              name: Initialize JUnit Dir
-              command: |
-                set -xu
-                echo $CIRCLE_WORKING_DIRECTORY
-                mkdir -p ~/junit/
-          - run:
-              name: Verify the CORE Module
-              command: mvn verify
-              working_directory: ./StudentWork/code
-          - run:
-              name: Save test results
-              command: |
-                set -xu
-                find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/junit/ \;
-              when: always
-
-          - run:
-              name: Save Coverage results
-              command: |
-                set -xu
-                find . -type f -regex ".*/target/jacoco/jacoco.xml" -exec cp {} ~/junit/ \;
+        - run:
+            name: Save Coverage results
+            command: |
+              set -xu
+              find . -type f -regex ".*/target/jacoco/jacoco.xml" -exec cp {} ~/junit/ \;
 
 
 ##---------------------------------------------------------------------------##
