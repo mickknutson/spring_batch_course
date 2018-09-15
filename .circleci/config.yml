@@ -27,7 +27,7 @@ jobs:
           _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
 
     steps:
-#      - checkout
+      - checkout
       - run:
           name: Initialize
           command: |
@@ -36,7 +36,7 @@ jobs:
             mkdir -p ~/junit/
             pwd
             ls -la
-            ls -la ${BASE_DIR}
+#            ls -la ${BASE_DIR}
             find . -maxdepth 2 -exec du -ms {} \; | sort -rn | head -n 15
 
 ##---------------------------------------------------------------------------##
