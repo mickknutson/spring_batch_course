@@ -45,20 +45,9 @@ jobs:
           paths:
           - ~/.m2
           key: v1-dependencies-{{ checksum "pom.xml" }}
-  
-      - run:
-          name: Verify the CORE Module
-          command: mvn verify
-          working_directory: ./StudentWork/code
-
-##---------------------------------------------------------------------------##
 
 workflows:
   version: 2
-  test_all_batch_sections:
+  build-and-deploy:
     jobs:
       - batch_section_core
-
-##---------------------------------------------------------------------------##
-## The End... ##
-##---------------------------------------------------------------------------##
