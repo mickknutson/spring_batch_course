@@ -15,7 +15,7 @@ version: 2
 ##---------------------------------------------------------------------------##
 jobs:
 
-  INIT:
+  INIT_PROJECT:
     steps:
     - checkout
     - run:
@@ -86,17 +86,15 @@ jobs:
 
 
 ##---------------------------------------------------------------------------##
+
 workflows:
   version: 2
-
   build_and_test:
     jobs:
-    - INIT
-    - CORE
-      requires:
-        - INIT
-    - POST
-
+    - INIT_PROJECT
+    - CORE:
+        requires:
+        - INIT_PROJECT
 
 ##---------------------------------------------------------------------------##
 ## The End... ##
