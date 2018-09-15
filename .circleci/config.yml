@@ -12,14 +12,16 @@ version: 2
 
 ##---------------------------------------------------------------------------##
 jobs:
-  section_core:
+  batch_section_core:
     docker:
-    - image: circleci/openjdk:8-jdk-browsers
-      environment:
-        BASE_DIR: "./StudentWork/code"
-        _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
-    working_directory: ~/tmp/workspace
-    #working_directory: ~/circleci-blinc-workflows
+      - image: circleci/openjdk:8-jdk-browsers
+      
+    environment:
+      BASE_DIR: "./StudentWork/code"
+      _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
+      
+    #working_directory: ~/tmp/workspace
+    working_directory: ~/circleci-mfk-workflows
 
     steps:
       - checkout
@@ -48,27 +50,14 @@ jobs:
           name: Verify the CORE Module
           command: mvn verify
           working_directory: ./StudentWork/code
-      - run:
-          name: Save test results
-          command: |
-            set -xu
-            find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/junit/ \;
-          when: always
-  
-      - run:
-          name: Save Coverage results
-          command: |
-            set -xu
-            find . -type f -regex ".*/target/jacoco/jacoco.xml" -exec cp {} ~/junit/ \;
-
 
 ##---------------------------------------------------------------------------##
 
 workflows:
   version: 2
-  test_all_sections:
+  test_all_batch_sections:
     jobs:
-      - section_core
+      - batch_section_core
 
 ##---------------------------------------------------------------------------##
 ## The End... ##
