@@ -50,11 +50,11 @@ jobs:
           working_directory: ./StudentWork/code
       - save_cache:
           paths:
-            - ~/.m2
+            - /root/project/.m2
           key: v1-dependencies-{{ checksum "./StudentWork/code/pom.xml" }}
-      - persist_to_workspace:
-          root: /root/project
-          paths: ~/.m2
+#      - persist_to_workspace:
+#          root: /root/project
+#          paths: /root/project/.m2
 
 
 ##---------------------------------------------------------------------------##
@@ -83,8 +83,8 @@ jobs:
             echo $CIRCLE_WORKING_DIRECTORY
             mkdir -p ~/junit/
             ls -la
-      - attach_workspace:
-          at: /root/project
+#      - attach_workspace:
+#          at: /root/project
       # Download and cache dependencies
       - restore_cache:
           keys:
