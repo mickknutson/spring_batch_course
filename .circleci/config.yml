@@ -14,8 +14,7 @@ jobs:
 
   build:
 
-    working_directory: /root/workspace
-#    working_directory: ~/tmp/workspace
+    working_directory: ~/tmp/workspace
 
     environment:
       _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
@@ -61,8 +60,7 @@ jobs:
 
   build_core:
 
-    working_directory: /root/workspace
-#    working_directory: ~/tmp/workspace
+    working_directory: ~/tmp/workspace
 
     environment:
       _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
@@ -112,8 +110,7 @@ jobs:
 ##---------------------------------------------------------------------------##
   build_flows:
 
-    working_directory: /root/workspace
-#    working_directory: ~/tmp/workspace
+    working_directory: ~/tmp/workspace
 
     environment:
       _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
@@ -155,8 +152,7 @@ jobs:
 ##---------------------------------------------------------------------------##
   build_scaling:
 
-    working_directory: /root/workspace
-#    working_directory: ~/tmp/workspace
+    working_directory: ~/tmp/workspace
 
     environment:
       _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
