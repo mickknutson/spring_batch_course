@@ -242,7 +242,7 @@ jobs:
       - run:
           name: Verify the SECTION CORE with codeQuality
           command: mvn verify -PcodeQuality
-          working_directory: ./StudentWork/code/spring_batch_section_scaling
+          working_directory: ./StudentWork/code/
       - run:
           name: Save test results
           command: |
@@ -281,7 +281,7 @@ jobs:
     steps:
       - run:
         name: Verify the SECTION CORE with codeQuality
-        command: echo 'COMPLETE'
+        command: ls -la ~/junit
 
 
 ##---------------------------------------------------------------------------##
