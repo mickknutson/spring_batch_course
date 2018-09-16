@@ -49,8 +49,8 @@ jobs:
           working_directory: ./StudentWork/code
       - save_cache:
           paths:
-            - /root/project/.m2
-#            - $CIRCLE_WORKING_DIRECTORY/.m2
+#            - /root/project/.m2
+            - $CIRCLE_WORKING_DIRECTORY/.m2
           key: v1-dependencies-{{ checksum "./StudentWork/code/pom.xml" }}
 #      - persist_to_workspace:
 #          root: /root/project
@@ -81,7 +81,6 @@ jobs:
             set -xu
             echo $CIRCLE_WORKING_DIRECTORY
             mkdir -p ~/junit/
-            ls -la
 #      - attach_workspace:
 #          at: /root/project
       # Download and cache dependencies
@@ -131,7 +130,6 @@ jobs:
             set -xu
             echo $CIRCLE_WORKING_DIRECTORY
             mkdir -p ~/junit/
-            ls -la
 #      - attach_workspace:
 #          at: /root/project
       # Download and cache dependencies
@@ -181,7 +179,6 @@ jobs:
             set -xu
             echo $CIRCLE_WORKING_DIRECTORY
             mkdir -p ~/junit/
-            ls -la
 #      - attach_workspace:
 #          at: /root/project
       # Download and cache dependencies
@@ -207,6 +204,64 @@ jobs:
             set -xu
             find . -type f -regex ".*/target/jacoco/jacoco.xml" -exec cp {} ~/junit/ \;
             bash <(curl -s https://codecov.io/bash)
+      - run:
+          name: listing after saving test results
+          command: |
+            set -xu
+            ls -la ~/junit
+
+
+##---------------------------------------------------------------------------##
+  code_quality:
+
+    working_directory: ~/tmp/workspace
+
+    environment:
+      _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
+      BASE_DIR: "./StudentWork/code"
+    
+    docker:
+      - image: circleci/openjdk:8-jdk-browsers
+        environment:
+          BASE_DIR: "./StudentWork/code"
+          _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
+
+    steps:
+      - checkout
+#      - run:
+#          name: Initialize
+#          command: |
+#            set -xu
+#            echo $CIRCLE_WORKING_DIRECTORY
+#            mkdir -p ~/junit/
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "./StudentWork/code/pom.xml" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+      - run:
+          name: Verify the SECTION CORE with codeQuality
+          command: mvn verify -PcodeQuality
+          working_directory: ./StudentWork/code/spring_batch_section_scaling
+      - run:
+          name: Save test results
+          command: |
+            set -xu
+            find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/junit/ \;
+          when: always
+
+      - run:
+          name: Save Coverage results
+          command: |
+            set -xu
+            find . -type f -regex ".*/target/jacoco/jacoco.xml" -exec cp {} ~/junit/ \;
+            ls -la ~/junit/
+            bash <(curl -s https://codecov.io/bash)
+      - run:
+          name: listing after saving test results
+          command: |
+            set -xu
+            ls -la ~/junit
 
 
 ##---------------------------------------------------------------------------##
