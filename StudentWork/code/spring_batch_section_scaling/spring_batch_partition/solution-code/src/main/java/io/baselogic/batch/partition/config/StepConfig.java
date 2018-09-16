@@ -32,10 +32,9 @@ import java.text.ParseException;
 
 @Configuration
 @Slf4j
-@SuppressWarnings("Duplicates")
+@SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
 public class StepConfig {
 
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     private TaskExecutor taskExecutor;
 

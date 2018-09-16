@@ -16,13 +16,12 @@ import javax.sql.DataSource;
 
 @Configuration
 @Slf4j
-@SuppressWarnings("Duplicates")
+@SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
 public class BatchConfig extends DefaultBatchConfigurer {
 
     @Autowired
     private PlatformTransactionManager transactionManager;
 
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     private DataSource dataSource;
 

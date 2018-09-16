@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
  * This can be changed to any valid javax.sql.DataSource
  */
 @Configuration
-@SuppressWarnings("Duplicates")
+@SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
 public class DatabaseConfig {
 
     //---------------------------------------------------------------------------//

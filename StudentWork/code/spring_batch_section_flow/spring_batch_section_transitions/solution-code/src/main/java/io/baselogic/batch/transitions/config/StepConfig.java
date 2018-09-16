@@ -14,7 +14,7 @@ import org.springframework.core.io.ClassPathResource;
 
 @Configuration
 @Slf4j
-@SuppressWarnings("Duplicates")
+@SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
 public class StepConfig {
 
     @Value("products.csv")

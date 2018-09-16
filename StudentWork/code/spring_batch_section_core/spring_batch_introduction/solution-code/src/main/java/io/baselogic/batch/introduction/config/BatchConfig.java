@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @Slf4j
-@SuppressWarnings("Duplicates")
+@SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
 public class BatchConfig {
 
     //---------------------------------------------------------------------------//

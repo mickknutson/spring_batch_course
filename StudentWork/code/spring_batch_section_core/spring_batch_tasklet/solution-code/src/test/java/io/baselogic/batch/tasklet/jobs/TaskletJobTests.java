@@ -49,15 +49,13 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 })
 @SpringBatchTest
 @Slf4j
-@SuppressWarnings("Duplicates")
+@SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
 public class TaskletJobTests {
 
 
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     private JobLauncherTestUtils jobLauncherTestUtils;
 
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     private JobRepositoryTestUtils jobRepositoryTestUtils;
 

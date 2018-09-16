@@ -36,7 +36,7 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 //@SpringBatchTest
 @SpringBootTest
 @Slf4j
-@SuppressWarnings("Duplicates")
+@SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
 public class IntroductionJobTests {
 
     @Autowired

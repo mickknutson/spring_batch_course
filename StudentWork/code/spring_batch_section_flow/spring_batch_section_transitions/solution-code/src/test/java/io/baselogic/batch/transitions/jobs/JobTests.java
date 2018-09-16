@@ -20,14 +20,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBatchTest
 @RunWith(SpringRunner.class)
 @Slf4j
-@SuppressWarnings("Duplicates")
+@SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
 public class JobTests {
 
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     private JobLauncherTestUtils jobLauncherTestUtils;
 
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     private JobRepositoryTestUtils jobRepositoryTestUtils;
 

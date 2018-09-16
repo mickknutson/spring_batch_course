@@ -10,13 +10,12 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @Slf4j
-@SuppressWarnings("Duplicates")
+@SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
 public class JobConfig {
 
     //---------------------------------------------------------------------------//
     // Jobs
 
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Bean
     public Job job(JobBuilderFactory jobBuilderFactory, Step noOpStep, Step stepA, Step stepB, Step stepC) {
         return jobBuilderFactory.get("taskletJob")

@@ -9,14 +9,13 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @Slf4j
-@SuppressWarnings("Duplicates")
+@SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
 public class JobConfig {
 
 
     //---------------------------------------------------------------------------//
     // Jobs
 
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Bean
     public Job job(JobBuilderFactory jobBuilderFactory,
                    Step stepA, Step stepB, Step stepC, Step stepD) {
@@ -27,7 +26,6 @@ public class JobConfig {
                 .build();
     }
 
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Bean
     public Job continueOnExitStatusJob(JobBuilderFactory jobBuilderFactory,
                               Step completedStep,
@@ -40,7 +38,6 @@ public class JobConfig {
                 .build();
     }
 
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Bean
     public Job failingJob(JobBuilderFactory jobBuilderFactory,
                           Step failedStep) {

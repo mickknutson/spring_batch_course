@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 @RestController
 @Slf4j
-@SuppressWarnings("Duplicates")
+@SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
 public class JobEndpoint {
 
     @Autowired

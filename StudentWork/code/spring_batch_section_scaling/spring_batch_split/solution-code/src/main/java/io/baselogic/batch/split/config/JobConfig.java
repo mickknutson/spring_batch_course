@@ -14,13 +14,13 @@ import org.springframework.core.task.SimpleAsyncTaskExecutor;
 
 @Configuration
 @Slf4j
-@SuppressWarnings("Duplicates")
+@SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
 public class JobConfig {
 
     //---------------------------------------------------------------------------//
     // Jobs
 
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
+
     @Bean
     public Job job(JobBuilderFactory jobBuilderFactory,
                    Step stepA, Step stepB, Step stepC, Step stepD) {

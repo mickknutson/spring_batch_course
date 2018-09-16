@@ -13,7 +13,7 @@ import java.util.Arrays;
 @SpringBootApplication
 @EnableBatchProcessing
 @Slf4j
-@SuppressWarnings("Duplicates")
+@SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
 public class Application {
 
     public static void main(String[] args) {
