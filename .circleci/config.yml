@@ -19,6 +19,9 @@ jobs:
     environment:
       _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
       BASE_DIR: "./StudentWork/code"
+    
+#    # Not sure if parallelism will work well for this project
+#    parallelism: 4
 
     docker:
       - image: circleci/openjdk:8-jdk-browsers
@@ -64,7 +67,10 @@ jobs:
     environment:
       _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
       BASE_DIR: "./StudentWork/code"
-    
+        
+#    # Not sure if parallelism will work well for this project
+#    parallelism: 4
+
     docker:
       - image: circleci/openjdk:8-jdk-browsers
         environment:
@@ -187,8 +193,6 @@ jobs:
             set -xu
             echo $CIRCLE_WORKING_DIRECTORY
             mkdir -p ~/junit/
-#      - attach_workspace:
-#          at: /root/project
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -222,8 +226,8 @@ jobs:
       _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
       BASE_DIR: "./StudentWork/code"
     
-    # Not sure if parallelism will work well for this project
-    parallelism: 4
+#    # Not sure if parallelism will work well for this project
+#    parallelism: 4
 
     docker:
       - image: circleci/openjdk:8-jdk-browsers
@@ -299,9 +303,6 @@ workflows:
   build_each_module:
     jobs:
       - build
-      - code_quality:
-          requires:
-            - build
       - build_core:
           requires:
             - build
@@ -309,6 +310,9 @@ workflows:
           requires:
             - build
       - build_scaling:
+          requires:
+            - build
+      - code_quality:
           requires:
             - build
       - end_course:

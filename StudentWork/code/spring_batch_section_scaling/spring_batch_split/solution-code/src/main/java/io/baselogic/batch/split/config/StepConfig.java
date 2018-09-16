@@ -1,7 +1,5 @@
 package io.baselogic.batch.split.config;
 
-import io.baselogic.batch.split.listeners.ChunkAuditor;
-import io.baselogic.batch.split.steps.ConsoleItemWriter;
 import io.baselogic.batch.split.steps.EchoTasklet;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Step;
@@ -74,19 +72,10 @@ public class StepConfig {
     //---------------------------------------------------------------------------//
     // Writers
 
-    @Bean
-    public ConsoleItemWriter consoleItemWriter(){
-        return new ConsoleItemWriter();
-    }
 
 
     //---------------------------------------------------------------------------//
     // Listeners
-
-    @Bean
-    public ChunkAuditor chunkAuditor(){
-        return new ChunkAuditor();
-    }
 
 
 } // The End...
