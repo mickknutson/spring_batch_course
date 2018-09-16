@@ -45,11 +45,12 @@ jobs:
           - v1-dependencies-
       - run:
           name: Cache Maven Dependencies
-          command: mvn dependency:resolve
+          command: mvn dependency:resolve -PcodeQuality
           working_directory: ./StudentWork/code
       - save_cache:
           paths:
             - /root/project/.m2
+#            - $CIRCLE_WORKING_DIRECTORY/.m2
           key: v1-dependencies-{{ checksum "./StudentWork/code/pom.xml" }}
 #      - persist_to_workspace:
 #          root: /root/project
@@ -91,7 +92,7 @@ jobs:
           - v1-dependencies-
       - run:
           name: Verify the SECTION CORE with codeQuality
-          command: mvn verify
+          command: mvn verify -PcodeQuality
           working_directory: ./StudentWork/code/spring_batch_section_core
       - run:
           name: Save test results
@@ -131,9 +132,17 @@ jobs:
             echo $CIRCLE_WORKING_DIRECTORY
             mkdir -p ~/junit/
             ls -la
+#      - attach_workspace:
+#          at: /root/project
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "./StudentWork/code/pom.xml" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
       - run:
           name: Verify the SECTION CORE with codeQuality
-          command: mvn verify
+          command: mvn verify -PcodeQuality
           working_directory: ./StudentWork/code/spring_batch_section_flow
       - run:
           name: Save test results
@@ -173,9 +182,17 @@ jobs:
             echo $CIRCLE_WORKING_DIRECTORY
             mkdir -p ~/junit/
             ls -la
+#      - attach_workspace:
+#          at: /root/project
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "./StudentWork/code/pom.xml" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
       - run:
           name: Verify the SECTION CORE with codeQuality
-          command: mvn verify
+          command: mvn verify -PcodeQuality
           working_directory: ./StudentWork/code/spring_batch_section_scaling
       - run:
           name: Save test results
