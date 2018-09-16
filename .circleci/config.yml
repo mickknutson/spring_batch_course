@@ -263,6 +263,27 @@ jobs:
 #            set -xu
 #            ls -la ~/junit
 
+##---------------------------------------------------------------------------##
+  end_course:
+
+    working_directory: ~/tmp/workspace
+
+    environment:
+      _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
+      BASE_DIR: "./StudentWork/code"
+    
+    docker:
+      - image: circleci/openjdk:8-jdk-browsers
+        environment:
+          BASE_DIR: "./StudentWork/code"
+          _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
+
+    steps:
+      - run:
+          name: Verify the SECTION CORE with codeQuality
+          command: mvn clean
+          working_directory: ./StudentWork/code/
+
 
 ##---------------------------------------------------------------------------##
 workflows:
@@ -279,6 +300,11 @@ workflows:
       - build_scaling:
           requires:
             - build
+      - end_course:
+          requires:
+            - build_core
+            - build_flows
+            - build_scaling
 
 ##---------------------------------------------------------------------------##
 ## The End... ##
