@@ -34,8 +34,6 @@ jobs:
             set -xu
             echo $CIRCLE_WORKING_DIRECTORY
             mkdir -p ~/junit/
-            pwd
-            ls -la
 
       # Download and cache dependencies
       - restore_cache:
@@ -99,13 +97,18 @@ jobs:
             set -xu
             find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/junit/ \;
           when: always
-
       - run:
           name: Save Coverage results
           command: |
             set -xu
             find . -type f -regex ".*/target/jacoco/jacoco.xml" -exec cp {} ~/junit/ \;
             bash <(curl -s https://codecov.io/bash)
+      - store_test_results:
+          name: Storing test results
+          path: ~/junit
+      - store_artifacts:
+          name: Storing Artifacts
+          path: ~/junit
 
 ##---------------------------------------------------------------------------##
   build_flows:
@@ -148,13 +151,18 @@ jobs:
             set -xu
             find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/junit/ \;
           when: always
-
       - run:
           name: Save Coverage results
           command: |
             set -xu
             find . -type f -regex ".*/target/jacoco/jacoco.xml" -exec cp {} ~/junit/ \;
             bash <(curl -s https://codecov.io/bash)
+      - store_test_results:
+          name: Storing test results
+          path: ~/junit
+      - store_artifacts:
+          name: Storing Artifacts
+          path: ~/junit
 
 ##---------------------------------------------------------------------------##
   build_scaling:
@@ -197,18 +205,12 @@ jobs:
             set -xu
             find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/junit/ \;
           when: always
-
       - run:
           name: Save Coverage results
           command: |
             set -xu
             find . -type f -regex ".*/target/jacoco/jacoco.xml" -exec cp {} ~/junit/ \;
             bash <(curl -s https://codecov.io/bash)
-#      - run:
-#          name: listing after saving test results
-#          command: |
-#            set -xu
-#            ls -la ~/junit
 
 
 ##---------------------------------------------------------------------------##
@@ -257,11 +259,6 @@ jobs:
             find . -type f -regex ".*/target/jacoco/jacoco.xml" -exec cp {} ~/junit/ \;
             ls -la ~/junit/
             bash <(curl -s https://codecov.io/bash)
-#      - run:
-#          name: listing after saving test results
-#          command: |
-#            set -xu
-#            ls -la ~/junit
 
 ##---------------------------------------------------------------------------##
   end_course:
@@ -280,10 +277,14 @@ jobs:
 
     steps:
       - run:
-          name: Verify the SECTION CORE with codeQuality
+          name: listing after Storing test results
           command: |
             set -xu
             ls -la ~/junit
+      - run:
+          name: END or Workflow
+          command: |
+            set -xu
             echo 'COMPLETE'
 
 ##---------------------------------------------------------------------------##
