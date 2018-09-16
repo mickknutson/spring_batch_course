@@ -280,9 +280,11 @@ jobs:
 
     steps:
       - run:
-        name: Verify the SECTION CORE with codeQuality
-        command: ls -la ~/junit
-
+          name: Verify the SECTION CORE with codeQuality
+          command: |
+            set -xu
+            ls -la ~/junit
+            echo 'COMPLETE'
 
 ##---------------------------------------------------------------------------##
 workflows:
