@@ -33,6 +33,9 @@ public class JobEndpointTests {
 
     //-----------------------------------------------------------------------//
 
+    @Test
+    public void noop() throws Exception {}
+
 
     @Test
     public void test_batch_job_endpoint__launch_job() throws Exception {

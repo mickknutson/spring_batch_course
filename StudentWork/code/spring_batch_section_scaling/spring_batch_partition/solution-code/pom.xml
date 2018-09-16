@@ -19,6 +19,13 @@
 
     <dependencies>
         <!-- See 'spring_batch_parent' for dependencies -->
+
+        <!-- OXM Dependencies for StaxEventItemWriter -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-oxm</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

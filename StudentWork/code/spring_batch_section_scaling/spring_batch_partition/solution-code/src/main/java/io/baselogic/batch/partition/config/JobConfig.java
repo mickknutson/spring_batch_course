@@ -7,9 +7,13 @@ import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
 import org.springframework.batch.core.job.builder.FlowBuilder;
 import org.springframework.batch.core.job.flow.Flow;
 import org.springframework.batch.core.job.flow.support.SimpleFlow;
+import org.springframework.batch.item.UnexpectedInputException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
+
+import java.net.MalformedURLException;
+import java.text.ParseException;
 
 
 @Configuration
@@ -20,24 +24,11 @@ public class JobConfig {
     //---------------------------------------------------------------------------//
     // Jobs
 
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Bean
-    public Job job(JobBuilderFactory jobBuilderFactory,
-                   Step stepA, Step stepB, Step stepC, Step stepD) {
-        Flow flow1 = new FlowBuilder<SimpleFlow>("flow1")
-                .start(stepA)
-                .next(stepB)
-                .build();
-        Flow flow2 = new FlowBuilder<SimpleFlow>("flow2")
-                .start(stepC)
-                .build();
-
-        return jobBuilderFactory.get("job")
-                .start(flow1)
-                .split(new SimpleAsyncTaskExecutor())
-                .add(flow2)
-                .next(stepD)
-                .end()
+    public Job partitionerJob(JobBuilderFactory jobBuilderFactory,
+                              Step partitionStep) {
+        return jobBuilderFactory.get("partitionerJob")
+                .start(partitionStep)
                 .build();
     }
 

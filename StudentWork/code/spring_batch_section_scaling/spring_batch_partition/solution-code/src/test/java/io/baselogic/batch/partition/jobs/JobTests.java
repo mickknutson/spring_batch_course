@@ -10,6 +10,7 @@ import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.batch.test.JobRepositoryTestUtils;
 import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -17,7 +18,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 
-@ContextConfiguration(classes = {TestConfig.class, DatabaseConfig.class, BatchConfig.class, JobConfig.class, StepConfig.class})
+@ContextConfiguration(classes = {
+        TestConfig.class, DatabaseConfig.class,
+        BatchConfig.class,
+        JobConfig.class,
+        StepConfig.class,
+})
 @SpringBatchTest
 @RunWith(SpringRunner.class)
 @Slf4j
@@ -38,7 +44,52 @@ public class JobTests {
         jobRepositoryTestUtils.removeJobExecutions();
     }
 
+    //---------------------------------------------------------------------------//
+    // Jobs
 
+    @Autowired
+    @Qualifier("partitionerJob")
+    private Job job;
+
+
+    //---------------------------------------------------------------------------//
+
+
+    public JobParameters getJobParameters() {
+        return new JobParametersBuilder()
+                .addLong("commit.interval", 2L)
+                .addLong("timestamp", System.currentTimeMillis())
+                .toJobParameters();
+    }
+
+    //---------------------------------------------------------------------------//
+    //---------------------------------------------------------------------------//
+
+
+    @Test
+    public void test__job__all_steps() throws Exception {
+
+        jobLauncherTestUtils.setJob(job);
+        JobExecution jobExecution = jobLauncherTestUtils.launchJob(getJobParameters());
+
+        log.info(logJobExecution(jobExecution));
+
+        if(log.isDebugEnabled()) {
+            jobExecution.getStepExecutions().forEach((stepExecution) -> {
+                log.debug(logStepExecution(stepExecution));
+
+            });
+        }
+
+        assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
+        assertThat(jobExecution.getStepExecutions().size()).isEqualTo(4);
+    }
+
+
+
+    //---------------------------------------------------------------------------//
+    //---------------------------------------------------------------------------//
+    //---------------------------------------------------------------------------//
     //---------------------------------------------------------------------------//
 
     protected String logJobExecution(JobExecution jobExecution) {
@@ -84,41 +135,5 @@ public class JobTests {
 
         return sb.toString();
     }
-
-
-    //---------------------------------------------------------------------------//
-    //---------------------------------------------------------------------------//
-    //---------------------------------------------------------------------------//
-
-
-    public JobParameters getJobParameters() {
-        return new JobParametersBuilder()
-                .addLong("commit.interval", 1L)
-                .addLong("timestamp", System.currentTimeMillis())
-                .toJobParameters();
-    }
-
-    //---------------------------------------------------------------------------//
-
-
-    @Test
-    public void test_job__all_steps() throws Exception {
-        JobExecution jobExecution = jobLauncherTestUtils.launchJob();
-
-        log.info(logJobExecution(jobExecution));
-
-        jobExecution.getStepExecutions().forEach((stepExecution) -> {
-            log.info(logStepExecution(stepExecution));
-
-        });
-
-        assertSoftly(
-                softAssertions -> {
-                    assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
-                    assertThat(jobExecution.getStepExecutions().size()).isEqualTo(4);
-                }
-        );
-    }
-
 
 } // The End...

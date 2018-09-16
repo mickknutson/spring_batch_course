@@ -39,6 +39,45 @@ public class JobTests {
     }
 
 
+
+    //---------------------------------------------------------------------------//
+    //---------------------------------------------------------------------------//
+    //---------------------------------------------------------------------------//
+
+
+    public JobParameters getJobParameters() {
+        return new JobParametersBuilder()
+                .addLong("commit.interval", 1L)
+                .addLong("timestamp", System.currentTimeMillis())
+                .toJobParameters();
+    }
+
+    //---------------------------------------------------------------------------//
+
+
+    @Test
+    public void test_job__all_steps() throws Exception {
+        JobExecution jobExecution = jobLauncherTestUtils.launchJob();
+
+        log.info(logJobExecution(jobExecution));
+
+        jobExecution.getStepExecutions().forEach((stepExecution) -> {
+            log.info(logStepExecution(stepExecution));
+
+        });
+
+        assertSoftly(
+                softAssertions -> {
+                    assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
+                    assertThat(jobExecution.getStepExecutions().size()).isEqualTo(4);
+                }
+        );
+    }
+
+
+    //---------------------------------------------------------------------------//
+    //---------------------------------------------------------------------------//
+    //---------------------------------------------------------------------------//
     //---------------------------------------------------------------------------//
 
     protected String logJobExecution(JobExecution jobExecution) {
@@ -84,41 +123,5 @@ public class JobTests {
 
         return sb.toString();
     }
-
-
-    //---------------------------------------------------------------------------//
-    //---------------------------------------------------------------------------//
-    //---------------------------------------------------------------------------//
-
-
-    public JobParameters getJobParameters() {
-        return new JobParametersBuilder()
-                .addLong("commit.interval", 1L)
-                .addLong("timestamp", System.currentTimeMillis())
-                .toJobParameters();
-    }
-
-    //---------------------------------------------------------------------------//
-
-
-    @Test
-    public void test_job__all_steps() throws Exception {
-        JobExecution jobExecution = jobLauncherTestUtils.launchJob();
-
-        log.info(logJobExecution(jobExecution));
-
-        jobExecution.getStepExecutions().forEach((stepExecution) -> {
-            log.info(logStepExecution(stepExecution));
-
-        });
-
-        assertSoftly(
-                softAssertions -> {
-                    assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
-                    assertThat(jobExecution.getStepExecutions().size()).isEqualTo(4);
-                }
-        );
-    }
-
 
 } // The End...
