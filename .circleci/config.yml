@@ -42,7 +42,10 @@ jobs:
           - v1-dependencies-{{ checksum "./StudentWork/code/pom.xml" }}
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
-      - run: mvn dependency:go-offline
+      - run:
+          name: dependency:go-offline
+          command: mvn dependency:go-offline
+          working_directory: ./StudentWork/code
       - save_cache:
           paths:
             - ~/.m2
