@@ -14,7 +14,8 @@ jobs:
 
   build:
 
-    working_directory: ~/tmp/workspace
+    working_directory: /root/workspace
+#    working_directory: ~/tmp/workspace
 
     environment:
       _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
@@ -36,6 +37,7 @@ jobs:
             mkdir -p ~/junit/
             pwd
             ls -la
+
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -43,20 +45,24 @@ jobs:
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
       - run:
-          name: dependency:go-offline
-          command: mvn dependency:go-offline
+          name: Cache Maven Dependencies
+          command: mvn dependency:resolve
           working_directory: ./StudentWork/code
       - save_cache:
           paths:
             - ~/.m2
           key: v1-dependencies-{{ checksum "./StudentWork/code/pom.xml" }}
+      - persist_to_workspace:
+          root: /root/project
+          paths: ~/.m2
 
 
 ##---------------------------------------------------------------------------##
 
   build_core:
 
-    working_directory: ~/tmp/workspace
+    working_directory: /root/workspace
+#    working_directory: ~/tmp/workspace
 
     environment:
       _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
@@ -77,7 +83,8 @@ jobs:
             echo $CIRCLE_WORKING_DIRECTORY
             mkdir -p ~/junit/
             ls -la
-#            find . -maxdepth 2 -exec du -ms {} \; | sort -rn | head -n 15
+      - attach_workspace:
+          at: /root/project
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -86,7 +93,7 @@ jobs:
           - v1-dependencies-
       - run:
           name: Verify the SECTION CORE with codeQuality
-          command: mvn verify -PcodeQuality
+          command: mvn verify
           working_directory: ./StudentWork/code/spring_batch_section_core
       - run:
           name: Save test results
@@ -105,7 +112,8 @@ jobs:
 ##---------------------------------------------------------------------------##
   build_flows:
 
-    working_directory: ~/tmp/workspace
+    working_directory: /root/workspace
+#    working_directory: ~/tmp/workspace
 
     environment:
       _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
@@ -128,8 +136,8 @@ jobs:
             ls -la
       - run:
           name: Verify the SECTION CORE with codeQuality
-          command: mvn verify -PcodeQuality
-          working_directory: ./StudentWork/code/spring_batch_section_flows
+          command: mvn verify
+          working_directory: ./StudentWork/code/spring_batch_section_flow
       - run:
           name: Save test results
           command: |
@@ -147,7 +155,8 @@ jobs:
 ##---------------------------------------------------------------------------##
   build_scaling:
 
-    working_directory: ~/tmp/workspace
+    working_directory: /root/workspace
+#    working_directory: ~/tmp/workspace
 
     environment:
       _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
@@ -168,10 +177,9 @@ jobs:
             echo $CIRCLE_WORKING_DIRECTORY
             mkdir -p ~/junit/
             ls -la
-#            find . -maxdepth 2 -exec du -ms {} \; | sort -rn | head -n 15
       - run:
           name: Verify the SECTION CORE with codeQuality
-          command: mvn verify -PcodeQuality
+          command: mvn verify
           working_directory: ./StudentWork/code/spring_batch_section_scaling
       - run:
           name: Save test results
