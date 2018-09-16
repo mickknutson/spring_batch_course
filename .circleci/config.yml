@@ -204,11 +204,11 @@ jobs:
             set -xu
             find . -type f -regex ".*/target/jacoco/jacoco.xml" -exec cp {} ~/junit/ \;
             bash <(curl -s https://codecov.io/bash)
-      - run:
-          name: listing after saving test results
-          command: |
-            set -xu
-            ls -la ~/junit
+#      - run:
+#          name: listing after saving test results
+#          command: |
+#            set -xu
+#            ls -la ~/junit
 
 
 ##---------------------------------------------------------------------------##
@@ -257,11 +257,11 @@ jobs:
             find . -type f -regex ".*/target/jacoco/jacoco.xml" -exec cp {} ~/junit/ \;
             ls -la ~/junit/
             bash <(curl -s https://codecov.io/bash)
-      - run:
-          name: listing after saving test results
-          command: |
-            set -xu
-            ls -la ~/junit
+#      - run:
+#          name: listing after saving test results
+#          command: |
+#            set -xu
+#            ls -la ~/junit
 
 
 ##---------------------------------------------------------------------------##
