@@ -11,7 +11,6 @@
 version: 2
 jobs:
 ##---------------------------------------------------------------------------##
-
   build:
 
     working_directory: ~/tmp/workspace
@@ -59,7 +58,6 @@ jobs:
 
 
 ##---------------------------------------------------------------------------##
-
   build_core:
 
     working_directory: ~/tmp/workspace
@@ -169,6 +167,41 @@ jobs:
       - store_artifacts:
           name: Storing Artifacts
           path: ~/junit
+
+#spring_batch_section_orchestration
+##---------------------------------------------------------------------------##
+  build_orchestration:
+
+    working_directory: ~/tmp/workspace
+
+    environment:
+      _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
+      BASE_DIR: "./StudentWork/code"
+    
+    docker:
+      - image: circleci/openjdk:8-jdk-browsers
+        environment:
+          BASE_DIR: "./StudentWork/code"
+          _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
+
+    steps:
+      - checkout
+      - run:
+          name: Initialize
+          command: |
+            set -xu
+            echo $CIRCLE_WORKING_DIRECTORY
+            mkdir -p ~/junit/
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "./StudentWork/code/pom.xml" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+      - run:
+          name: Verify the SECTION CORE with codeQuality
+          command: mvn verify -PcodeQuality
+          working_directory: ./StudentWork/code/spring_batch_section_orchestration
 
 ##---------------------------------------------------------------------------##
   build_scaling:
@@ -314,6 +347,9 @@ workflows:
       - build_scaling:
           requires:
             - build
+      - build_orchestration:
+          requires:
+            - build
       - code_quality:
           requires:
             - build
@@ -321,6 +357,7 @@ workflows:
           requires:
             - build_core
             - build_flows
+            - build_orchestration
             - build_scaling
             - code_quality
 

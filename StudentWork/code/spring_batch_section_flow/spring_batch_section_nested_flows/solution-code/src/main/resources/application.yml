@@ -6,12 +6,12 @@ debug: ${DEBUG_MODE:false}
 server:
   port: ${SERVER_PORT:8080}
 
-serviceId: ${SERVICE_ID:batch-decisions}
+serviceId: ${SERVICE_ID:batch-nested}
 
 ##---------------------------------------------------------------------------##
 spring:
   application:
-    name: batch-decisions
+    name: batch-nested
 
 ##---------------------------------------------------------------------------##
 # BATCH CONFIGURATION
@@ -30,6 +30,7 @@ spring:
 # MODULE SPECIFIC PROPERTIES
 
 spring.batch.job.enabled: ${BATCH_JOB_ENABLED:false}
+
 
 
 ##---------------------------------------------------------------------------##

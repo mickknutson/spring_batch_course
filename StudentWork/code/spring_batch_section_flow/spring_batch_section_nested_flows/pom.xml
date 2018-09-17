@@ -3,24 +3,23 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.baselogic.batch</groupId>
-    <artifactId>spring_batch_section_flow</artifactId>
+    <groupId>com.springclass.batch</groupId>
+    <artifactId>spring_batch_section_nested_flows</artifactId>
     <version>1.0.0.RELEASE</version>
     <packaging>pom</packaging>
 
-    <name>BATCH SECTION FLOW</name>
-    <description>${project.name}</description>
+    <name>${project.artifactId}</name>
+    <description>${project.artifactId}</description>
 
     <parent>
         <groupId>com.baselogic.batch</groupId>
-        <artifactId>spring_batch_parent</artifactId>
+        <artifactId>spring_batch_section_flow</artifactId>
         <version>1.0.0.RELEASE</version>
     </parent>
 
     <modules>
-        <module>spring_batch_section_transitions</module>
-        <module>spring_batch_section_decisions</module>
-        <module>spring_batch_section_nested_flows</module>
+        <!--<module>lab-code</module>-->
+        <module>solution-code</module>
     </modules>
 
 </project>
