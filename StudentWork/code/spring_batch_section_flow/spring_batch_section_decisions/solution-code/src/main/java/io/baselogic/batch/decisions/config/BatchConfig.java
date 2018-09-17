@@ -1,4 +1,4 @@
-package io.baselogic.batch.transitions.config;
+package io.baselogic.batch.decisions.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.configuration.annotation.DefaultBatchConfigurer;

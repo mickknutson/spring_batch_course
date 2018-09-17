@@ -1,14 +1,11 @@
-package io.baselogic.batch.transitions.config;
+package io.baselogic.batch.decisions.config;
 
-import io.baselogic.batch.transitions.steps.ConsoleItemWriter;
-import io.baselogic.batch.transitions.steps.EchoTasklet;
+import io.baselogic.batch.decisions.steps.EchoTasklet;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
 
 
 @Configuration
@@ -16,36 +13,35 @@ import org.springframework.core.io.ClassPathResource;
 @SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
 public class StepConfig {
 
-    @Value("products.csv")
-    private ClassPathResource inputResource;
-
 
     //---------------------------------------------------------------------------//
     // Steps
 
     @Bean
-    public Step stepA(StepBuilderFactory stepBuilderFactory) {
-        return stepBuilderFactory.get("stepA")
-                .tasklet(new EchoTasklet("** STEP A"))
+    public Step startingStep(StepBuilderFactory stepBuilderFactory) {
+        return stepBuilderFactory.get("startingStep")
+                .tasklet(new EchoTasklet("** Entry STEP **"))
                 .build();
     }
 
     @Bean
-    public Step stepB(StepBuilderFactory stepBuilderFactory) {
-        return stepBuilderFactory.get("stepB")
-                .tasklet(new EchoTasklet("** STEP B")).build();
+    public Step flipACoinStep(StepBuilderFactory stepBuilderFactory) {
+        return stepBuilderFactory.get("flipACoinStep")
+                .tasklet(new EchoTasklet("** STEP Flipping a coin"))
+                .build();
     }
 
     @Bean
-    public Step stepC(StepBuilderFactory stepBuilderFactory) {
-        return stepBuilderFactory.get("stepC")
-                .tasklet(new EchoTasklet("** STEP C")).build();
+    public Step oddStep(StepBuilderFactory stepBuilderFactory) {
+        return stepBuilderFactory.get("oddStep")
+                .tasklet(new EchoTasklet("** STEP ODD"))
+                .build();
     }
 
     @Bean
-    public Step stepD(StepBuilderFactory stepBuilderFactory) {
-        return stepBuilderFactory.get("stepD")
-                .tasklet(new EchoTasklet("** STEP D")).build();
+    public Step evenStep(StepBuilderFactory stepBuilderFactory) {
+        return stepBuilderFactory.get("evenStep")
+                .tasklet(new EchoTasklet("** STEP EVEN")).build();
     }
 
     @Bean
@@ -72,11 +68,6 @@ public class StepConfig {
 
     //---------------------------------------------------------------------------//
     // Writers
-
-    @Bean
-    public ConsoleItemWriter consoleItemWriter(){
-        return new ConsoleItemWriter();
-    }
 
 
     //---------------------------------------------------------------------------//

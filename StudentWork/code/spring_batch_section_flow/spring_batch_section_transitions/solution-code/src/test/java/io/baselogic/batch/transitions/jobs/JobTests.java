@@ -50,6 +50,10 @@ public class JobTests {
     @Qualifier("failingJob")
     private Job failingJob;
 
+    @Autowired
+    @Qualifier("jobFlow")
+    private Job jobFlow;
+
     //---------------------------------------------------------------------------//
 
 
@@ -123,6 +127,33 @@ public class JobTests {
                 .isEqualTo(ExitStatus.FAILED.getExitCode());
         assertThat(jobExecution.getStepExecutions().size()).isEqualTo(1);
     }
+
+
+    //---------------------------------------------------------------------------//
+
+    @Test
+    public void test_jobFlow__all_steps() throws Exception {
+        jobLauncherTestUtils.setJob(jobFlow);
+        JobExecution jobExecution = jobLauncherTestUtils.launchJob();
+
+        log.info(logJobExecution(jobExecution));
+
+        if(log.isDebugEnabled()) {
+
+            jobExecution.getStepExecutions().forEach((stepExecution) -> {
+                log.debug(logStepExecution(stepExecution));
+
+            });
+        }
+
+        assertThat(jobExecution.getExitStatus().getExitCode())
+                .isEqualTo(ExitStatus.COMPLETED.getExitCode());
+        assertThat(jobExecution.getStepExecutions().size()).isEqualTo(5);
+    }
+
+
+
+
 
     //---------------------------------------------------------------------------//
     //---------------------------------------------------------------------------//

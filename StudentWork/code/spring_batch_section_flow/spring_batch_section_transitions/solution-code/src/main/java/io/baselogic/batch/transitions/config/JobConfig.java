@@ -4,8 +4,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
+import org.springframework.batch.core.job.builder.FlowBuilder;
+import org.springframework.batch.core.job.flow.Flow;
+import org.springframework.batch.core.job.flow.support.SimpleFlow;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.task.SimpleAsyncTaskExecutor;
 
 @Configuration
 @Slf4j
@@ -46,6 +50,26 @@ public class JobConfig {
                 .end()
                 .build();
     }
+
+
+    @Bean
+    public Job jobFlow(JobBuilderFactory jobBuilderFactory,
+                   Step stepA, Step stepB, Step stepC, Step stepD) {
+
+        Flow flow1 = new FlowBuilder<SimpleFlow>("flow1")
+                .start(stepA)
+                .next(stepB)
+                .next(stepC)
+                .next(stepD)
+                .build();
+
+        return jobBuilderFactory.get("job")
+                .start(flow1)
+                .next(stepD)
+                .end()
+                .build();
+    }
+
 
 
 

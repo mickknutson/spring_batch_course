@@ -1,4 +1,4 @@
-package io.baselogic.batch.transitions;
+package io.baselogic.batch.decisions;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

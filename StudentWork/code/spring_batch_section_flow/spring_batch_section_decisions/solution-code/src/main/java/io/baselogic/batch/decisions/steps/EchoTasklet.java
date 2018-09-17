@@ -1,4 +1,4 @@
-package io.baselogic.batch.transitions.steps;
+package io.baselogic.batch.decisions.steps;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.StepContribution;

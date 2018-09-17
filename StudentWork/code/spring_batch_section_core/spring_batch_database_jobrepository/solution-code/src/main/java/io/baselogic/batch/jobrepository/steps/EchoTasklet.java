@@ -6,7 +6,6 @@ import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 
-
 @Slf4j
 public class EchoTasklet implements Tasklet{
 
@@ -25,11 +24,9 @@ public class EchoTasklet implements Tasklet{
     public RepeatStatus execute(final StepContribution stepContribution,
                                 final ChunkContext chunkContext) throws Exception {
         log.info("--> Processing STEP [{}] !", message);
-        log.info("\t id: [{}], name: [{}]",
-                chunkContext.getStepContext().getId(),
-                chunkContext.getStepContext().getStepName()
-        );
-
+        log.info("{} has been executed on thread {}",
+                chunkContext.getStepContext().getStepName(),
+                Thread.currentThread().getName());
 
         return RepeatStatus.FINISHED;
     }
