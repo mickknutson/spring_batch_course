@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.batch.core.*;
+import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.batch.test.JobRepositoryTestUtils;
 import org.springframework.batch.test.context.SpringBatchTest;
@@ -29,6 +30,8 @@ public class JobTests {
     @Autowired
     private JobRepositoryTestUtils jobRepositoryTestUtils;
 
+    @Autowired
+    private BatchQueryDao batchQueryDao;
 
     @Before
     public void clearMetadata() {
@@ -63,70 +66,52 @@ public class JobTests {
         JobExecution jobExecution = jobLauncherTestUtils.launchJob();
 
         if(log.isDebugEnabled()) {
+
             log.debug(logJobExecution(jobExecution));
 
             jobExecution.getStepExecutions().forEach((stepExecution) -> {
                 log.debug(logStepExecution(stepExecution));
 
             });
+
+            // List all steps from the database:
+            log.debug(batchQueryDao.logStepExecutions());
         }
 
         assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
         assertThat(jobExecution.getStepExecutions().size()).isEqualTo(4);
     }
 
-    //---------------------------------------------------------------------------//
-
-
-
 
     //---------------------------------------------------------------------------//
     //---------------------------------------------------------------------------//
     //---------------------------------------------------------------------------//
-    //---------------------------------------------------------------------------//
 
+    /**
+     * Need to create a query for a single job execution
+     * @param jobExecution
+     * @return
+     */
     protected String logJobExecution(JobExecution jobExecution) {
 
-        StringBuilder sb = new StringBuilder();
+//        return batchQueryDao.logJobExecutions();
 
-        jobExecution.getStepExecutions().forEach((stepExecution) -> {
-            sb.append("Processed: ").append(stepExecution.getStepName()).append("\n");
+        String results = batchQueryDao.logJobExecutions(jobExecution);
 
-        });
-
-        return sb.toString();
+        return results;
     }
 
+
+    /**
+     * Need to create a query for a single step execution
+     * @param stepExecution
+     * @return
+     */
     protected String logStepExecution(StepExecution stepExecution) {
 
-        StringBuilder sb = new StringBuilder();
+        String results = batchQueryDao.logStepExecutions(stepExecution);
 
-        sb.append("\n\n");
-        sb.append("------------------------------------------------\n");
-        sb.append("Processed: ").append(stepExecution).append("\n");
-        sb.append("------------------------------------------------\n");
-        sb.append("stepName: ").append(stepExecution.getStepName()).append("\n");
-        sb.append("status: ").append(stepExecution.getStatus()).append("\n");
-        sb.append("readCount: ").append(stepExecution.getReadCount()).append("\n");
-        sb.append("writeCount: ").append(stepExecution.getWriteCount()).append("\n");
-        sb.append("commitCount: ").append(stepExecution.getCommitCount()).append("\n");
-        sb.append("rollbackCount: ").append(stepExecution.getRollbackCount()).append("\n");
-        sb.append("readSkipCount: ").append(stepExecution.getReadSkipCount()).append("\n");
-        sb.append("processSkipCount: ").append(stepExecution.getProcessSkipCount()).append("\n");
-        sb.append("writeSkipCount: ").append(stepExecution.getWriteSkipCount()).append("\n");
-        sb.append("startTime: ").append(stepExecution.getStartTime()).append("\n");
-        sb.append("endTime: ").append(stepExecution.getEndTime()).append("\n");
-        sb.append("lastUpdated: ").append(stepExecution.getLastUpdated()).append("\n");
-        sb.append("exitStatus: ").append(stepExecution.getExitStatus()).append("\n");
-        sb.append("terminateOnly: ").append(stepExecution.isTerminateOnly()).append("\n");
-        sb.append("filterCount: ").append(stepExecution.getFilterCount()).append("\n");
-        sb.append("failureExceptions: ").append(stepExecution.getFailureExceptions()).append("\n");
-        sb.append("------------------------------------------------\n");
-        sb.append("executionContext: ").append(stepExecution.getExecutionContext()).append("\n");
-        sb.append("------------------------------------------------\n");
-        sb.append("\n\n");
-
-        return sb.toString();
+        return results;
     }
 
 } // The End...

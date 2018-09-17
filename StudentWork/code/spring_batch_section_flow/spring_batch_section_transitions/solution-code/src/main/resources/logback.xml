@@ -7,6 +7,7 @@
     <logger name="org.springframework" level="INFO"/>
     <logger name="org.springframework.web" level="WARN"/>
 
+    <logger name="org.springframework.jdbc.datasource.embedded" level="ERROR"/>
     <logger name="org.h2.jdbc" level="ERROR"/>
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">

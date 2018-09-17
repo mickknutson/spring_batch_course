@@ -1,6 +1,7 @@
 package io.baselogic.batch.nested.endpoints;
 
 
+import io.baselogic.batch.nested.config.BatchQueryDao;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.launch.JobLauncher;
@@ -23,6 +24,9 @@ public class JobEndpoint {
     @Autowired
     private Job job;
 
+    @Autowired
+    private BatchQueryDao batchQueryDao;
+
     private AtomicBoolean enabled = new AtomicBoolean(true);
 
     //---------------------------------------------------------------------------//
@@ -32,6 +36,23 @@ public class JobEndpoint {
             throws JobExecutionException {
         enabled.set(launchJob);
         return startSimpleJob();
+    }
+
+
+    @GetMapping("/query")
+    public String query(@RequestParam(value = "launchJob", required = false, defaultValue="true") boolean launchJob)
+            throws JobExecutionException {
+        enabled.set(launchJob);
+
+        String result = startSimpleJob();
+
+        log.info(result);
+
+        log.info(batchQueryDao.logJobExecutions());
+        log.info(batchQueryDao.logStepExecutions());
+
+        return result;
+
     }
 
     //---------------------------------------------------------------------------//
@@ -63,10 +84,11 @@ public class JobEndpoint {
     public static String getJobExecutionDetails(JobExecution jobExecution){
         StringBuilder sb = new StringBuilder();
 
-        sb.append("\n***Job Execution Details ***\n");
-        sb.append("\njobExecution exit status: ").append(jobExecution.getExitStatus());
-        sb.append("\nsteps executed:: ").append(jobExecution.getStepExecutions().size());
+        sb.append("{ 'title' : '***Job Execution Details ***'").append(",");
+        sb.append(" 'exit_status' : '").append(jobExecution.getExitStatus()).append("',");
+        sb.append(" 'steps_executed' : '").append(jobExecution.getStepExecutions().size()).append("',");
+        sb.append("}");
 
         return sb.toString();
     }
-}
+} // The End...

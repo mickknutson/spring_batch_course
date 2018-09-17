@@ -35,6 +35,10 @@ spring.batch.job.enabled: ${BATCH_JOB_ENABLED:false}
 ##---------------------------------------------------------------------------##
 # Logging and Console
 
+logging:
+  level:
+    io.baselogic: 'DEBUG'
+
 spring.main.banner-mode: ${BANNER_MODE:off}
 #spring.main.banner-mode: ${BANNER_MODE:console}
 spring.output.ansi.enabled: ${SPRING_ANSI_ENABLED:ALWAYS}

@@ -31,6 +31,8 @@ spring:
 
 spring.batch.job.enabled: ${BATCH_JOB_ENABLED:false}
 
+spring.batch.job.names: parentJob
+
 
 
 ##---------------------------------------------------------------------------##

@@ -63,10 +63,11 @@ public class JobEndpoint {
     public static String getJobExecutionDetails(JobExecution jobExecution){
         StringBuilder sb = new StringBuilder();
 
-        sb.append("\n***Job Execution Details ***\n");
-        sb.append("\njobExecution exit status: ").append(jobExecution.getExitStatus());
-        sb.append("\nsteps executed:: ").append(jobExecution.getStepExecutions().size());
+        sb.append("{ 'title' : '***Job Execution Details ***'").append(",");
+        sb.append(" 'exit_status' : '").append(jobExecution.getExitStatus()).append("',");
+        sb.append(" 'steps_executed' : '").append(jobExecution.getStepExecutions().size()).append("',");
+        sb.append("}");
 
         return sb.toString();
     }
-}
+} // The End...
