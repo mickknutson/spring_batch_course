@@ -6,7 +6,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.batch.core.*;
-import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.batch.test.JobRepositoryTestUtils;
 import org.springframework.batch.test.context.SpringBatchTest;
@@ -31,7 +30,7 @@ public class JobTests {
     private JobRepositoryTestUtils jobRepositoryTestUtils;
 
     @Autowired
-    private BatchQueryDao batchQueryDao;
+    private BatchDao batchDao;
 
     @Before
     public void clearMetadata() {
@@ -75,8 +74,12 @@ public class JobTests {
             });
 
             // List all steps from the database:
-            log.debug(batchQueryDao.logStepExecutions());
+            log.debug(batchDao.logStepExecutions());
         }
+
+        // NOTE: Query the BATCH database for the results:
+        assertThat(batchDao.countJobExecutions()).isEqualTo(2);
+        assertThat(batchDao.countJobInstances()).isEqualTo(2);
 
         assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
         assertThat(jobExecution.getStepExecutions().size()).isEqualTo(4);
@@ -94,9 +97,7 @@ public class JobTests {
      */
     protected String logJobExecution(JobExecution jobExecution) {
 
-//        return batchQueryDao.logJobExecutions();
-
-        String results = batchQueryDao.logJobExecutions(jobExecution);
+        String results = batchDao.logJobExecutions(jobExecution);
 
         return results;
     }
@@ -109,7 +110,7 @@ public class JobTests {
      */
     protected String logStepExecution(StepExecution stepExecution) {
 
-        String results = batchQueryDao.logStepExecutions(stepExecution);
+        String results = batchDao.logStepExecutions(stepExecution);
 
         return results;
     }

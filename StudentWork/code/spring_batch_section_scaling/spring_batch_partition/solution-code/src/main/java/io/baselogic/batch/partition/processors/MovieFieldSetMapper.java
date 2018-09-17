@@ -38,8 +38,6 @@ public class MovieFieldSetMapper implements FieldSetMapper<Movie> {
             movie.setReleaseDate(LocalDate.parse(dateString, formatter));
         } catch (DateTimeParseException e) {
             log.error("DateTimeParseException: {}", e.getMessage());
-
-            log.debug("DateTimeParseException: {}", e.getMessage(), e);
             log.debug("\t--> Movie Error: {}, dateString: [{}]", movie.toString(), dateString);
         }
 

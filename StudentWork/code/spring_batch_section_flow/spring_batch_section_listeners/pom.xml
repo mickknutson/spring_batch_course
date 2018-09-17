@@ -22,4 +22,15 @@
         <module>solution-code</module>
     </modules>
 
+    <dependencies>
+        <!-- See 'spring_batch_parent' for dependencies -->
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+
+    </dependencies>
+
+
 </project>

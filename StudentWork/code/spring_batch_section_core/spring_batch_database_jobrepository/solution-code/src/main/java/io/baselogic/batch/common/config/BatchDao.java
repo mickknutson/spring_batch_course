@@ -1,21 +1,15 @@
-package io.baselogic.batch.nested.config;
+package io.baselogic.batch.common.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.ResultSetExtractor;
-import org.springframework.stereotype.Component;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Map;
 
 @Slf4j
-public class BatchQueryDao {
+@SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
+public class BatchDao {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -38,6 +32,8 @@ public class BatchQueryDao {
             "FROM BATCH_STEP_EXECUTION bse inner join BATCH_JOB_INSTANCE ji inner join BATCH_JOB_EXECUTION je " +
             "where ji.JOB_INSTANCE_ID = je.JOB_INSTANCE_ID and bse.JOB_EXECUTION_ID = je.JOB_EXECUTION_ID order by bse.job_execution_id desc";
 
+    //---------------------------------------------------------------------------//
+    // Job Execution
 
     /**
      * Get Job Executions for debugging
@@ -76,6 +72,16 @@ public class BatchQueryDao {
         });
     }
 
+    public int countJobExecutions() {
+        return jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM BATCH_JOB_EXECUTION", Integer.class);
+    }
+
+    public int countJobInstances() {
+        return jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM BATCH_JOB_INSTANCE", Integer.class);
+    }
+
 
 
     public String logJobExecutions(JobExecution jobExecution) {
@@ -105,6 +111,8 @@ public class BatchQueryDao {
     }
 
 
+    //---------------------------------------------------------------------------//
+    // Steps Execution
 
     /**
      * Get Step Executions for debugging

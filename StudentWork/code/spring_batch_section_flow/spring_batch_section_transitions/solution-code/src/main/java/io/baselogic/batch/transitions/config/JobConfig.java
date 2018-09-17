@@ -9,7 +9,6 @@ import org.springframework.batch.core.job.flow.Flow;
 import org.springframework.batch.core.job.flow.support.SimpleFlow;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.task.SimpleAsyncTaskExecutor;
 
 @Configuration
 @Slf4j

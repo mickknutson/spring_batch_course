@@ -1,7 +1,7 @@
 package io.baselogic.batch.nested.endpoints;
 
 
-import io.baselogic.batch.nested.config.BatchQueryDao;
+import io.baselogic.batch.nested.config.BatchDao;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.launch.JobLauncher;
@@ -25,7 +25,7 @@ public class JobEndpoint {
     private Job job;
 
     @Autowired
-    private BatchQueryDao batchQueryDao;
+    private BatchDao batchDao;
 
     private AtomicBoolean enabled = new AtomicBoolean(true);
 
@@ -48,8 +48,8 @@ public class JobEndpoint {
 
         log.info(result);
 
-        log.info(batchQueryDao.logJobExecutions());
-        log.info(batchQueryDao.logStepExecutions());
+        log.info(batchDao.logJobExecutions());
+        log.info(batchDao.logStepExecutions());
 
         return result;
 

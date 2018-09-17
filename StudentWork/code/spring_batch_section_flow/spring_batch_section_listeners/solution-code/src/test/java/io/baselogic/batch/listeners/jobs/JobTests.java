@@ -1,5 +1,6 @@
 package io.baselogic.batch.listeners.jobs;
 
+import io.baselogic.batch.common.config.BatchDao;
 import io.baselogic.batch.listeners.config.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
@@ -30,7 +31,7 @@ public class JobTests {
     private JobRepositoryTestUtils jobRepositoryTestUtils;
 
     @Autowired
-    private BatchQueryDao batchQueryDao;
+    private BatchDao batchDao;
 
     @Before
     public void clearMetadata() {
@@ -75,7 +76,7 @@ public class JobTests {
             });
 
             // List all steps from the database:
-            log.debug(batchQueryDao.logStepExecutions());
+            log.debug(batchDao.logStepExecutions());
         }
 
         assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
@@ -95,9 +96,9 @@ public class JobTests {
      */
     protected String logJobExecution(JobExecution jobExecution) {
 
-//        return batchQueryDao.logJobExecutions();
+//        return batchDao.logJobExecutions();
 
-        String results = batchQueryDao.logJobExecutions(jobExecution);
+        String results = batchDao.logJobExecutions(jobExecution);
 
         return results;
     }
@@ -110,7 +111,7 @@ public class JobTests {
      */
     protected String logStepExecution(StepExecution stepExecution) {
 
-        String results = batchQueryDao.logStepExecutions(stepExecution);
+        String results = batchDao.logStepExecutions(stepExecution);
 
         return results;
     }

@@ -1,5 +1,6 @@
 package io.baselogic.batch.listeners.config;
 
+import io.baselogic.batch.common.config.BatchDao;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +17,7 @@ import javax.sql.DataSource;
  */
 @Configuration
 @Slf4j
+@SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
 public class DatabaseConfig {
 
     //---------------------------------------------------------------------------//
@@ -37,8 +39,8 @@ public class DatabaseConfig {
     }
 
     @Bean
-    BatchQueryDao batchQueryDao(){
-        return new BatchQueryDao();
+    BatchDao batchDao(){
+        return new BatchDao();
     }
 
 } // The End...

@@ -1,4 +1,4 @@
-package io.baselogic.batch.listeners.config;
+package io.baselogic.batch.partition.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -8,7 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 @Slf4j
-public class BatchQueryDao {
+@SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
+public class BatchDao {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;

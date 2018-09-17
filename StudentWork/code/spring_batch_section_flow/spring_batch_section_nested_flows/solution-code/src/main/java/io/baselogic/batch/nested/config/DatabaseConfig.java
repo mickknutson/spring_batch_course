@@ -16,6 +16,7 @@ import javax.sql.DataSource;
  */
 @Configuration
 @Slf4j
+@SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
 public class DatabaseConfig {
 
     //---------------------------------------------------------------------------//
@@ -37,8 +38,8 @@ public class DatabaseConfig {
     }
 
     @Bean
-    BatchQueryDao batchQueryDao(){
-        return new BatchQueryDao();
+    BatchDao batchDao(){
+        return new BatchDao();
     }
 
 } // The End...

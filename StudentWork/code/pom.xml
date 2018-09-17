@@ -102,7 +102,6 @@
 
             </plugins>
         </pluginManagement>
-
     </build>
 
     <dependencyManagement>
