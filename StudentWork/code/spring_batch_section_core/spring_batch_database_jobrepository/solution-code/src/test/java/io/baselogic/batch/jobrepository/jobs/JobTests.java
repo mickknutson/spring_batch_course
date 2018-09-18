@@ -74,18 +74,12 @@ public class JobTests {
         jobLauncherTestUtils.setJob(job);
         JobExecution jobExecution = jobLauncherTestUtils.launchJob(getJobParameters());
 
-        if(log.isDebugEnabled()) {
+        log.info(logJobExecution(jobExecution));
 
-            log.debug(logJobExecution(jobExecution));
+        jobExecution.getStepExecutions().forEach(stepExecution -> {
+            log.debug(logStepExecution(stepExecution));
 
-            jobExecution.getStepExecutions().forEach(stepExecution -> {
-                log.debug(logStepExecution(stepExecution));
-
-            });
-
-            // List all steps from the database:
-            log.debug(batchDao.logStepExecutions());
-        }
+        });
 
 
         assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
@@ -101,6 +95,7 @@ public class JobTests {
         JobExecution jobExecution = jobLauncherTestUtils.launchStep("stepA");
 
         log.info(logJobExecution(jobExecution));
+
 
         if(log.isDebugEnabled()) {
 
