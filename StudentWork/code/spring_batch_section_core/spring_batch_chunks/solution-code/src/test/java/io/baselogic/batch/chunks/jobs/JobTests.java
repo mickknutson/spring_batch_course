@@ -97,9 +97,6 @@ public class JobTests {
     public void test_job__reader_EXCEPTION() throws Exception {
         JobExecution jobExecution = jobLauncherTestUtils.launchJob();
 
-        log.info(logJobExecution(jobExecution));
-//        log.info("User " + val.replaceAll("[\r\n]","") + " (" + userAgent.replaceAll("[\r\n]","") + ") was not authenticated");
-
         jobExecution.getStepExecutions().forEach((stepExecution) -> {
             log.info(logStepExecution(stepExecution));
 

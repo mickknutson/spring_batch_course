@@ -18,19 +18,19 @@ public class BatchDao {
     private JdbcTemplate jdbcTemplate;
 
 
-    private String LINE = "+" + new String(new char[55]).replace('\0', '-') + "+";
+    private static final String LINE = "+" + new String(new char[55]).replace('\0', '-') + "+";
 
-    private String ROW_FORMAT = "|%s|";
-    private String COLUMN_FORMAT = "| %1$-20s ";
-    private String RESULT_FORMAT = "| %1$-30s |";
+    private static final String ROW_FORMAT = "|%s|";
+    private static final String COLUMN_FORMAT = "| %1$-20s ";
+    private static final String RESULT_FORMAT = "| %1$-30s |";
 
-    private final String JOB_EXECUTIONS = "SELECT " +
+    private static final String JOB_EXECUTIONS = "SELECT " +
             "je.JOB_EXECUTION_ID, je.JOB_INSTANCE_ID, ji.JOB_NAME, je.START_TIME, je.END_TIME, je.STATUS, je.EXIT_CODE, je.EXIT_MESSAGE, bjep.* " +
             "FROM BATCH_JOB_EXECUTION je inner join BATCH_JOB_INSTANCE ji inner join BATCH_JOB_EXECUTION_PARAMS bjep " +
             "where je.JOB_INSTANCE_ID=ji.JOB_INSTANCE_ID and je.JOB_EXECUTION_ID = bjep.JOB_EXECUTION_ID order by je.JOB_EXECUTION_ID desc";
 
 
-    private final String STEP_EXECUTIONS = "SELECT " +
+    private static final String STEP_EXECUTIONS = "SELECT " +
             "bse.STEP_EXECUTION_ID,bse.JOB_EXECUTION_ID,ji.JOB_NAME, bse.STEP_NAME, bse.START_TIME, bse.END_TIME, bse.COMMIT_COUNT, " +
             "bse.READ_COUNT, bse.WRITE_COUNT, bse.STATUS, bse.EXIT_MESSAGE, bse.LAST_UPDATED " +
             "FROM BATCH_STEP_EXECUTION bse inner join BATCH_JOB_INSTANCE ji inner join BATCH_JOB_EXECUTION je " +

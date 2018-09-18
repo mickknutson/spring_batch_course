@@ -67,9 +67,9 @@ public class JobTests {
         jobLauncherTestUtils.setJob(job);
         JobExecution jobExecution = jobLauncherTestUtils.launchJob(getJobParameters());
 
-        if(log.isDebugEnabled()) {
+        log.info(logJobExecution(jobExecution));
 
-            log.debug(logJobExecution(jobExecution));
+        if(log.isDebugEnabled()) {
 
             jobExecution.getStepExecutions().forEach((stepExecution) -> {
                 log.debug(logStepExecution(stepExecution));
