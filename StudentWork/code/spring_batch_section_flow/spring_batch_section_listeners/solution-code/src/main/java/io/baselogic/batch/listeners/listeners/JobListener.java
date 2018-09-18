@@ -40,7 +40,7 @@ public class JobListener implements JobExecutionListener {
 
                 log.info(batchDao.logJobExecutions(jobExecution));
 
-                jobExecution.getStepExecutions().forEach((stepExecution) -> {
+                jobExecution.getStepExecutions().forEach(stepExecution -> {
                     log.debug(batchDao.logStepExecutions(stepExecution));
 
                 });

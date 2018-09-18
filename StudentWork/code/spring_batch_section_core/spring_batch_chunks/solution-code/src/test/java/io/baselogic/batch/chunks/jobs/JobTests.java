@@ -70,7 +70,7 @@ public class JobTests {
 
         log.info(logJobExecution(jobExecution));
 
-        jobExecution.getStepExecutions().forEach((stepExecution) -> {
+        jobExecution.getStepExecutions().forEach(stepExecution -> {
             log.info(logStepExecution(stepExecution));
 
             assertSoftly(
@@ -97,7 +97,7 @@ public class JobTests {
     public void test_job__reader_EXCEPTION() throws Exception {
         JobExecution jobExecution = jobLauncherTestUtils.launchJob();
 
-        jobExecution.getStepExecutions().forEach((stepExecution) -> {
+        jobExecution.getStepExecutions().forEach(stepExecution -> {
             log.info(logStepExecution(stepExecution));
 
             assertSoftly(

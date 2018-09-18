@@ -106,7 +106,7 @@ public class JobTests {
 //        JobExecution jobExecution = jobLauncherTestUtils.launchJob();
         JobExecution jobExecution = jobLauncherTestUtils.launchJob(getJobParameters());
 
-        jobExecution.getStepExecutions().forEach((stepExecution) -> {
+        jobExecution.getStepExecutions().forEach(stepExecution -> {
             log.info("Processed: " + stepExecution);
 
             if (stepExecution.getStepName().equals("stepA")) {
@@ -131,7 +131,7 @@ public class JobTests {
 
         log.info(logJobExecution(jobExecution));
 
-        jobExecution.getStepExecutions().forEach((stepExecution) -> {
+        jobExecution.getStepExecutions().forEach(stepExecution -> {
             log.info(logStepExecution(stepExecution));
 
         });

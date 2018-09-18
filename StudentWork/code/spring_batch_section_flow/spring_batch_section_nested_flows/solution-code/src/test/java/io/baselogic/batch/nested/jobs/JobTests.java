@@ -69,7 +69,7 @@ public class JobTests {
 
         if(log.isDebugEnabled()) {
 
-            jobExecution.getStepExecutions().forEach((stepExecution) -> {
+            jobExecution.getStepExecutions().forEach(stepExecution -> {
                 log.debug(logStepExecution(stepExecution));
 
             });
