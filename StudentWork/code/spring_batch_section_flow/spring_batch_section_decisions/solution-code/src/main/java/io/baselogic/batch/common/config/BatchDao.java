@@ -20,7 +20,6 @@ public class BatchDao {
 
     private String LINE = "+" + new String(new char[55]).replace('\0', '-') + "+";
 
-    //    public static final String ROW_FORMAT = "| %1$-46s |";
     private String ROW_FORMAT = "|%s|";
     private String COLUMN_FORMAT = "| %1$-20s ";
     private String RESULT_FORMAT = "| %1$-30s |";
