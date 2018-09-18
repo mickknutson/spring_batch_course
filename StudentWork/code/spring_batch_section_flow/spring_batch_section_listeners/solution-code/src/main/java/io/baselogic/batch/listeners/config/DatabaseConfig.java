@@ -39,7 +39,7 @@ public class DatabaseConfig {
     }
 
     @Bean
-    BatchDao batchDao(){
+    public BatchDao batchDao(){
         return new BatchDao();
     }
 

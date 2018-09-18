@@ -1,6 +1,6 @@
 package io.baselogic.batch.listeners.config;
 
-import io.baselogic.batch.listeners.decisions.FlowDecision;
+import io.baselogic.batch.listeners.listeners.JobListener;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -19,39 +19,18 @@ public class JobConfig {
 
     @Bean
     public Job job(JobBuilderFactory jobBuilderFactory,
-                   FlowDecision flowDecision,
-                   Step startingStep, Step flipACoinStep, Step evenStep, Step oddStep, Step endStep) {
+                   JobListener jobListener,
+                   Step stepA) {
 
-        return jobBuilderFactory.get("decisionJob")
-
-                // Step #1:
-                .start(startingStep).next(flowDecision)
-
-                // Step #2:
-                .from(flowDecision).on("ODD").to(oddStep)
-                .from(flowDecision).on("EVEN").to(evenStep)
-
-                // Does not count as step:
-                .from(oddStep).on("*").to(flowDecision)
-
-                // Step #3:
-                .from(flowDecision).on("ODD").to(oddStep)
-                .from(flowDecision).on("EVEN").to(evenStep)
-
-                // Step #4
-                .next(endStep)
-
-                .end()
+        return jobBuilderFactory.get("listenerJob")
+                .start(stepA)
+                .listener(jobListener)
                 .build();
     }
 
     //---------------------------------------------------------------------------//
     // Decisions
 
-    @Bean
-    public FlowDecision flowDecision(){
-        return new FlowDecision();
-    }
 
 
 } // The End...

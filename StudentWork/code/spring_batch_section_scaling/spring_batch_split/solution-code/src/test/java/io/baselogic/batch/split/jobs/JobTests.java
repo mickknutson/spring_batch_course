@@ -1,5 +1,6 @@
 package io.baselogic.batch.split.jobs;
 
+import io.baselogic.batch.common.config.BatchDao;
 import io.baselogic.batch.split.config.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
@@ -10,6 +11,7 @@ import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.batch.test.JobRepositoryTestUtils;
 import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -30,39 +32,56 @@ public class JobTests {
     @Autowired
     private JobRepositoryTestUtils jobRepositoryTestUtils;
 
+    @Autowired
+    private BatchDao batchDao;
 
     @Before
     public void clearMetadata() {
         jobRepositoryTestUtils.removeJobExecutions();
     }
 
-
-
     //---------------------------------------------------------------------------//
-    //---------------------------------------------------------------------------//
-    //---------------------------------------------------------------------------//
-
+    // Job Parameters
 
     public JobParameters getJobParameters() {
         return new JobParametersBuilder()
-                .addLong("commit.interval", 1L)
+                .addLong("commit.interval", 2L)
                 .addLong("timestamp", System.currentTimeMillis())
                 .toJobParameters();
     }
 
+
+    //---------------------------------------------------------------------------//
+    // Jobs
+
+    @Autowired
+    @Qualifier("job")
+    private Job job;
+
+
+    //---------------------------------------------------------------------------//
+    //---------------------------------------------------------------------------//
     //---------------------------------------------------------------------------//
 
 
     @Test
     public void test_job__all_steps() throws Exception {
-        JobExecution jobExecution = jobLauncherTestUtils.launchJob();
 
-        log.info(logJobExecution(jobExecution));
+        jobLauncherTestUtils.setJob(job);
+        JobExecution jobExecution = jobLauncherTestUtils.launchJob(getJobParameters());
 
-        jobExecution.getStepExecutions().forEach((stepExecution) -> {
-            log.info(logStepExecution(stepExecution));
+        if(log.isDebugEnabled()) {
 
-        });
+            log.debug(logJobExecution(jobExecution));
+
+            jobExecution.getStepExecutions().forEach((stepExecution) -> {
+                log.debug(logStepExecution(stepExecution));
+
+            });
+
+            // List all steps from the database:
+            log.debug(batchDao.logStepExecutions());
+        }
 
         assertSoftly(
                 softAssertions -> {
@@ -73,53 +92,36 @@ public class JobTests {
     }
 
 
-    //---------------------------------------------------------------------------//
+
     //---------------------------------------------------------------------------//
     //---------------------------------------------------------------------------//
     //---------------------------------------------------------------------------//
 
+    /**
+     * Need to create a query for a single job execution
+     * @param jobExecution
+     * @return
+     */
     protected String logJobExecution(JobExecution jobExecution) {
 
-        StringBuilder sb = new StringBuilder();
+//        return batchDao.logJobExecutions();
 
-        jobExecution.getStepExecutions().forEach((stepExecution) -> {
-            sb.append("Processed: ").append(stepExecution.getStepName()).append("\n");
+        String results = batchDao.logJobExecutions(jobExecution);
 
-        });
-
-        return sb.toString();
+        return results;
     }
 
+
+    /**
+     * Need to create a query for a single step execution
+     * @param stepExecution
+     * @return
+     */
     protected String logStepExecution(StepExecution stepExecution) {
 
-        StringBuilder sb = new StringBuilder();
+        String results = batchDao.logStepExecutions(stepExecution);
 
-        sb.append("\n\n");
-        sb.append("------------------------------------------------\n");
-        sb.append("Processed: ").append(stepExecution).append("\n");
-        sb.append("------------------------------------------------\n");
-        sb.append("stepName: ").append(stepExecution.getStepName()).append("\n");
-        sb.append("status: ").append(stepExecution.getStatus()).append("\n");
-        sb.append("readCount: ").append(stepExecution.getReadCount()).append("\n");
-        sb.append("writeCount: ").append(stepExecution.getWriteCount()).append("\n");
-        sb.append("commitCount: ").append(stepExecution.getCommitCount()).append("\n");
-        sb.append("rollbackCount: ").append(stepExecution.getRollbackCount()).append("\n");
-        sb.append("readSkipCount: ").append(stepExecution.getReadSkipCount()).append("\n");
-        sb.append("processSkipCount: ").append(stepExecution.getProcessSkipCount()).append("\n");
-        sb.append("writeSkipCount: ").append(stepExecution.getWriteSkipCount()).append("\n");
-        sb.append("startTime: ").append(stepExecution.getStartTime()).append("\n");
-        sb.append("endTime: ").append(stepExecution.getEndTime()).append("\n");
-        sb.append("lastUpdated: ").append(stepExecution.getLastUpdated()).append("\n");
-        sb.append("exitStatus: ").append(stepExecution.getExitStatus()).append("\n");
-        sb.append("terminateOnly: ").append(stepExecution.isTerminateOnly()).append("\n");
-        sb.append("filterCount: ").append(stepExecution.getFilterCount()).append("\n");
-        sb.append("failureExceptions: ").append(stepExecution.getFailureExceptions()).append("\n");
-        sb.append("------------------------------------------------\n");
-        sb.append("executionContext: ").append(stepExecution.getExecutionContext()).append("\n");
-        sb.append("------------------------------------------------\n");
-        sb.append("\n\n");
-
-        return sb.toString();
+        return results;
     }
 
 } // The End...

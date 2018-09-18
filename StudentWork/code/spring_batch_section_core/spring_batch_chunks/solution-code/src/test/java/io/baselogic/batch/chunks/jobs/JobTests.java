@@ -1,6 +1,7 @@
 package io.baselogic.batch.chunks.jobs;
 
 import io.baselogic.batch.chunks.config.*;
+import io.baselogic.batch.common.config.BatchDao;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,7 +23,7 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 @RunWith(SpringRunner.class)
 @Slf4j
 @SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
-public class ChunksJobTests {
+public class JobTests {
 
     @Autowired
     private JobLauncherTestUtils jobLauncherTestUtils;
@@ -30,6 +31,8 @@ public class ChunksJobTests {
     @Autowired
     private JobRepositoryTestUtils jobRepositoryTestUtils;
 
+    @Autowired
+    private BatchDao batchDao;
 
     @Before
     public void clearMetadata() {
@@ -37,64 +40,27 @@ public class ChunksJobTests {
     }
 
     //---------------------------------------------------------------------------//
+    // Jobs
 
-    protected String logJobExecution(JobExecution jobExecution) {
-
-        StringBuilder sb = new StringBuilder();
-
-        jobExecution.getStepExecutions().forEach((stepExecution) -> {
-            sb.append("Processed: ").append(stepExecution.getStepName()).append("\n");
-
-        });
-
-        return sb.toString();
-    }
-
-    protected String logStepExecution(StepExecution stepExecution) {
-
-        StringBuilder sb = new StringBuilder();
-
-        sb.append("\n\n");
-        sb.append("------------------------------------------------\n");
-        sb.append("Processed: ").append(stepExecution).append("\n");
-        sb.append("------------------------------------------------\n");
-        sb.append("stepName: ").append(stepExecution.getStepName()).append("\n");
-        sb.append("status: ").append(stepExecution.getStatus()).append("\n");
-        sb.append("readCount: ").append(stepExecution.getReadCount()).append("\n");
-        sb.append("writeCount: ").append(stepExecution.getWriteCount()).append("\n");
-        sb.append("commitCount: ").append(stepExecution.getCommitCount()).append("\n");
-        sb.append("rollbackCount: ").append(stepExecution.getRollbackCount()).append("\n");
-        sb.append("readSkipCount: ").append(stepExecution.getReadSkipCount()).append("\n");
-        sb.append("processSkipCount: ").append(stepExecution.getProcessSkipCount()).append("\n");
-        sb.append("writeSkipCount: ").append(stepExecution.getWriteSkipCount()).append("\n");
-        sb.append("startTime: ").append(stepExecution.getStartTime()).append("\n");
-        sb.append("endTime: ").append(stepExecution.getEndTime()).append("\n");
-        sb.append("lastUpdated: ").append(stepExecution.getLastUpdated()).append("\n");
-        sb.append("exitStatus: ").append(stepExecution.getExitStatus()).append("\n");
-        sb.append("terminateOnly: ").append(stepExecution.isTerminateOnly()).append("\n");
-        sb.append("filterCount: ").append(stepExecution.getFilterCount()).append("\n");
-        sb.append("failureExceptions: ").append(stepExecution.getFailureExceptions()).append("\n");
-        sb.append("------------------------------------------------\n");
-        sb.append("executionContext: ").append(stepExecution.getExecutionContext()).append("\n");
-        sb.append("------------------------------------------------\n");
-        sb.append("\n\n");
-
-        return sb.toString();
-    }
+    @Autowired
+    private Job job;
 
 
-    //---------------------------------------------------------------------------//
-    //---------------------------------------------------------------------------//
     //---------------------------------------------------------------------------//
 
 
     public JobParameters getJobParameters() {
-        return new JobParametersBuilder()
-                .addLong("commit.interval", 1L)
-                .addLong("timestamp", System.currentTimeMillis())
-                .toJobParameters();
+        // given
+        return jobLauncherTestUtils.getUniqueJobParameters();
+
+//        return new JobParametersBuilder()
+//                .addLong("commit.interval", 2L)
+//                .addLong("timestamp", System.currentTimeMillis())
+//                .toJobParameters();
     }
 
+    //---------------------------------------------------------------------------//
+    //---------------------------------------------------------------------------//
     //---------------------------------------------------------------------------//
 
 
@@ -150,5 +116,36 @@ public class ChunksJobTests {
     }
 
 
+
+    //---------------------------------------------------------------------------//
+    //---------------------------------------------------------------------------//
+    //---------------------------------------------------------------------------//
+
+    /**
+     * Need to create a query for a single job execution
+     * @param jobExecution
+     * @return
+     */
+    protected String logJobExecution(JobExecution jobExecution) {
+
+//        return batchDao.logJobExecutions();
+
+        String results = batchDao.logJobExecutions(jobExecution);
+
+        return results;
+    }
+
+
+    /**
+     * Need to create a query for a single step execution
+     * @param stepExecution
+     * @return
+     */
+    protected String logStepExecution(StepExecution stepExecution) {
+
+        String results = batchDao.logStepExecutions(stepExecution);
+
+        return results;
+    }
 
 } // The End...

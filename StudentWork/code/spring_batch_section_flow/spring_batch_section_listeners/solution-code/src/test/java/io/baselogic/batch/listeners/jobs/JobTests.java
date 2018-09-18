@@ -63,6 +63,7 @@ public class JobTests {
 
     @Test
     public void test_job__all_steps() throws Exception {
+
         jobLauncherTestUtils.setJob(job);
         JobExecution jobExecution = jobLauncherTestUtils.launchJob(getJobParameters());
 
@@ -80,7 +81,7 @@ public class JobTests {
         }
 
         assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
-        assertThat(jobExecution.getStepExecutions().size()).isEqualTo(4);
+        assertThat(jobExecution.getStepExecutions().size()).isEqualTo(1);
     }
 
 

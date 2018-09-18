@@ -1,7 +1,7 @@
 package io.baselogic.batch.chunks.config;
 
 import io.baselogic.batch.chunks.domain.TextLineItem;
-import io.baselogic.batch.chunks.listeners.ChunkAuditor;
+import io.baselogic.batch.chunks.listeners.ChunkListener;
 import io.baselogic.batch.chunks.steps.ConsoleItemWriter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Step;
@@ -34,12 +34,12 @@ public class StepConfig {
     public Step stepFileAuditor(StepBuilderFactory stepBuilderFactory,
                                 ConsoleItemWriter writer,
                                 FlatFileItemReader reader,
-                                ChunkAuditor chunkAuditor) {
+                                ChunkListener chunkListener) {
         return stepBuilderFactory.get("stepFileReadAndAudit")
                 .<TextLineItem, TextLineItem> chunk(2)
                 .reader(reader)
                 .writer(writer)
-                .listener(chunkAuditor)
+                .listener(chunkListener)
                 .build();
     }
 
@@ -100,8 +100,8 @@ public class StepConfig {
     // Listeners
 
     @Bean
-    public ChunkAuditor chunkAuditor(){
-        return new ChunkAuditor();
+    public ChunkListener chunkListener(){
+        return new ChunkListener();
     }
 
 

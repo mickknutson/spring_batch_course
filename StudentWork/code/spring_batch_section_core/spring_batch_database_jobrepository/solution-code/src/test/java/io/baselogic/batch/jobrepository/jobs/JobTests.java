@@ -56,9 +56,7 @@ public class JobTests {
 
 
     public JobParameters getJobParameters() {
-        // given
         return jobLauncherTestUtils.getUniqueJobParameters();
-
 
 //        return new JobParametersBuilder()
 //                .addLong("commit.interval", 2L)

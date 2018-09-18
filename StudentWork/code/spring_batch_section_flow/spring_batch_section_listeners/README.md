@@ -9,17 +9,21 @@
 
 ---
 
+### *References*
+
+Demonstration of the ChunkListener
+ - **[ChunkListener](https://github.com/mickknutson/spring_batch_course/tree/master/StudentWork/code/spring_batch_section_core/spring_batch_chunks)**
+
+---
+
+
 ### *NOTES*
 
 **Investigate:**
 
-- [ ] Listener Support Classes
-- [ ] JobExecutionListener
-- [ ] StepExecutionListener
-- [ ] ChunkExecutionListener (Annotation)
+- [ ] Spring Batch Listener Support Classes
 - [ ] ItemReadListener
 - [ ] ItemProcessListener
-- [ ] ItemWriteListener
-- [ ] Annotation based Listeners
+- [ ] org.springframework.batch.core.ItemWriteListener
 
 ## The End...

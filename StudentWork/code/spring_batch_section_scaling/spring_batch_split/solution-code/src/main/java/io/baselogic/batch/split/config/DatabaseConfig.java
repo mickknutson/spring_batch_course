@@ -1,11 +1,15 @@
 package io.baselogic.batch.split.config;
 
+import io.baselogic.batch.common.config.BatchDao;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+
+import javax.sql.DataSource;
 
 /**
  * Create an EmbeddedDatabase.
@@ -13,6 +17,7 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
  */
 @Configuration
 @Slf4j
+@SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
 public class DatabaseConfig {
 
     //---------------------------------------------------------------------------//
@@ -28,5 +33,14 @@ public class DatabaseConfig {
                 .build();
     }
 
+    @Bean
+    public JdbcTemplate jdbcTemplate(DataSource dataSource){
+        return new JdbcTemplate(dataSource);
+    }
+
+    @Bean
+    public BatchDao batchDao(){
+        return new BatchDao();
+    }
 
 } // The End...

@@ -20,6 +20,8 @@ public class BatchDao {
 
     public static final String LINE = "+" + new String(new char[55]).replace('\0', '-') + "+";
 
+//    public static final String rowFormat = "| %1$-46s |";
+    public static final String rowFormat = "|%s|";
     public static final String columnFormat = "| %1$-20s ";
     public static final String resultFormat = "| %1$-30s |";
 
@@ -92,7 +94,7 @@ public class BatchDao {
         StringBuilder sb = new StringBuilder();
 
         sb.append("\n\n").append(LINE).append("\n");
-        sb.append(String.format("|%s|", StringUtils.center("JOB EXECUTION", 55))).append("\n");
+        sb.append(String.format(rowFormat, StringUtils.center("JOB EXECUTION", 55))).append("\n");
         sb.append(LINE).append("\n");
         sb.append(String.format("|%s|%s|", StringUtils.center("COLUMN", 22), StringUtils.center("RESULT", 32))).append("\n");
         sb.append(LINE).append("\n");
@@ -137,7 +139,7 @@ public class BatchDao {
         StringBuilder sb = new StringBuilder();
 
         sb.append("\n\n").append(LINE).append("\n");
-        sb.append(String.format("|%s|", StringUtils.center("STEP EXECUTIONS (DB)", 55))).append("\n");
+        sb.append(String.format(rowFormat, StringUtils.center("STEP EXECUTIONS (DB)", 55))).append("\n");
         sb.append(LINE).append("\n");
         sb.append(String.format("|%s|%s|", StringUtils.center("COLUMN", 22), StringUtils.center("RESULT", 32))).append("\n");
         sb.append(LINE).append("\n");
@@ -162,9 +164,9 @@ public class BatchDao {
                 sb.append( printRow("LAST_UPDATED", rs.getString(11)));
 
 //                sb.append(LINE).append("\n");
-//                sb.append(String.format("|%s|", StringUtils.left("STATUS:", 55))).append("\n");
+//                sb.append(String.format(rowFormat, StringUtils.left("STATUS:", 55))).append("\n");
 //                sb.append(LINE).append("\n");
-//                sb.append(String.format("|%s|", StringUtils.left(""+rs.getString(10), 55))).append("\n");
+//                sb.append(String.format(rowFormat, StringUtils.left(""+rs.getString(10), 55))).append("\n");
                 sb.append(LINE).append("\n");
             }
 
@@ -178,9 +180,9 @@ public class BatchDao {
         StringBuilder sb = new StringBuilder();
 
         sb.append("\n\n").append(LINE).append("\n");
-        sb.append(String.format("|%s|", StringUtils.center("STEP EXECUTION", 55))).append("\n");
+        sb.append(String.format(rowFormat, StringUtils.center("STEP EXECUTION", 55))).append("\n");
         sb.append(LINE).append("\n");
-        sb.append(String.format("|%s|%s|", StringUtils.center("COLUMN", 22), StringUtils.center("RESULT", 32))).append("\n");
+        sb.append(String.format(rowFormat, StringUtils.center("COLUMN", 22), StringUtils.center("RESULT", 32))).append("\n");
         sb.append(LINE).append("\n");
 
         sb.append( printRow("JOB_EXECUTION_ID: ", ""+stepExecution.getJobExecutionId()) );
@@ -204,9 +206,9 @@ public class BatchDao {
         sb.append( printRow("FAILURE_EXCEPTIONS: ", ""+stepExecution.getFailureExceptions()));
 
         sb.append(LINE).append("\n");
-        sb.append(String.format("|%s|", StringUtils.left("EXIT_STATUS:", 55))).append("\n");
+        sb.append(String.format(rowFormat, StringUtils.center("EXIT_STATUS:", 55))).append("\n");
         sb.append(LINE).append("\n");
-        sb.append(String.format("|%s|", StringUtils.left(""+stepExecution.getExitStatus(), 55))).append("\n");
+        sb.append(String.format(rowFormat, StringUtils.center(""+stepExecution.getExitStatus(), 55))).append("\n");
         sb.append(LINE).append("\n");
         sb.append("\n\n");
 
@@ -221,6 +223,14 @@ public class BatchDao {
 
         return (String.format(columnFormat, k)) + (String.format(resultFormat, v)) +"\n";
 
+    }
+
+    public static String consoleLine(char lineChar){
+        return consoleLine(55, lineChar);
+    }
+
+    public static String consoleLine(int length, char lineChar){
+        return "+" + new String(new char[length]).replace('\0', lineChar) + "+";
     }
 
 } // The End...

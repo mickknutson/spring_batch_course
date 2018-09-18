@@ -38,7 +38,7 @@ public class Application {
             }
 
             sb.append("----------------------------------------\n\n");
-            log.debug(sb.toString().replaceAll("[\r\n]",""));
+            log.trace(sb.toString().replaceAll("[\r\n]",""));
 
         };
     }
