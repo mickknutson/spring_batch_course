@@ -18,12 +18,12 @@ public class BatchDao {
     private JdbcTemplate jdbcTemplate;
 
 
-    public static final String LINE = "+" + new String(new char[55]).replace('\0', '-') + "+";
+    private String LINE = "+" + new String(new char[55]).replace('\0', '-') + "+";
 
-//    public static final String rowFormat = "| %1$-46s |";
-    public static final String rowFormat = "|%s|";
-    public static final String columnFormat = "| %1$-20s ";
-    public static final String resultFormat = "| %1$-30s |";
+    //    public static final String ROW_FORMAT = "| %1$-46s |";
+    private String ROW_FORMAT = "|%s|";
+    private String COLUMN_FORMAT = "| %1$-20s ";
+    private String RESULT_FORMAT = "| %1$-30s |";
 
     private final String JOB_EXECUTIONS = "SELECT " +
             "je.JOB_EXECUTION_ID, je.JOB_INSTANCE_ID, ji.JOB_NAME, je.START_TIME, je.END_TIME, je.STATUS, je.EXIT_CODE, je.EXIT_MESSAGE, bjep.* " +
@@ -55,25 +55,25 @@ public class BatchDao {
         sb.append(String.format("|%s|%s|", StringUtils.center("COLUMN", 22), StringUtils.center("RESULT", 32))).append("\n");
         sb.append(LINE).append("\n");
 
-        return jdbcTemplate.query(JOB_EXECUTIONS, (rs) -> {
-                while (rs.next()) {
+        return jdbcTemplate.query(JOB_EXECUTIONS, rs -> {
+            while (rs.next()) {
 
-                    sb.append( printRow("je.JOB_EXECUTION_ID", rs.getString(1)));
-                    sb.append( printRow("je.JOB_INSTANCE_ID", rs.getString(2)));
+                sb.append( printRow("je.JOB_EXECUTION_ID", rs.getString(1)));
+                sb.append( printRow("je.JOB_INSTANCE_ID", rs.getString(2)));
 
-                    sb.append( printRow("ji.JOB_NAME", rs.getString(3)));
-                    sb.append( printRow("je.START_TIME", rs.getString(4)));
-                    sb.append( printRow("je.END_TIME", rs.getString(5)));
-                    sb.append( printRow("je.STATUS", rs.getString(6)));
-                    sb.append( printRow("je.EXIT_CODE", rs.getString(7)));
-                    sb.append( printRow("je.EXIT_MESSAGE", rs.getString(8)));
-                    sb.append( printRow("bjep.*", rs.getString(9)));
+                sb.append( printRow("ji.JOB_NAME", rs.getString(3)));
+                sb.append( printRow("je.START_TIME", rs.getString(4)));
+                sb.append( printRow("je.END_TIME", rs.getString(5)));
+                sb.append( printRow("je.STATUS", rs.getString(6)));
+                sb.append( printRow("je.EXIT_CODE", rs.getString(7)));
+                sb.append( printRow("je.EXIT_MESSAGE", rs.getString(8)));
+                sb.append( printRow("bjep.*", rs.getString(9)));
 
-                    sb.append(LINE).append("\n");
-                }
+                sb.append(LINE).append("\n");
+            }
 
-                sb.append("\n");
-                return sb.toString();
+            sb.append("\n");
+            return sb.toString();
         });
     }
 
@@ -94,7 +94,7 @@ public class BatchDao {
         StringBuilder sb = new StringBuilder();
 
         sb.append("\n\n").append(LINE).append("\n");
-        sb.append(String.format(rowFormat, StringUtils.center("JOB EXECUTION", 55))).append("\n");
+        sb.append(String.format(ROW_FORMAT, StringUtils.center("JOB EXECUTION", 55))).append("\n");
         sb.append(LINE).append("\n");
         sb.append(String.format("|%s|%s|", StringUtils.center("COLUMN", 22), StringUtils.center("RESULT", 32))).append("\n");
         sb.append(LINE).append("\n");
@@ -109,7 +109,10 @@ public class BatchDao {
         sb.append( printRow("EXIT_CODE", ""+jobExecution.getExitStatus().getExitCode()));
         sb.append( printRow("EXIT_MESSAGE", ""+jobExecution.getExitStatus().getExitDescription()));
 
-        sb.append( printRow("JOB_PARAMETERS", ""+jobExecution.getJobParameters()) );
+        sb.append(LINE).append("\n");
+        sb.append(String.format(ROW_FORMAT, StringUtils.center("JOB_PARAMETERS", 55))).append("\n");
+        sb.append(LINE).append("\n");
+        sb.append(String.format(ROW_FORMAT, StringUtils.center(""+jobExecution.getJobParameters(), 55))).append("\n");
 
         sb.append(LINE).append("\n");
         sb.append("\n\n");
@@ -126,14 +129,14 @@ public class BatchDao {
      *
      * TODO: Need to add the following columns:
      *
-     sb.append("rollbackCount: ").append(stepExecution.getRollbackCount()).append("\n");
-     sb.append("readSkipCount: ").append(stepExecution.getReadSkipCount()).append("\n");
-     sb.append("processSkipCount: ").append(stepExecution.getProcessSkipCount()).append("\n");
-     sb.append("writeSkipCount: ").append(stepExecution.getWriteSkipCount()).append("\n");
-     sb.append("exitStatus: ").append(stepExecution.getExitStatus()).append("\n");
-     sb.append("terminateOnly: ").append(stepExecution.isTerminateOnly()).append("\n");
-     sb.append("filterCount: ").append(stepExecution.getFilterCount()).append("\n");
-     sb.append("failureExceptions: ").append(stepExecution.getFailureExceptions()).append("\n");
+     sb.append("rollbackCount").append(stepExecution.getRollbackCount()).append("\n");
+     sb.append("readSkipCount").append(stepExecution.getReadSkipCount()).append("\n");
+     sb.append("processSkipCount").append(stepExecution.getProcessSkipCount()).append("\n");
+     sb.append("writeSkipCount").append(stepExecution.getWriteSkipCount()).append("\n");
+     sb.append("exitStatus").append(stepExecution.getExitStatus()).append("\n");
+     sb.append("terminateOnly").append(stepExecution.isTerminateOnly()).append("\n");
+     sb.append("filterCount").append(stepExecution.getFilterCount()).append("\n");
+     sb.append("failureExceptions").append(stepExecution.getFailureExceptions()).append("\n");
      *
      * @return String formatted table of current Step Executions in the database
      */
@@ -141,7 +144,7 @@ public class BatchDao {
         StringBuilder sb = new StringBuilder();
 
         sb.append("\n\n").append(LINE).append("\n");
-        sb.append(String.format(rowFormat, StringUtils.center("STEP EXECUTIONS (DB)", 55))).append("\n");
+        sb.append(String.format(ROW_FORMAT, StringUtils.center("STEP EXECUTIONS (DB)", 55))).append("\n");
         sb.append(LINE).append("\n");
         sb.append(String.format("|%s|%s|", StringUtils.center("COLUMN", 22), StringUtils.center("RESULT", 32))).append("\n");
         sb.append(LINE).append("\n");
@@ -165,10 +168,6 @@ public class BatchDao {
                 sb.append( printRow("EXIT_MESSAGE", rs.getString(11)));
                 sb.append( printRow("LAST_UPDATED", rs.getString(11)));
 
-//                sb.append(LINE).append("\n");
-//                sb.append(String.format(rowFormat, StringUtils.left("STATUS:", 55))).append("\n");
-//                sb.append(LINE).append("\n");
-//                sb.append(String.format(rowFormat, StringUtils.left(""+rs.getString(10), 55))).append("\n");
                 sb.append(LINE).append("\n");
             }
 
@@ -182,35 +181,46 @@ public class BatchDao {
         StringBuilder sb = new StringBuilder();
 
         sb.append("\n\n").append(LINE).append("\n");
-        sb.append(String.format(rowFormat, StringUtils.center("STEP EXECUTION", 55))).append("\n");
+        sb.append(String.format(ROW_FORMAT, StringUtils.center("STEP EXECUTION", 55))).append("\n");
         sb.append(LINE).append("\n");
-        sb.append(String.format(rowFormat, StringUtils.center("COLUMN", 22), StringUtils.center("RESULT", 32))).append("\n");
+        sb.append(String.format(ROW_FORMAT, StringUtils.center("COLUMN", 22), StringUtils.center("RESULT", 32))).append("\n");
         sb.append(LINE).append("\n");
 
-        sb.append( printRow("JOB_EXECUTION_ID: ", ""+stepExecution.getJobExecutionId()) );
-        sb.append( printRow("JOB_NAME: ", ""+stepExecution.getJobExecution().getJobConfigurationName()) );
+        sb.append( printRow("JOB_EXECUTION_ID", ""+stepExecution.getJobExecutionId()) );
+        sb.append( printRow("JOB_NAME", ""+stepExecution.getJobExecution().getJobConfigurationName()) );
 
-        sb.append( printRow("STEP_NAME: ", stepExecution.getStepName()) );
+        sb.append( printRow("STEP_NAME", stepExecution.getStepName()) );
 
-        sb.append( printRow("STATUS: ", ""+stepExecution.getStatus()));
-        sb.append( printRow("READ_COUNT: ", ""+stepExecution.getReadCount()));
-        sb.append( printRow("WRITE_COUNT: ", ""+stepExecution.getWriteCount()));
-        sb.append( printRow("COMMIT_COUNT: ", ""+stepExecution.getCommitCount()));
-        sb.append( printRow("ROLLBACK_COUNT: ", ""+stepExecution.getRollbackCount()));
-        sb.append( printRow("READ_SKIP_COUNT: ", ""+stepExecution.getReadSkipCount()));
-        sb.append( printRow("PROCESS_SKIP_COUNT: ", ""+stepExecution.getProcessSkipCount()));
-        sb.append( printRow("WRITE_SKIP_COUNT: ", ""+stepExecution.getWriteSkipCount()));
-        sb.append( printRow("START_TIME: ", ""+stepExecution.getStartTime()));
-        sb.append( printRow("END_TIME: ", ""+stepExecution.getEndTime()));
-        sb.append( printRow("LAST_UPDATED: ", ""+stepExecution.getLastUpdated()));
-        sb.append( printRow("TERMINATE_ONLY: ", ""+stepExecution.isTerminateOnly()));
-        sb.append( printRow("FILTER_COUNT: ", ""+stepExecution.getFilterCount()));
-        sb.append( printRow("FAILURE_EXCEPTIONS: ", ""+stepExecution.getFailureExceptions()));
+        sb.append( printRow("STATUS", ""+stepExecution.getStatus()));
+        sb.append( printRow("READ_COUNT", ""+stepExecution.getReadCount()));
+        sb.append( printRow("WRITE_COUNT", ""+stepExecution.getWriteCount()));
+        sb.append( printRow("COMMIT_COUNT", ""+stepExecution.getCommitCount()));
+        sb.append( printRow("ROLLBACK_COUNT", ""+stepExecution.getRollbackCount()));
+        sb.append( printRow("READ_SKIP_COUNT", ""+stepExecution.getReadSkipCount()));
+        sb.append( printRow("PROCESS_SKIP_COUNT", ""+stepExecution.getProcessSkipCount()));
+        sb.append( printRow("WRITE_SKIP_COUNT", ""+stepExecution.getWriteSkipCount()));
+        sb.append( printRow("START_TIME", ""+stepExecution.getStartTime()));
+        sb.append( printRow("END_TIME", ""+stepExecution.getEndTime()));
+        sb.append( printRow("LAST_UPDATED", ""+stepExecution.getLastUpdated()));
+        sb.append( printRow("TERMINATE_ONLY", ""+stepExecution.isTerminateOnly()));
+        sb.append( printRow("FILTER_COUNT", ""+stepExecution.getFilterCount()));
+        sb.append( printRow("FAILURE_EXCEPTIONS", ""+stepExecution.getFailureExceptions()));
+
+
 
         sb.append(LINE).append("\n");
-        sb.append(String.format(rowFormat, StringUtils.center("EXIT_STATUS:", 55))).append("\n");
+        sb.append(String.format(ROW_FORMAT, StringUtils.center("JOB_PARAMETERS", 55))).append("\n");
         sb.append(LINE).append("\n");
-        sb.append(String.format(rowFormat, StringUtils.center(""+stepExecution.getExitStatus(), 55))).append("\n");
+        sb.append(String.format(ROW_FORMAT, StringUtils.center(""+stepExecution.getJobParameters(), 55))).append("\n");
+
+//        sb.append( printRow("*fileName ???", ""+stepExecution.getExecutionContext().getString("fileName")));
+
+        sb.append(LINE).append("\n");
+        sb.append(String.format(ROW_FORMAT, StringUtils.center("EXIT_STATUS", 55))).append("\n");
+        sb.append(LINE).append("\n");
+        sb.append(String.format(ROW_FORMAT, StringUtils.center(""+stepExecution.getExitStatus(), 55))).append("\n");
+
+
         sb.append(LINE).append("\n");
         sb.append("\n\n");
 
@@ -223,7 +233,7 @@ public class BatchDao {
 
     private String printRow(String k, String v) {
 
-        return (String.format(columnFormat, k)) + (String.format(resultFormat, v)) +"\n";
+        return (String.format(COLUMN_FORMAT, k)) + (String.format(RESULT_FORMAT, v)) +"\n";
 
     }
 

@@ -18,12 +18,12 @@ public class BatchDao {
     private JdbcTemplate jdbcTemplate;
 
 
-    public static final String LINE = "+" + new String(new char[55]).replace('\0', '-') + "+";
+    private String LINE = "+" + new String(new char[55]).replace('\0', '-') + "+";
 
-    //    public static final String rowFormat = "| %1$-46s |";
-    public static final String rowFormat = "|%s|";
-    public static final String columnFormat = "| %1$-20s ";
-    public static final String resultFormat = "| %1$-30s |";
+    //    public static final String ROW_FORMAT = "| %1$-46s |";
+    private String ROW_FORMAT = "|%s|";
+    private String COLUMN_FORMAT = "| %1$-20s ";
+    private String RESULT_FORMAT = "| %1$-30s |";
 
     private final String JOB_EXECUTIONS = "SELECT " +
             "je.JOB_EXECUTION_ID, je.JOB_INSTANCE_ID, ji.JOB_NAME, je.START_TIME, je.END_TIME, je.STATUS, je.EXIT_CODE, je.EXIT_MESSAGE, bjep.* " +
@@ -55,7 +55,7 @@ public class BatchDao {
         sb.append(String.format("|%s|%s|", StringUtils.center("COLUMN", 22), StringUtils.center("RESULT", 32))).append("\n");
         sb.append(LINE).append("\n");
 
-        return jdbcTemplate.query(JOB_EXECUTIONS, (rs) -> {
+        return jdbcTemplate.query(JOB_EXECUTIONS, rs -> {
             while (rs.next()) {
 
                 sb.append( printRow("je.JOB_EXECUTION_ID", rs.getString(1)));
@@ -94,7 +94,7 @@ public class BatchDao {
         StringBuilder sb = new StringBuilder();
 
         sb.append("\n\n").append(LINE).append("\n");
-        sb.append(String.format(rowFormat, StringUtils.center("JOB EXECUTION", 55))).append("\n");
+        sb.append(String.format(ROW_FORMAT, StringUtils.center("JOB EXECUTION", 55))).append("\n");
         sb.append(LINE).append("\n");
         sb.append(String.format("|%s|%s|", StringUtils.center("COLUMN", 22), StringUtils.center("RESULT", 32))).append("\n");
         sb.append(LINE).append("\n");
@@ -110,10 +110,9 @@ public class BatchDao {
         sb.append( printRow("EXIT_MESSAGE", ""+jobExecution.getExitStatus().getExitDescription()));
 
         sb.append(LINE).append("\n");
-        sb.append(String.format(rowFormat, StringUtils.center("JOB_PARAMETERS", 55))).append("\n");
+        sb.append(String.format(ROW_FORMAT, StringUtils.center("JOB_PARAMETERS", 55))).append("\n");
         sb.append(LINE).append("\n");
-        sb.append(String.format(rowFormat, StringUtils.center(""+jobExecution.getJobParameters(), 55))).append("\n");
-
+        sb.append(String.format(ROW_FORMAT, StringUtils.center(""+jobExecution.getJobParameters(), 55))).append("\n");
 
         sb.append(LINE).append("\n");
         sb.append("\n\n");
@@ -145,7 +144,7 @@ public class BatchDao {
         StringBuilder sb = new StringBuilder();
 
         sb.append("\n\n").append(LINE).append("\n");
-        sb.append(String.format(rowFormat, StringUtils.center("STEP EXECUTIONS (DB)", 55))).append("\n");
+        sb.append(String.format(ROW_FORMAT, StringUtils.center("STEP EXECUTIONS (DB)", 55))).append("\n");
         sb.append(LINE).append("\n");
         sb.append(String.format("|%s|%s|", StringUtils.center("COLUMN", 22), StringUtils.center("RESULT", 32))).append("\n");
         sb.append(LINE).append("\n");
@@ -182,9 +181,9 @@ public class BatchDao {
         StringBuilder sb = new StringBuilder();
 
         sb.append("\n\n").append(LINE).append("\n");
-        sb.append(String.format(rowFormat, StringUtils.center("STEP EXECUTION", 55))).append("\n");
+        sb.append(String.format(ROW_FORMAT, StringUtils.center("STEP EXECUTION", 55))).append("\n");
         sb.append(LINE).append("\n");
-        sb.append(String.format(rowFormat, StringUtils.center("COLUMN", 22), StringUtils.center("RESULT", 32))).append("\n");
+        sb.append(String.format(ROW_FORMAT, StringUtils.center("COLUMN", 22), StringUtils.center("RESULT", 32))).append("\n");
         sb.append(LINE).append("\n");
 
         sb.append( printRow("JOB_EXECUTION_ID", ""+stepExecution.getJobExecutionId()) );
@@ -210,16 +209,16 @@ public class BatchDao {
 
 
         sb.append(LINE).append("\n");
-        sb.append(String.format(rowFormat, StringUtils.center("JOB_PARAMETERS", 55))).append("\n");
+        sb.append(String.format(ROW_FORMAT, StringUtils.center("JOB_PARAMETERS", 55))).append("\n");
         sb.append(LINE).append("\n");
-        sb.append(String.format(rowFormat, StringUtils.center(""+stepExecution.getJobParameters(), 55))).append("\n");
+        sb.append(String.format(ROW_FORMAT, StringUtils.center(""+stepExecution.getJobParameters(), 55))).append("\n");
 
 //        sb.append( printRow("*fileName ???", ""+stepExecution.getExecutionContext().getString("fileName")));
 
         sb.append(LINE).append("\n");
-        sb.append(String.format(rowFormat, StringUtils.center("EXIT_STATUS", 55))).append("\n");
+        sb.append(String.format(ROW_FORMAT, StringUtils.center("EXIT_STATUS", 55))).append("\n");
         sb.append(LINE).append("\n");
-        sb.append(String.format(rowFormat, StringUtils.center(""+stepExecution.getExitStatus(), 55))).append("\n");
+        sb.append(String.format(ROW_FORMAT, StringUtils.center(""+stepExecution.getExitStatus(), 55))).append("\n");
 
 
         sb.append(LINE).append("\n");
@@ -234,7 +233,7 @@ public class BatchDao {
 
     private String printRow(String k, String v) {
 
-        return (String.format(columnFormat, k)) + (String.format(resultFormat, v)) +"\n";
+        return (String.format(COLUMN_FORMAT, k)) + (String.format(RESULT_FORMAT, v)) +"\n";
 
     }
 

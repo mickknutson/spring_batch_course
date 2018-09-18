@@ -100,6 +100,10 @@ public class JobTests {
 //        return batchDao.logJobExecutions();
 
         String results = batchDao.logJobExecutions(jobExecution);
+        batchDao.logJobExecutions();
+        batchDao.logStepExecutions();
+        batchDao.countJobExecutions();
+        batchDao.countJobInstances();
 
         return results;
     }

@@ -11,7 +11,7 @@
  - **[Core Concepts](https://github.com/mickknutson/spring_batch_course/tree/master/StudentWork/code/spring_batch_section_core/)**
  - **[Inputs](https://github.com/mickknutson/spring_batch_course/tree/master/StudentWork/code/spring_batch_section_inputs/)**
  - **[Outputs](https://github.com/mickknutson/spring_batch_course/tree/master/StudentWork/code/spring_batch_section_outputs/)**
- - **[Flows](https://github.com/mickknutson/spring_batch_course/tree/master/StudentWork/code/spring_batch_section_flows/)**
+ - **[Job Flow](https://github.com/mickknutson/spring_batch_course/tree/master/StudentWork/code/spring_batch_section_flow/)**
  - **[Processing Items](https://github.com/mickknutson/spring_batch_course/tree/master/StudentWork/code/spring_batch_section_processing/)**
  - **[Error Handling](https://github.com/mickknutson/spring_batch_course/tree/master/StudentWork/code/spring_batch_section_error_handling/)**
  - **[Orchestration](https://github.com/mickknutson/spring_batch_course/tree/master/StudentWork/code/spring_batch_section_orchestration/)**

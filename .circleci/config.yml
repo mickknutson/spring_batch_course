@@ -92,27 +92,46 @@ jobs:
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
       - run:
-          name: Verify the SECTION CORE with codeQuality
-          command: mvn verify -PcodeQuality
+          name: Verify the SECTION CORE module
+          command: mvn verify
           working_directory: ./StudentWork/code/spring_batch_section_core
+
+##---------------------------------------------------------------------------##
+  build_inputts:
+
+    working_directory: ~/tmp/workspace
+
+    environment:
+      _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
+      BASE_DIR: "./StudentWork/code"
+    
+    docker:
+      - image: circleci/openjdk:8-jdk-browsers
+        environment:
+          BASE_DIR: "./StudentWork/code"
+          _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
+
+    steps:
+      - checkout
       - run:
-          name: Save test results
+          name: Initialize
           command: |
             set -xu
-            find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/junit/ \;
-          when: always
+            echo $CIRCLE_WORKING_DIRECTORY
+            mkdir -p ~/junit/
+#      - attach_workspace:
+#          at: /root/project
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "./StudentWork/code/pom.xml" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
       - run:
-          name: Save Coverage results
-          command: |
-            set -xu
-            find . -type f -regex ".*/target/jacoco/jacoco.xml" -exec cp {} ~/junit/ \;
-            bash <(curl -s https://codecov.io/bash)
-      - store_test_results:
-          name: Storing test results
-          path: ~/junit
-      - store_artifacts:
-          name: Storing Artifacts
-          path: ~/junit
+          name: Verify the SECTION INPUTS Module
+          command: mvn verify
+          working_directory: ./StudentWork/code/spring_batch_section_inputs
+
 
 ##---------------------------------------------------------------------------##
   build_flows:
@@ -146,27 +165,10 @@ jobs:
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
       - run:
-          name: Verify the SECTION CORE with codeQuality
-          command: mvn verify -PcodeQuality
+          name: Verify the SECTION FLOWS module
+          command: mvn verify
           working_directory: ./StudentWork/code/spring_batch_section_flow
-      - run:
-          name: Save test results
-          command: |
-            set -xu
-            find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/junit/ \;
-          when: always
-      - run:
-          name: Save Coverage results
-          command: |
-            set -xu
-            find . -type f -regex ".*/target/jacoco/jacoco.xml" -exec cp {} ~/junit/ \;
-            bash <(curl -s https://codecov.io/bash)
-      - store_test_results:
-          name: Storing test results
-          path: ~/junit
-      - store_artifacts:
-          name: Storing Artifacts
-          path: ~/junit
+
 
 #spring_batch_section_orchestration
 ##---------------------------------------------------------------------------##
@@ -199,8 +201,8 @@ jobs:
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
       - run:
-          name: Verify the SECTION CORE with codeQuality
-          command: mvn verify -PcodeQuality
+          name: Verify the SECTION ORCHESTRATION module
+          command: mvn verify
           working_directory: ./StudentWork/code/spring_batch_section_orchestration
 
 ##---------------------------------------------------------------------------##
@@ -233,21 +235,9 @@ jobs:
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
       - run:
-          name: Verify the SECTION CORE with codeQuality
-          command: mvn verify -PcodeQuality
+          name: Verify the SECTION SCALING module
+          command: mvn verify
           working_directory: ./StudentWork/code/spring_batch_section_scaling
-      - run:
-          name: Save test results
-          command: |
-            set -xu
-            find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/junit/ \;
-          when: always
-      - run:
-          name: Save Coverage results
-          command: |
-            set -xu
-            find . -type f -regex ".*/target/jacoco/jacoco.xml" -exec cp {} ~/junit/ \;
-            bash <(curl -s https://codecov.io/bash)
 
 
 ##---------------------------------------------------------------------------##
