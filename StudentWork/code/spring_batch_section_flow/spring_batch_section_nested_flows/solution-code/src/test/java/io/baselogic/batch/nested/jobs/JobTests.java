@@ -1,5 +1,6 @@
 package io.baselogic.batch.nested.jobs;
 
+import io.baselogic.batch.common.config.BatchDao;
 import io.baselogic.batch.nested.config.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;

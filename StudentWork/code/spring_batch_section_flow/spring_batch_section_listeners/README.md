@@ -19,6 +19,9 @@ Demonstration of the ChunkListener
 
 ### *NOTES*
 
+Listeners do not register a record in the Job nor Step Context.
+
+
 **Investigate:**
 
 - [ ] Spring Batch Listener Support Classes

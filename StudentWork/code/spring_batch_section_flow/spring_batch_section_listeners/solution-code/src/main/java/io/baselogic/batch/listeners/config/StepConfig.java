@@ -61,7 +61,7 @@ public class StepConfig {
 
     @Bean
     public ItemReader<String> reader() {
-        return new ListItemReader<>(Arrays.asList("A", "B", "C", "ONE", "TWO", "THREE"));
+        return new ListItemReader<>(Arrays.asList("A", "B", "C", "D", "ONE", "TWO", "THREE", "FOUR"));
     }
 
 

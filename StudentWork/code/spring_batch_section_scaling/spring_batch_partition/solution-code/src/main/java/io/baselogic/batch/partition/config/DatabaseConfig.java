@@ -1,5 +1,6 @@
 package io.baselogic.batch.partition.config;
 
+import io.baselogic.batch.common.config.BatchDao;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

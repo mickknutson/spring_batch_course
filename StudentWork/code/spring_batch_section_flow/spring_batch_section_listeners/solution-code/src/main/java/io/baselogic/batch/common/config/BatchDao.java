@@ -109,6 +109,8 @@ public class BatchDao {
         sb.append( printRow("EXIT_CODE", ""+jobExecution.getExitStatus().getExitCode()));
         sb.append( printRow("EXIT_MESSAGE", ""+jobExecution.getExitStatus().getExitDescription()));
 
+        sb.append( printRow("JOB_PARAMETERS", ""+jobExecution.getJobParameters()) );
+
         sb.append(LINE).append("\n");
         sb.append("\n\n");
 

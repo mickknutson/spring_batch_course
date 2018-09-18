@@ -1,5 +1,6 @@
 package io.baselogic.batch.partition.jobs;
 
+import io.baselogic.batch.common.config.BatchDao;
 import io.baselogic.batch.partition.config.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
@@ -104,8 +105,6 @@ public class JobTests {
      * @return
      */
     protected String logJobExecution(JobExecution jobExecution) {
-
-//        return batchDao.logJobExecutions();
 
         String results = batchDao.logJobExecutions(jobExecution);
 
