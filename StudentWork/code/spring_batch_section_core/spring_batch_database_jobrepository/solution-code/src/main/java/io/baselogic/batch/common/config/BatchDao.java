@@ -26,33 +26,31 @@ public class BatchDao {
     private static final String RESULT_FORMAT = "| %1$-30s |";
 
 
-    private static String JOB_EXECUTION_ID = "JOB_EXECUTION_ID";
-    private static String JOB_INSTANCE_ID = "JOB_INSTANCE_ID";
-    private static String JOB_NAME = "JOB_NAME";
+    private static final String JOB_EXECUTION_ID = "JOB_EXECUTION_ID";
+    private static final String JOB_INSTANCE_ID = "JOB_INSTANCE_ID";
+    private static final String JOB_NAME = "JOB_NAME";
 
 
-    private static String STEP_EXECUTION_ID = "STEP_EXECUTION_ID";
-    private static String STEP_NAME = "STEP_NAME";
+    private static final String STEP_EXECUTION_ID = "STEP_EXECUTION_ID";
+    private static final String STEP_NAME = "STEP_NAME";
 
 
-    private static String START_TIME = "START_TIME";
-    private static String END_TIME = "END_TIME";
-    private static String STATUS = "STATUS";
-    private static String EXIT_CODE = "EXIT_CODE";
-    private static String EXIT_STATUS = "EXIT_STATUS";
-    private static String EXIT_MESSAGE = "EXIT_MESSAGE";
-    private static String JOB_EXECUTION_PARAMS = "BATCH_JOB_EXECUTION_PARAMS";
+    private static final String START_TIME = "START_TIME";
+    private static final String END_TIME = "END_TIME";
+    private static final String STATUS = "STATUS";
+    private static final String EXIT_CODE = "EXIT_CODE";
+    private static final String EXIT_STATUS = "EXIT_STATUS";
+    private static final String EXIT_MESSAGE = "EXIT_MESSAGE";
+    private static final String JOB_EXECUTION_PARAMS = "BATCH_JOB_EXECUTION_PARAMS";
 
-    private static String COMMIT_COUNT = "COMMIT_COUNT";
-    private static String READ_COUNT = "READ_COUNT";
-    private static String WRITE_COUNT = "WRITE_COUNT";
-    private static String LAST_UPDATED = "LAST_UPDATED";
-
-
+    private static final String COMMIT_COUNT = "COMMIT_COUNT";
+    private static final String READ_COUNT = "READ_COUNT";
+    private static final String WRITE_COUNT = "WRITE_COUNT";
+    private static final String LAST_UPDATED = "LAST_UPDATED";
 
 
-    private static String COLUMN = "COLUMN";
-    private static String RESULT = "RESULT";
+    private static final String COLUMN = "COLUMN";
+    private static final String RESULT = "RESULT";
 
 
 

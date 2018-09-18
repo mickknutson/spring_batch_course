@@ -10,7 +10,7 @@ public class ConsoleItemWriter<T> implements ItemWriter<T> {
 
     @Override
     public void write(List<? extends T> items) throws Exception {
-        items.forEach((i) -> {
+        items.forEach(i -> {
             log.info("\t Item: {}", i);
         });
     }
