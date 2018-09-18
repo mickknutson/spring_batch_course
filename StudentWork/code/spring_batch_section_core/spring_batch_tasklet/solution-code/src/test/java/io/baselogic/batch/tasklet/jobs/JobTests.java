@@ -103,15 +103,13 @@ public class JobTests {
 
     @Test
     public void test_tasklet_job__all_steps() throws Exception {
-//        JobExecution jobExecution = jobLauncherTestUtils.launchJob();
         JobExecution jobExecution = jobLauncherTestUtils.launchJob(getJobParameters());
 
-        jobExecution.getStepExecutions().forEach(stepExecution -> {
-            log.info("Processed: " + stepExecution);
+        log.info(logJobExecution(jobExecution));
 
-            if (stepExecution.getStepName().equals("stepA")) {
-                assertThat(stepExecution.getCommitCount()).isEqualTo(1);
-            }
+        jobExecution.getStepExecutions().forEach(stepExecution -> {
+            log.info(logStepExecution(stepExecution));
+
         });
 
         assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
@@ -159,13 +157,12 @@ public class JobTests {
      */
     protected String logJobExecution(JobExecution jobExecution) {
 
-//        return batchDao.logJobExecutions();
-
         String results = batchDao.logJobExecutions(jobExecution);
         batchDao.logJobExecutions();
         batchDao.logStepExecutions();
         batchDao.countJobExecutions();
         batchDao.countJobInstances();
+        batchDao.consoleLine('m');
 
         return results;
     }

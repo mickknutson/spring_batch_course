@@ -78,6 +78,8 @@ public class JobTests {
         jobLauncherTestUtils.setJob(job);
         JobExecution jobExecution = jobLauncherTestUtils.launchJob();
 
+        log.info(logJobExecution(jobExecution));
+
         if(log.isDebugEnabled()) {
 
             log.debug(logJobExecution(jobExecution));
@@ -98,6 +100,8 @@ public class JobTests {
     public void test__continueOnExitStatusJob__all_steps() throws Exception {
         jobLauncherTestUtils.setJob(continueOnExitStatusJob);
         JobExecution jobExecution = jobLauncherTestUtils.launchJob();
+
+        log.info(logJobExecution(jobExecution));
 
         if(log.isDebugEnabled()) {
 
@@ -174,13 +178,12 @@ public class JobTests {
      */
     protected String logJobExecution(JobExecution jobExecution) {
 
-//        return batchDao.logJobExecutions();
-
         String results = batchDao.logJobExecutions(jobExecution);
         batchDao.logJobExecutions();
         batchDao.logStepExecutions();
         batchDao.countJobExecutions();
         batchDao.countJobInstances();
+        batchDao.consoleLine('m');
 
         return results;
     }

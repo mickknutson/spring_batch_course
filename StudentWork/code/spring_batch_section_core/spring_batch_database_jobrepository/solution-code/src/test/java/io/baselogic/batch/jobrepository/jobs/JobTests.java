@@ -102,8 +102,6 @@ public class JobTests {
 
         log.info(logJobExecution(jobExecution));
 
-        log.info(logJobExecution(jobExecution));
-
         if(log.isDebugEnabled()) {
 
             jobExecution.getStepExecutions().forEach(stepExecution -> {
@@ -134,13 +132,12 @@ public class JobTests {
      */
     protected String logJobExecution(JobExecution jobExecution) {
 
-//        return batchDao.logJobExecutions();
-
         String results = batchDao.logJobExecutions(jobExecution);
         batchDao.logJobExecutions();
         batchDao.logStepExecutions();
         batchDao.countJobExecutions();
         batchDao.countJobInstances();
+        batchDao.consoleLine('m');
 
         return results;
     }

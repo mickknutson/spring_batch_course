@@ -107,11 +107,11 @@ public class JobTests {
     protected String logJobExecution(JobExecution jobExecution) {
 
         String results = batchDao.logJobExecutions(jobExecution);
-
         batchDao.logJobExecutions();
         batchDao.logStepExecutions();
         batchDao.countJobExecutions();
         batchDao.countJobInstances();
+        batchDao.consoleLine('m');
 
         return results;
     }

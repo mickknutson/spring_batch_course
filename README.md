@@ -55,11 +55,28 @@ You will learn how Spring Batch can integrate with diverse enterprise technologi
 *   Anyone who wants to learn Spring Batch
 
 ---
+
+### *Sections in this course:*
+
+ - **[Core Concepts](https://github.com/mickknutson/spring_batch_course/tree/master/StudentWork/code/spring_batch_section_core/)**
+ - **[Inputs](https://github.com/mickknutson/spring_batch_course/tree/master/StudentWork/code/spring_batch_section_inputs/)**
+ - **[Outputs](https://github.com/mickknutson/spring_batch_course/tree/master/StudentWork/code/spring_batch_section_outputs/)**
+ - **[Job Flow](https://github.com/mickknutson/spring_batch_course/tree/master/StudentWork/code/spring_batch_section_flow/)**
+ - **[Processing Items](https://github.com/mickknutson/spring_batch_course/tree/master/StudentWork/code/spring_batch_section_processing/)**
+ - **[Error Handling](https://github.com/mickknutson/spring_batch_course/tree/master/StudentWork/code/spring_batch_section_error_handling/)**
+ - **[Orchestration](https://github.com/mickknutson/spring_batch_course/tree/master/StudentWork/code/spring_batch_section_orchestration/)**
+ - **[Job Partitioning and Scaling](https://github.com/mickknutson/spring_batch_course/tree/master/StudentWork/code/spring_batch_section_scaling/)**
+ - **Summary**
+
+
+---
+
 ## **Source Code Root**
 The root of the labs and solutions is located:
 https://github.com/mickknutson/spring_batch_course/tree/master/StudentWork/code
 
 ---
+
 ## **Available Soon**
 On Udemy
 	https://www.udemy.com/user/mickknutson/
@@ -78,7 +95,8 @@ On Udemy
 
 
 ---
- ## Project Status
+
+## Project Status
  
 ![https://sonarcloud.io/images/project_badges/sonarcloud-orange.svg](https://sonarcloud.io/images/project_badges/sonarcloud-orange.svg)
 

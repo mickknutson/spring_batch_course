@@ -103,6 +103,7 @@ public class JobTests {
         batchDao.logStepExecutions();
         batchDao.countJobExecutions();
         batchDao.countJobInstances();
+        batchDao.consoleLine('m');
 
         return results;
     }

@@ -1,6 +1,5 @@
 package io.baselogic.batch;
 
-import io.baselogic.batch.Application;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;

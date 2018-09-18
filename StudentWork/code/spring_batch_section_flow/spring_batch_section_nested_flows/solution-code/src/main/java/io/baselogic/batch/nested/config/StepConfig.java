@@ -1,9 +1,7 @@
 package io.baselogic.batch.nested.config;
 
 import io.baselogic.batch.nested.steps.EchoTasklet;
-import io.baselogic.batch.nested.steps.StatusTasklet;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
@@ -80,13 +78,6 @@ public class StepConfig {
     public Step stepC(StepBuilderFactory stepBuilderFactory) {
         return stepBuilderFactory.get("stepC")
                 .tasklet(new EchoTasklet("** (child) STEP C")).build();
-    }
-
-    @Bean
-    public Step failedStep(StepBuilderFactory stepBuilderFactory) {
-        return stepBuilderFactory.get("failedStep")
-                .tasklet(new StatusTasklet(ExitStatus.FAILED))
-                .build();
     }
 
 
