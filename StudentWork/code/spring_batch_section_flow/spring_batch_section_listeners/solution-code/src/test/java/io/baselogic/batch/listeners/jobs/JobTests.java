@@ -69,16 +69,10 @@ public class JobTests {
 
         log.info(logJobExecution(jobExecution));
 
-        if(log.isDebugEnabled()) {
+        jobExecution.getStepExecutions().forEach(stepExecution -> {
+            log.info(logStepExecution(stepExecution));
 
-            jobExecution.getStepExecutions().forEach(stepExecution -> {
-                log.debug(logStepExecution(stepExecution));
-
-            });
-
-            // List all steps from the database:
-            log.debug(batchDao.logStepExecutions());
-        }
+        });
 
         assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
         assertThat(jobExecution.getStepExecutions().size()).isEqualTo(1);

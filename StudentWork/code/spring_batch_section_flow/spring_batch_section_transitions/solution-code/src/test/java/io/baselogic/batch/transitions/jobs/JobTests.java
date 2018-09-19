@@ -80,15 +80,10 @@ public class JobTests {
 
         log.info(logJobExecution(jobExecution));
 
-        if(log.isDebugEnabled()) {
+        jobExecution.getStepExecutions().forEach(stepExecution -> {
+            log.info(logStepExecution(stepExecution));
 
-            log.debug(logJobExecution(jobExecution));
-
-            jobExecution.getStepExecutions().forEach(stepExecution -> {
-                log.debug(logStepExecution(stepExecution));
-
-            });
-        }
+        });
 
         assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
         assertThat(jobExecution.getStepExecutions().size()).isEqualTo(4);
@@ -103,15 +98,10 @@ public class JobTests {
 
         log.info(logJobExecution(jobExecution));
 
-        if(log.isDebugEnabled()) {
+        jobExecution.getStepExecutions().forEach(stepExecution -> {
+            log.info(logStepExecution(stepExecution));
 
-            log.debug(logJobExecution(jobExecution));
-
-            jobExecution.getStepExecutions().forEach(stepExecution -> {
-                log.debug(logStepExecution(stepExecution));
-
-            });
-        }
+        });
 
         assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
         assertThat(jobExecution.getStepExecutions().size()).isEqualTo(5);
