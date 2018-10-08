@@ -20,6 +20,10 @@ public class Application {
         SpringApplication.run(Application.class, args);
     }
 
+
+    // FIXME: Need to make the others like this:
+    private static final String LINE = "+" + new String(new char[78]).replace('\0', '-') + "+";
+
     //@Profile("trace")
     @Bean
     public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
@@ -27,20 +31,22 @@ public class Application {
 
             StringBuilder sb = new StringBuilder();
 
-            sb.append("\n\n----------------------------------------");
-            sb.append("Let's inspect the beans provided by Spring Boot:\n");
-            sb.append("--------------------------------------------");
+            sb.append("\n\n").append(LINE).append("\n");
+            sb.append("Let's inspect the beans provided by Spring Boot:");
+            sb.append("\n").append(LINE).append("\n\n");
 
             String[] beanNames = ctx.getBeanDefinitionNames();
             Arrays.sort(beanNames);
             for (String beanName : beanNames) {
-                sb.append(beanName);
+                sb.append(beanName).append("\n");
             }
 
-            sb.append("----------------------------------------\n\n");
-            log.trace(sb.toString().replaceAll("[\r\n]",""));
+            sb.append("\n").append(LINE).append("\n");
+            sb.append(LINE).append("\n");
+            sb.append(LINE).append("\n\n");
+
+            log.info(sb.toString());
 
         };
     }
-
 } // The End...

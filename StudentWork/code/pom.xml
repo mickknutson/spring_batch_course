@@ -35,9 +35,14 @@
         <spotbugs.version>3.1.6</spotbugs.version>
 
         <!-- Spring properties -->
+        <spring-boot.version>2.1.0.M4</spring-boot.version>
+        <spring-boot-starter-batch.version>${spring-boot.version}</spring-boot-starter-batch.version>
+        <spring-boot-starter-integration.version>${spring-boot.version}</spring-boot-starter-integration.version>
+
         <spring-cloud-netflix.version>2.0.1.RELEASE</spring-cloud-netflix.version>
         <spring-boot-admin.version>2.0.2</spring-boot-admin.version>
         <!--<spring-cloud.version>Finchley.RELEASE</spring-cloud.version>-->
+        <!--<spring-cloud.version>Finchley.BUILD-SNAPSHOT</spring-cloud.version>-->
         <spring-cloud.version>Finchley.SR1</spring-cloud.version>
 
     </properties>
@@ -45,7 +50,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.0.M3</version>
+        <version>2.1.0.M4</version>
     </parent>
 
     <modules>
@@ -58,6 +63,12 @@
         <module>spring_batch_section_orchestration</module>
         <module>spring_batch_section_scaling</module>
     </modules>
+
+    <scm>
+        <connection>scm:git:scm:git:git://github.com/mickknutson/spring_batch_course.git</connection>
+        <developerConnection>scm:git:scm:git:ssh://git@github.com:mickknutson/spring_batch_course.git</developerConnection>
+        <url>https://github.com/mickknutson/spring_batch_course</url>
+    </scm>
 
     <build>
         <pluginManagement>
@@ -220,10 +231,10 @@
 
     </dependencies>
 
-    <!--
+    <!--=======================================================================
         to run reports:
         mvn site
-    -->
+    ========================================================================-->
     <reporting>
         <plugins>
 
@@ -314,9 +325,13 @@
 
     <profiles>
 
-        <!--
-        mvn clean verify -PcodeQuality
-        -->
+        <!--=======================================================================
+            to run reports:
+            mvn clean verify -PcodeQuality
+
+            to run SITE reports:
+            mvn clean site:site -PcodeQuality
+        ========================================================================-->
         <profile>
             <id>codeQuality</id>
             <!--
@@ -329,7 +344,8 @@
             </activation>
             <properties>
                 <!--
-                    log in color, if terminal supports ANSI escape sequences
+                    log in color, if terminal supports ANSI escape sequences1lp
+                    [']koaq
                     see: https://confluence.atlassian.com/clover/using-test-optimization-in-maven-170492714.html
                   -->
                 <ansi.color>true</ansi.color>
@@ -338,6 +354,12 @@
             <!-- Code Quality Reporting -->
             <reporting>
                 <plugins>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-report-plugin</artifactId>
+                        <version>LATEST</version>
+                    </plugin>
 
                     <plugin>
                         <groupId>com.github.spotbugs</groupId>
@@ -358,9 +380,10 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-jxr-plugin</artifactId>
-                        <version>2.5</version>
+                        <version>3.0.0</version>
                     </plugin>
                 </plugins>
+
             </reporting>
 
             <!-- Code Quality Execution -->
@@ -505,7 +528,7 @@
                             <excludeFilterFile>${session.executionRootDirectory}/spotbugs-security-exclude.xml</excludeFilterFile>-->
                             <xmlOutput>true</xmlOutput>
                             <!-- Optional directory to put spotbugs xdoc xml report -->
-                            <!--<xmlOutputDirectory>target/site</xmlOutputDirectory>-->
+                            <xmlOutputDirectory>target/site</xmlOutputDirectory>
                             <plugins>
                                 <plugin>
                                     <groupId>com.h3xstream.findsecbugs</groupId>

@@ -21,6 +21,32 @@
 ---
 
 
+## *H2 Admin Console*
+
+
+**The H2 Web Admin console is used in each module**
+
+To use:
+
+Run the module:
+
+    mvn spring-boot:run
+
+Then open a browser to:
+
+    http://localhost:8080/admin/h2
+
+Login to the admin console with the following credentials:
+
+    Driver Class: org.h2.Driver
+    JDBC URL: jdbc:h2:mem:testdb
+    User Name: sa
+    Password: [null]
+
+
+---
+
+
 ## *NOTES*
 
 

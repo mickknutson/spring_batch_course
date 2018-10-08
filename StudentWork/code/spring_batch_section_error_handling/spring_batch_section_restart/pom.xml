@@ -3,23 +3,23 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.baselogic.batch</groupId>
-    <artifactId>spring_batch_section_error_handling</artifactId>
+    <groupId>com.springclass.batch</groupId>
+    <artifactId>spring_batch_section_restart</artifactId>
     <version>1.0.0.RELEASE</version>
     <packaging>pom</packaging>
 
-    <name>BATCH SECTION ERROR HANDLING</name>
-    <description>${project.name} - ${project.artifactId}</description>
+    <name>${project.artifactId}</name>
+    <description>${project.artifactId}</description>
 
     <parent>
         <groupId>com.baselogic.batch</groupId>
-        <artifactId>spring_batch_parent</artifactId>
+        <artifactId>spring_batch_section_error_handling</artifactId>
         <version>1.0.0.RELEASE</version>
     </parent>
 
     <modules>
-        <module>spring_batch_section_restart</module>
-        <module>spring_batch_section_retry</module>
+        <!--<module>lab-code</module>-->
+        <module>solution-code</module>
     </modules>
 
 </project>
