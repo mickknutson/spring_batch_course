@@ -5,10 +5,16 @@ import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
+//---------------------------------------------------------------------------//
+// Lab: add @EnableBatchProcessing
 @EnableBatchProcessing
+
+
+@Configuration
 public class TestConfig {
 
+    //-------------------------------------------------------------------//
+    // Lab: Review JobLauncherTestUtils
     @Bean
     public JobLauncherTestUtils jobLauncherTestUtils(){
         return new JobLauncherTestUtils();

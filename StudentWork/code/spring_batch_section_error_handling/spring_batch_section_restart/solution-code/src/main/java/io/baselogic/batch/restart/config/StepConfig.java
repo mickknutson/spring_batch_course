@@ -1,5 +1,6 @@
 package io.baselogic.batch.restart.config;
 
+import io.baselogic.batch.restart.steps.EchoTasklet;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.StepContribution;
@@ -34,6 +35,15 @@ public class StepConfig {
     public Step stepB(StepBuilderFactory stepBuilderFactory) {
         return stepBuilderFactory.get("stepB")
                 .tasklet(restartTasklet())
+                .build();
+    }
+
+
+    @Bean
+    public Step limitedRestartStep(StepBuilderFactory stepBuilderFactory) {
+        return stepBuilderFactory.get("limitedRestartStep")
+                .tasklet(restartTasklet())
+                .startLimit(3)
                 .build();
     }
 

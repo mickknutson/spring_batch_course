@@ -7,7 +7,8 @@ import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 
 @Slf4j
-public class EchoTasklet implements Tasklet{
+@SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
+public class EchoTasklet implements Tasklet {
 
     private String message;
 
@@ -23,14 +24,17 @@ public class EchoTasklet implements Tasklet{
     @Override
     public RepeatStatus execute(final StepContribution stepContribution,
                                 final ChunkContext chunkContext) throws Exception {
-        log.info("--> Processing STEP [{}] !", message);
-        log.info("{} has been executed on thread {}",
+
+        log.info("==> Step [{}] has been executed on thread {}",
                 chunkContext.getStepContext().getStepName(),
                 Thread.currentThread().getName());
+        log.info("Job Parameter 'message': [{}]", message);
+
+//        chunkContext.getStepContext().getStepExecutionContext().put("stepKey",
+//                "stepKeyValue."+chunkContext.getStepContext().getStepName());
 
         return RepeatStatus.FINISHED;
     }
 
-    //---------------------------------------------------------------------------//
 
 } // The End...

@@ -51,6 +51,7 @@ public class JobTests {
 
     public JobParameters getJobParameters() {
         return new JobParametersBuilder()
+                .addString("message", "JobParameter message")
                 .addLong("commit.interval", 1L)
                 .addLong("timestamp", System.currentTimeMillis())
                 .toJobParameters();

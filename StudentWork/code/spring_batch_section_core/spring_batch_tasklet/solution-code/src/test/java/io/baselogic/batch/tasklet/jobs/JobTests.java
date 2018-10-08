@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
 import org.springframework.batch.core.*;
 import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.batch.test.JobRepositoryTestUtils;
+import org.springframework.batch.test.MetaDataInstanceFactory;
 import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -53,6 +54,7 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 @SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
 public class JobTests {
 
+    private static final String LINE = "+" + new String(new char[40]).replace('\0', '-') + "+";
 
     @Autowired
     private JobLauncherTestUtils jobLauncherTestUtils;
@@ -80,18 +82,17 @@ public class JobTests {
 
     public JobParameters getJobParameters() {
         // given
-        return jobLauncherTestUtils.getUniqueJobParameters();
+//        return jobLauncherTestUtils.getUniqueJobParameters();
 
-//        return new JobParametersBuilder()
-//                .addLong("commit.interval", 2L)
-//                .addLong("timestamp", System.currentTimeMillis())
-//                .toJobParameters();
+        return new JobParametersBuilder()
+                .addString("message", "JobParameter message")
+                .toJobParameters();
 
     }
 
     /*public StepExecution getStepExecution() {
         StepExecution execution = MetaDataInstanceFactory.createStepExecution();
-        execution.getExecutionContext().putString("message", "an amazing test message");
+        execution.getExecutionContext().putString("message", "StepExecution message");
         return execution;
     }*/
 
@@ -103,26 +104,30 @@ public class JobTests {
 
     @Test
     public void test_tasklet_job__all_steps() throws Exception {
+        log.info(LINE);
+
         JobExecution jobExecution = jobLauncherTestUtils.launchJob(getJobParameters());
 
-        log.info(logJobExecution(jobExecution));
-
-        jobExecution.getStepExecutions().forEach(stepExecution -> {
-            log.info(logStepExecution(stepExecution));
-
-        });
+//        log.info(logJobExecution(jobExecution));
+//
+//        jobExecution.getStepExecutions().forEach(stepExecution -> {
+//            log.info(logStepExecution(stepExecution));
+//
+//        });
 
         assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
         assertThat(jobExecution.getStepExecutions().size()).isEqualTo(4);
 
-        log.info(logJobExecution(jobExecution));
+//        log.info(logJobExecution(jobExecution));
+
+        log.info(LINE);
     }
 
 
     //---------------------------------------------------------------------------//
 
 
-    @Test
+//    @Test
     public void test_echo_job__stepA() throws Exception {
 
         JobExecution jobExecution = jobLauncherTestUtils.launchStep("stepA");

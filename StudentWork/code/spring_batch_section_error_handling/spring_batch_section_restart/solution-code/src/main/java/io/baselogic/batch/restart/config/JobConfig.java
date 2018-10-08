@@ -16,12 +16,26 @@ public class JobConfig {
     //---------------------------------------------------------------------------//
     // Jobs
 
+
     @Bean("job")
     public Job job(JobBuilderFactory jobBuilderFactory,
                    Step stepA,
                    Step stepB
     ) {
-        return jobBuilderFactory.get("job")
+        return jobBuilderFactory.get("notRestartableJob")
+//                .preventRestart()
+                .start(stepA)
+                .next(stepB)
+                .build();
+    }
+
+
+    @Bean("startLimitJob")
+    public Job startLimitJob(JobBuilderFactory jobBuilderFactory,
+                   Step stepA,
+                   Step stepB
+    ) {
+        return jobBuilderFactory.get("startLimitJob")
                 .start(stepA)
                 .next(stepB)
                 .build();

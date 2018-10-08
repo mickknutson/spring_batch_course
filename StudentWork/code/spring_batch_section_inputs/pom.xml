@@ -18,7 +18,7 @@
     </parent>
 
     <modules>
-        <!--<module>spring_batch_TBD</module>-->
+        <module>file_input</module>
     </modules>
 
 </project>

@@ -5,10 +5,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.JobStepBuilder;
 import org.springframework.batch.core.step.builder.StepBuilder;
+import org.springframework.batch.core.step.tasklet.Tasklet;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -84,6 +87,20 @@ public class StepConfig {
     //---------------------------------------------------------------------------//
     // Tasklets
 
+    /**
+     * Revisit:
+     * @Value("#{stepExecutionContext['stepKey']}")
+     * vs
+     * @Value("#{jobParameters[message]}")
+     *
+     * @param message
+     * @return
+     */
+    @Bean
+    @StepScope
+    public Tasklet echoTasklet(@Value("#{jobParameters['message']}") String message) {
+        return new EchoTasklet(message);
+    }
 
 
     //---------------------------------------------------------------------------//

@@ -13,10 +13,11 @@ import org.springframework.context.annotation.Configuration;
 @SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
 public class JobConfig {
 
-    // CommandLineJobRunner
-
     //---------------------------------------------------------------------------//
     // Jobs
+
+    //---------------------------------------------------------------------------//
+    // LAB: Create Job
 
     @Bean
     public Job job(JobBuilderFactory jobBuilderFactory, Step step1) {

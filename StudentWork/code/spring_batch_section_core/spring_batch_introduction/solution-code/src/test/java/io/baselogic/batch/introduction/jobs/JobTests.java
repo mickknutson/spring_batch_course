@@ -18,30 +18,16 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
-
+//---------------------------------------------------------------------------//
+// Lab: add @TestExecutionListeners
 @TestExecutionListeners({
         DependencyInjectionTestExecutionListener.class,
         JobScopeTestExecutionListener.class,
         StepScopeTestExecutionListener.class
 })
-@SpringBootTest
 
-
-/*
-// NOTE: Not shure why this config does not work:
-//@SpringBatchTest
-
-GET THIS ERROR:
----------------
-2018-09-17 19:01:40.868  WARN   --- [           main] o.s.c.support.GenericApplicationContext  : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'jobRepositoryTestUtils': Unsatisfied dependency expressed through method 'setDataSource' parameter 0; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'javax.sql.DataSource' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
-2018-09-17 19:01:40.872 ERROR   --- [           main] o.s.test.context.TestContextManager      : Caught exception while allowing TestExecutionListener [org.springframework.test.context.support.DependencyInjectionTestExecutionListener@21de60b4] to prepare test instance [io.baselogic.batch.introduction.jobs.JobTests@4f704591]
- */
-
-
-
-
-@RunWith(SpringRunner.class)
+//---------------------------------------------------------------------------//
+// Lab: add @ContextConfiguration
 @ContextConfiguration(classes = {
         TestConfig.class,
         DatabaseConfig.class,
@@ -50,6 +36,9 @@ GET THIS ERROR:
         StepConfig.class
 })
 
+
+@SpringBootTest
+@RunWith(SpringRunner.class)
 @Slf4j
 @SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
 public class JobTests {
@@ -61,22 +50,24 @@ public class JobTests {
     // Jobs
 
 
-    //---------------------------------------------------------------------------//
-
-
-
-    //---------------------------------------------------------------------------//
-    //---------------------------------------------------------------------------//
-    //---------------------------------------------------------------------------//
-
-
     @Test
     public void test_hello_world_job() throws Exception {
 
+
+        //-------------------------------------------------------------------//
+        // Lab: Launch Job
         JobExecution jobExecution = jobLauncherTestUtils.launchJob();
 
+        //-------------------------------------------------------------------//
+        // Lab: Verify Exit Status
         assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
+
+
+        //-------------------------------------------------------------------//
+        // Lab: Verify Step Executions
         assertThat(jobExecution.getStepExecutions().size()).isEqualTo(1);
+
+
     }
 
 
