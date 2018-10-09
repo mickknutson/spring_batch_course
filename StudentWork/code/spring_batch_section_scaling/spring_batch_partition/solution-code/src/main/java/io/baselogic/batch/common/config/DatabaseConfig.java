@@ -1,4 +1,4 @@
-package io.baselogic.batch.listeners.config;
+package io.baselogic.batch.common.config;
 
 import io.baselogic.batch.common.config.BatchDao;
 import lombok.extern.slf4j.Slf4j;

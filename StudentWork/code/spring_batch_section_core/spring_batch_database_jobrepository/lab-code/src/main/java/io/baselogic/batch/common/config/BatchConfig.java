@@ -22,42 +22,23 @@ public class BatchConfig extends DefaultBatchConfigurer {
 
     //---------------------------------------------------------------------------//
     // Lab: Autowire transactionManager
-    @Autowired
-    private PlatformTransactionManager transactionManager;
+
 
 
     //---------------------------------------------------------------------------//
     // Lab: Autowire DataSource
-    @Autowired
-    private DataSource dataSource;
+
 
 
     //---------------------------------------------------------------------------//
     // Lab: Create JobLauncher Bean
-    @Bean
-    @Override
-    public JobLauncher createJobLauncher() throws Exception {
-        SimpleJobLauncher jobLauncher = new SimpleJobLauncher();
-        jobLauncher.setJobRepository(createJobRepository());
-        jobLauncher.afterPropertiesSet();
-        return jobLauncher;
-    }
+
+
 
 
     //---------------------------------------------------------------------------//
     // Lab: Create JobRepository Bean
-    @Bean
-    @Override
-    public JobRepository createJobRepository() throws Exception {
-        JobRepositoryFactoryBean factory = new JobRepositoryFactoryBean();
-        factory.setDataSource(dataSource);
-        factory.setTransactionManager(transactionManager);
-        factory.setIsolationLevelForCreate("ISOLATION_SERIALIZABLE");
-        factory.setTablePrefix("BATCH_");
-        factory.setMaxVarCharLength(1_000);
-        factory.afterPropertiesSet();
-        return factory.getObject();
-    }
+
 
 
 } // The End...

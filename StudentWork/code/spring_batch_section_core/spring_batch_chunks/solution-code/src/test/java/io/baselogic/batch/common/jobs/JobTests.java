@@ -88,9 +88,9 @@ public class JobTests {
 
         jobExecution.getStepExecutions().forEach(stepExecution -> {
 
-            assertThat(stepExecution.getReadCount()).isEqualTo(10);
-            assertThat(stepExecution.getWriteCount()).isEqualTo(10);
-            assertThat(stepExecution.getCommitCount()).isEqualTo(6);
+            assertThat(stepExecution.getReadCount()).isEqualTo(19);
+            assertThat(stepExecution.getWriteCount()).isEqualTo(19);
+            assertThat(stepExecution.getCommitCount()).isEqualTo(10);
 
         });
 

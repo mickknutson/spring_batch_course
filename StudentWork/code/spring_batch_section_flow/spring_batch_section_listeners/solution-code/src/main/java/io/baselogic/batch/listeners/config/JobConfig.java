@@ -14,9 +14,9 @@ import org.springframework.context.annotation.Configuration;
 @SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
 public class JobConfig {
 
-    //---------------------------------------------------------------------------//
-    // Jobs
 
+    //---------------------------------------------------------------------------//
+    // Lab: Create @BeforeRead and log step details
     @Bean
     public Job job(JobBuilderFactory jobBuilderFactory,
                    JobListener jobListener,

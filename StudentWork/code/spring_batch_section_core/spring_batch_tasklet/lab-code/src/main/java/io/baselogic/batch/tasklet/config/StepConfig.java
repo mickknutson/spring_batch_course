@@ -20,73 +20,25 @@ public class StepConfig {
 
     //---------------------------------------------------------------------------//
     // Lab: Create Step's and Autowire Tasklets
-    @Bean
-    public Step noOpStep(StepBuilderFactory stepBuilderFactory,
-                         Tasklet noOpTasklet) {
-        return stepBuilderFactory.get("noOpStep")
-                .tasklet(noOpTasklet)
-                .build();
-    }
 
-    @Bean
-    public Step stepA(StepBuilderFactory stepBuilderFactory,
-                      Tasklet echoTasklet) {
-        return stepBuilderFactory.get("stepA")
-                .tasklet(echoTasklet)
-                .build();
-    }
 
-    @Bean
-    public Step stepB(StepBuilderFactory stepBuilderFactory,
-                      Tasklet echoTasklet) {
-        return stepBuilderFactory.get("stepB")
-                .tasklet(echoTasklet)
-                .build();
-    }
-
-    @Bean
-    public Step stepC(StepBuilderFactory stepBuilderFactory,
-                      Tasklet echoTasklet) {
-        return stepBuilderFactory.get("stepC")
-                .tasklet(echoTasklet)
-                .build();
-    }
 
 
     //---------------------------------------------------------------------------//
     // Lab: Create Tasklet with lambda expression
-    @Bean
-    public Step endStep(StepBuilderFactory stepBuilderFactory) {
-        return stepBuilderFactory.get("endStep")
-                .tasklet((contribution, chunkContext) -> null)
-                .build();
-    }
+
+
 
 
     //---------------------------------------------------------------------------//
     // Lab: Create NoOpTasklet
-    @Bean
-    public Tasklet noOpTasklet() {
-        return new NoOpTasklet();
-    }
 
 
-    /**
-     * Revisit:
-     * @Value("#{stepExecutionContext['stepKey']}")
-     * vs
-     * @Value("#{jobParameters[message]}")
-     *
-     * @param message
-     * @return
-     */
+
     //---------------------------------------------------------------------------//
     // Lab: Create EchoTasklet with jobParameters
-    @Bean
-    @StepScope
-    public Tasklet echoTasklet(@Value("#{jobParameters['message']}") String message) {
-        return new EchoTasklet(message);
-    }
+
+
 
 
 

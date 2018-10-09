@@ -1,4 +1,4 @@
-package io.baselogic.batch.parameters.config;
+package io.baselogic.batch.common.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.configuration.annotation.DefaultBatchConfigurer;
@@ -7,11 +7,8 @@ import org.springframework.batch.core.launch.support.SimpleJobLauncher;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.repository.support.JobRepositoryFactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.task.TaskExecutor;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
@@ -28,8 +25,6 @@ public class BatchConfig extends DefaultBatchConfigurer {
     @Autowired
     private DataSource dataSource;
 
-    @Value("4")
-    public int taskSize;
 
     //---------------------------------------------------------------------------//
     // Launcher and Repository
@@ -57,20 +52,6 @@ public class BatchConfig extends DefaultBatchConfigurer {
         factory.afterPropertiesSet();
         return factory.getObject();
     }
-
-    //---------------------------------------------------------------------------//
-    // Executor
-
-    @Bean
-    public TaskExecutor taskExecutor() {
-        ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
-        taskExecutor.setCorePoolSize(taskSize);
-        taskExecutor.setMaxPoolSize(taskSize);
-        taskExecutor.setQueueCapacity(taskSize);
-        taskExecutor.afterPropertiesSet();
-        return taskExecutor;
-    }
-
 
 
 } // The End...

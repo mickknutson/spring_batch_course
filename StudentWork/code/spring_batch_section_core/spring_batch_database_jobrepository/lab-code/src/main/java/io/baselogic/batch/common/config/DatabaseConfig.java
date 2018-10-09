@@ -22,28 +22,12 @@ public class DatabaseConfig {
 
     //---------------------------------------------------------------------------//
     // Lab: Create  EmbeddedDatabase:
-    @Bean(destroyMethod = "shutdown")
-    public EmbeddedDatabase dataSource(){
-        return new EmbeddedDatabaseBuilder()
-                .setType(EmbeddedDatabaseType.H2)
 
-                // NOTE: We first Drop the Batch Schema:
-                .addScript("classpath:org/springframework/batch/core/schema-drop-h2.sql")
 
-                // NOTE: Next we Drop the Batch Schema:
-                .addScript("classpath:org/springframework/batch/core/schema-h2.sql")
-                .ignoreFailedDrops(true)
-                .continueOnError(true)
-                .build();
-    }
 
 
     //---------------------------------------------------------------------------//
     // Lab: Create JdbcTemplate Bean
-    @Bean
-    public JdbcTemplate jdbcTemplate(DataSource dataSource){
-        return new JdbcTemplate(dataSource);
-    }
 
 
 

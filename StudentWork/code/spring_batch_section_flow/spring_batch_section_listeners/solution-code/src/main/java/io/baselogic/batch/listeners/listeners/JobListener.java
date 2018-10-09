@@ -9,11 +9,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @Slf4j
 @SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
+
+//---------------------------------------------------------------------------//
+// Lab: Create @BeforeRead and log step details
 public class JobListener implements JobExecutionListener {
 
     @Autowired
     private BatchDao batchDao;
 
+
+
+    //---------------------------------------------------------------------------//
+    // Lab: Create @BeforeRead and log step details
     @Override
 	public void beforeJob(JobExecution jobExecution) {
 
@@ -26,6 +33,9 @@ public class JobListener implements JobExecutionListener {
         log.info("\n" + batchDao.consoleLine(80,'<') + " (beforeJob)\n");
 	}
 
+
+    //---------------------------------------------------------------------------//
+    // Lab: Create @BeforeRead and log step details
 	@Override
 	public void afterJob(JobExecution jobExecution) {
 

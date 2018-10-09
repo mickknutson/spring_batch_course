@@ -27,13 +27,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 //---------------------------------------------------------------------------//
 // Lab: add @ContextConfiguration
-@ContextConfiguration(classes = {
-        TestConfig.class,
-        DatabaseConfig.class,
-        BatchConfig.class,
-        JobConfig.class,
-        StepConfig.class
-})
+
+
 
 //---------------------------------------------------------------------------//
 // Lab: add @SpringBatchTest

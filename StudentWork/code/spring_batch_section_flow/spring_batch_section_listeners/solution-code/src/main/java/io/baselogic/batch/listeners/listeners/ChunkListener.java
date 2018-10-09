@@ -9,6 +9,8 @@ import org.springframework.batch.core.scope.context.ChunkContext;
 @SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
 public class ChunkListener {
 
+    //---------------------------------------------------------------------------//
+    // Lab: Create @BeforeChunk and log step details
     @BeforeChunk
     public void beforeChunk(ChunkContext context) {
 
@@ -18,6 +20,9 @@ public class ChunkListener {
         log.info("\t Step Name: {}", stepName);
     }
 
+
+    //---------------------------------------------------------------------------//
+    // Lab: Create @AfterChunk and log step details
     @AfterChunk
     public void afterChunk(ChunkContext context) {
 

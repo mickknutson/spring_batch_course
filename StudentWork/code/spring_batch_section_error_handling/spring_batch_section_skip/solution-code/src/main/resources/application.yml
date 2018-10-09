@@ -6,12 +6,12 @@ debug: ${DEBUG_MODE:false}
 server:
   port: ${SERVER_PORT:8080}
 
-serviceId: ${SERVICE_ID:batch-parameters}
+serviceId: ${SERVICE_ID:batch-chunks}
 
 ##---------------------------------------------------------------------------##
 spring:
   application:
-    name: batch-parameters
+    name: batch-chunks
 
 ##---------------------------------------------------------------------------##
 # BATCH CONFIGURATION
@@ -32,9 +32,12 @@ spring:
 spring.batch.job.enabled: ${BATCH_JOB_ENABLED:false}
 
 
-
 ##---------------------------------------------------------------------------##
 # Logging and Console
+
+logging:
+  level:
+    io.baselogic: 'INFO'
 
 spring.main.banner-mode: ${BANNER_MODE:off}
 #spring.main.banner-mode: ${BANNER_MODE:console}

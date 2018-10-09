@@ -24,25 +24,11 @@ public class StepConfig {
 
     //---------------------------------------------------------------------------//
     // Lab: Add ClassPathResource to import CSV file for ItemReader
-    @Value("products.csv")
-    private ClassPathResource inputResource;
+
 
 
     //---------------------------------------------------------------------------//
     // Lab: Add Step with chunk details
-    @Bean
-    @SuppressWarnings("unchecked")
-    public Step stepFileAuditor(StepBuilderFactory stepBuilderFactory,
-                                FlatFileItemReader reader,
-                                ConsoleItemWriter writer,
-                                ChunkListener chunkListener) {
-        return stepBuilderFactory.get("stepFileReadAndAudit")
-                .<TextLineItem, TextLineItem> chunk(2)
-                .reader(reader)
-                .writer(writer)
-                .listener(chunkListener)
-                .build();
-    }
 
 
 
@@ -51,36 +37,8 @@ public class StepConfig {
 
     //---------------------------------------------------------------------------//
     // Lab: Create FlatFileItemReader
-    @Bean
-    @StepScope
-    public FlatFileItemReader<TextLineItem> reader() {
 
-        // FlatFileItemReader to read TextLineItem's:
-        FlatFileItemReader<TextLineItem> reader = new FlatFileItemReader<>();
 
-        // Read items from inputResource:
-        reader.setResource(inputResource);
-
-        // This CSV file does not have a header, so no need to skip items:
-        reader.setLinesToSkip(0);
-
-        // Map each line from the CSV file into a TextLineItem
-        DefaultLineMapper<TextLineItem> lineMapper = new DefaultLineMapper<>();
-        DelimitedLineTokenizer tokenizer = new DelimitedLineTokenizer();
-
-        // take the data from each line and map it to the 'id' field:
-        tokenizer.setNames("id");
-
-        // Now map the id field into a new TextLineItem.class for each line:
-        BeanWrapperFieldSetMapper<TextLineItem> fieldSetMapper = new BeanWrapperFieldSetMapper<>();
-        fieldSetMapper.setTargetType(TextLineItem.class);
-
-        lineMapper.setFieldSetMapper(fieldSetMapper);
-        lineMapper.setLineTokenizer(tokenizer);
-        reader.setLineMapper(lineMapper);
-
-        return reader;
-    }
 
 
 

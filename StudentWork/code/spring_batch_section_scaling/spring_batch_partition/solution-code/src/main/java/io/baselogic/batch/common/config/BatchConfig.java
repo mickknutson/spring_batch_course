@@ -1,4 +1,4 @@
-package io.baselogic.batch.partition.config;
+package io.baselogic.batch.common.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.configuration.annotation.DefaultBatchConfigurer;

@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.springclass.batch</groupId>
+    <groupId>com.baselogic.batch</groupId>
     <artifactId>spring_batch_section_job_parameters_solution</artifactId>
     <version>1.0.0.RELEASE</version>
     <packaging>jar</packaging>
@@ -12,7 +12,7 @@
     <description>Solution: ${project.artifactId}</description>
 
     <parent>
-        <groupId>com.springclass.batch</groupId>
+        <groupId>com.baselogic.batch</groupId>
         <artifactId>spring_batch_section_job_parameters</artifactId>
         <version>1.0.0.RELEASE</version>
     </parent>

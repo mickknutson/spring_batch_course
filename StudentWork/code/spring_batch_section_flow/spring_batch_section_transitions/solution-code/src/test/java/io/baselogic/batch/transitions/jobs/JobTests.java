@@ -1,6 +1,7 @@
 package io.baselogic.batch.transitions.jobs;
 
 import io.baselogic.batch.common.config.BatchDao;
+import io.baselogic.batch.common.config.TestConfig;
 import io.baselogic.batch.transitions.config.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
@@ -12,13 +13,23 @@ import org.springframework.batch.test.JobRepositoryTestUtils;
 import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ContextConfiguration(classes = {TestConfig.class, DatabaseConfig.class, BatchConfig.class, JobConfig.class, StepConfig.class})
+@ContextConfiguration(classes = {
+        TestConfig.class,
+        DatabaseConfig.class,
+        BatchConfig.class,
+        JobConfig.class,
+        StepConfig.class
+})
+
 @SpringBatchTest
+
+@SpringBootTest
 @RunWith(SpringRunner.class)
 @Slf4j
 @SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})

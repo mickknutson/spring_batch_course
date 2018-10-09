@@ -2,6 +2,7 @@ package io.baselogic.batch.common.endpoints;
 
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.batch.core.*;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +26,7 @@ public class JobEndpoint {
     private AtomicBoolean enabled = new AtomicBoolean(true);
 
     //---------------------------------------------------------------------------//
-
+    // Lab: Note this endpoint URI '/launch'
     @GetMapping("/launch")
     public String launchJob(@RequestParam(value = "launchJob", required = false, defaultValue="true") boolean launchJob)
             throws JobExecutionException {
@@ -69,4 +70,5 @@ public class JobEndpoint {
 
         return sb.toString();
     }
+
 } // The End...

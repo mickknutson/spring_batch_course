@@ -21,8 +21,7 @@ public class StepConfig {
 
 
     //---------------------------------------------------------------------------//
-    // Steps
-
+    // Lab: Create @BeforeRead and log step details
     @Bean
     public Step stepA(StepBuilderFactory stepBuilderFactory,
                       CustomStepExecutionListener customStepExecutionListener,
@@ -79,6 +78,7 @@ public class StepConfig {
         return new ItemWriter<String>() {
             @Override
             public void write(List<? extends String> items) throws Exception {
+
                 for (String item : items) {
                     log.info("Writing item: {}", item);
                 }
@@ -88,9 +88,7 @@ public class StepConfig {
 
 
     //---------------------------------------------------------------------------//
-    // Listeners
-
-
+    // Lab: Create @Bean declarations for all five listeners
     @Bean
     public JobListener jobListener(){
         return new JobListener();

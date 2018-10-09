@@ -10,12 +10,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @Slf4j
 @SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
+
+//---------------------------------------------------------------------------//
+// Lab: Create @BeforeRead and log step details
+
 public class CustomStepExecutionListener implements StepExecutionListener {
 
     @Autowired
     private BatchDao batchDao;
 
 
+    //---------------------------------------------------------------------------//
+    // Lab: Create @BeforeRead and log step details
+    @Override
     public void beforeStep(StepExecution stepExecution){
 
         log.info("\n(beforeStep) " + batchDao.consoleLine(80, '>'));
@@ -27,6 +34,10 @@ public class CustomStepExecutionListener implements StepExecutionListener {
         log.info("\n" + batchDao.consoleLine(80,'<') + " (beforeStep)\n");
     }
 
+
+    //---------------------------------------------------------------------------//
+    // Lab: Create @BeforeRead and log step details
+    @Override
     public ExitStatus afterStep(StepExecution stepExecution){
         log.info("\n(afterStep) " + batchDao.consoleLine(80, '>'));
 
@@ -45,4 +56,4 @@ public class CustomStepExecutionListener implements StepExecutionListener {
         return stepExecution.getExitStatus();
     }
 
-}
+} // The End...
