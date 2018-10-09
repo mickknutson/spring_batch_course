@@ -1,11 +1,10 @@
-package io.baselogic.batch.tasklet.jobs;
+package io.baselogic.batch.common.jobs;
 
 import io.baselogic.batch.common.config.BatchConfig;
-import io.baselogic.batch.common.config.BatchDao;
 import io.baselogic.batch.common.config.DatabaseConfig;
+import io.baselogic.batch.common.config.TestConfig;
 import io.baselogic.batch.tasklet.config.JobConfig;
 import io.baselogic.batch.tasklet.config.StepConfig;
-import io.baselogic.batch.tasklet.config.TestConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,16 +12,22 @@ import org.junit.runner.RunWith;
 import org.springframework.batch.core.*;
 import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.batch.test.JobRepositoryTestUtils;
+import org.springframework.batch.test.JobScopeTestExecutionListener;
+import org.springframework.batch.test.StepScopeTestExecutionListener;
 import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 
-@RunWith(SpringRunner.class)
+//---------------------------------------------------------------------------//
+// Lab: add @ContextConfiguration
 @ContextConfiguration(classes = {
         TestConfig.class,
         DatabaseConfig.class,
@@ -30,7 +35,13 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
         JobConfig.class,
         StepConfig.class
 })
+
+//---------------------------------------------------------------------------//
+// Lab: add @SpringBatchTest
 @SpringBatchTest
+
+@SpringBootTest
+@RunWith(SpringRunner.class)
 @Slf4j
 @SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
 public class JobTests {
@@ -47,14 +58,13 @@ public class JobTests {
     }
 
     //---------------------------------------------------------------------------//
-    // Jobs
+    // JOBS
 
     @Autowired
     private Job job;
 
-
     //---------------------------------------------------------------------------//
-
+    // JOB PARAMETERS
 
     public JobParameters getJobParameters() {
         // given
