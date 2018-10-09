@@ -2,7 +2,6 @@ package io.baselogic.batch.file_input.process;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

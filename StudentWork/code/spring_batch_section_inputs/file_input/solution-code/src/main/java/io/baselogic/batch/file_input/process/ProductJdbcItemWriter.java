@@ -1,15 +1,13 @@
 package io.baselogic.batch.file_input.process;
 
-import java.util.List;
-
-import javax.sql.DataSource;
-
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
+
+import javax.sql.DataSource;
+import java.util.List;
 
 @Slf4j
 @SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})

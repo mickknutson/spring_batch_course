@@ -1,11 +1,15 @@
 package io.baselogic.batch.tasklet.steps;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 
+import lombok.extern.slf4j.Slf4j;
+
+
+//---------------------------------------------------------------------------//
+// Lab: Note the @Slf4j annotation that registers log.info()
 @Slf4j
 @SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
 public class EchoTasklet implements Tasklet {
@@ -20,18 +24,17 @@ public class EchoTasklet implements Tasklet {
 
 
     //---------------------------------------------------------------------------//
-
+    // Lab: Create Tasklet execute method
     @Override
     public RepeatStatus execute(final StepContribution stepContribution,
                                 final ChunkContext chunkContext) throws Exception {
 
+        //-------------------------------------------------------------------//
+        // Lab: Log the Step name from the StepContext:
         log.info("==> Step [{}] has been executed on thread {}",
                 chunkContext.getStepContext().getStepName(),
                 Thread.currentThread().getName());
         log.info("Job Parameter 'message': [{}]", message);
-
-//        chunkContext.getStepContext().getStepExecutionContext().put("stepKey",
-//                "stepKeyValue."+chunkContext.getStepContext().getStepName());
 
         return RepeatStatus.FINISHED;
     }

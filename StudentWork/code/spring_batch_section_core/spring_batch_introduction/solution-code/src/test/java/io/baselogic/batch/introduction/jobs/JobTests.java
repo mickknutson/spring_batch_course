@@ -51,7 +51,7 @@ public class JobTests {
 
 
     @Test
-    public void test_hello_world_job() throws Exception {
+    public void test__launch_job__all_steps() throws Exception {
 
 
         //-------------------------------------------------------------------//

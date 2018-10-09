@@ -62,7 +62,7 @@ public class JobTests {
 
 
     @Test
-    public void test_job__all_steps() throws Exception {
+    public void test__launch_job__all_steps() throws Exception {
 
         jobLauncherTestUtils.setJob(job);
         JobExecution jobExecution = jobLauncherTestUtils.launchJob(getJobParameters());

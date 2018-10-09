@@ -37,7 +37,7 @@ spring.batch.job.enabled: ${BATCH_JOB_ENABLED:false}
 
 logging:
   level:
-    io.baselogic: 'DEBUG'
+    io.baselogic: 'INFO'
 
 spring.main.banner-mode: ${BANNER_MODE:off}
 #spring.main.banner-mode: ${BANNER_MODE:console}

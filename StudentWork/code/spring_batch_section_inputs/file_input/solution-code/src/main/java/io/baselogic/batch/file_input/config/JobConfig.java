@@ -1,6 +1,5 @@
 package io.baselogic.batch.file_input.config;
 
-import io.baselogic.batch.file_input.decisions.FlowDecision;
 import io.baselogic.batch.file_input.process.BatchJobListener;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;

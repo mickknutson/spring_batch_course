@@ -1,10 +1,9 @@
 package io.baselogic.batch.file_input.process;
 
-import java.math.BigDecimal;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemProcessor;
-import org.springframework.stereotype.Component;
+
+import java.math.BigDecimal;
 
 @Slf4j
 @SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})

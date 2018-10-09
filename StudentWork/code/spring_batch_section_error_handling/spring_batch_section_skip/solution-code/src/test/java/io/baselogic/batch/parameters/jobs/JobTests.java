@@ -1,12 +1,10 @@
 package io.baselogic.batch.parameters.jobs;
 
 import io.baselogic.batch.common.config.BatchDao;
-import io.baselogic.batch.parameters.config.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.batch.core.*;
 import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.batch.test.JobRepositoryTestUtils;
 import org.springframework.batch.test.context.SpringBatchTest;
@@ -60,7 +58,7 @@ public class JobTests {
 
 
     @Test
-    public void test__job__all_steps() throws Exception {
+    public void test__launch_job__all_steps() throws Exception {
 
         jobLauncherTestUtils.setJob(job);
         JobExecution jobExecution = jobLauncherTestUtils.launchJob();

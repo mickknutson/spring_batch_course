@@ -53,7 +53,7 @@ public class JobEndpointTests {
 
 
     @Test
-    public void test_batch_job_endpoint__launch_job_diabled() throws Exception {
+    public void test_batch_job_endpoint__launch_job_disabled() throws Exception {
         MvcResult result = mockMvc
                 .perform(get("/launch")
                         .param("launchJob", "false")
