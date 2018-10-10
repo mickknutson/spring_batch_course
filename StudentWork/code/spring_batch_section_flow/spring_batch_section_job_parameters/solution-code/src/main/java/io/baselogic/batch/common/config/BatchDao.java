@@ -1,6 +1,5 @@
 package io.baselogic.batch.common.config;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepExecution;
@@ -10,9 +9,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 /**
  * Common DAO for accessing the Spring Batch Database
  */
-@Slf4j
 @SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
 public class BatchDao {
+
+    private org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private JdbcTemplate jdbcTemplate;

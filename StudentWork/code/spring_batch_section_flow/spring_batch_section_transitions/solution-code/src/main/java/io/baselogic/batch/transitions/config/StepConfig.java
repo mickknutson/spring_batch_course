@@ -2,7 +2,6 @@ package io.baselogic.batch.transitions.config;
 
 import io.baselogic.batch.transitions.steps.EchoTasklet;
 import io.baselogic.batch.transitions.steps.StatusTasklet;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
@@ -13,7 +12,6 @@ import org.springframework.core.io.ClassPathResource;
 
 
 @Configuration
-@Slf4j
 @SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
 public class StepConfig {
 

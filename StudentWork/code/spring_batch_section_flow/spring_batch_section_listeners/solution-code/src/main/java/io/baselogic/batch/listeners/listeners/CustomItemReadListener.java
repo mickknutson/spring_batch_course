@@ -1,13 +1,12 @@
 package io.baselogic.batch.listeners.listeners;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.annotation.AfterRead;
 import org.springframework.batch.core.annotation.BeforeRead;
 import org.springframework.batch.core.annotation.OnReadError;
 
-@Slf4j
 @SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
 public class CustomItemReadListener {
+    private org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(this.getClass());
 
     //---------------------------------------------------------------------------//
     // Lab: Create @BeforeRead and log step details

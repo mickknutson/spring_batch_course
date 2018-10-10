@@ -1,6 +1,5 @@
 package io.baselogic.batch;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -12,9 +11,10 @@ import java.util.Arrays;
 
 @SpringBootApplication
 @EnableBatchProcessing
-@Slf4j
 @SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
 public class Application {
+
+    private org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(this.getClass());
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);

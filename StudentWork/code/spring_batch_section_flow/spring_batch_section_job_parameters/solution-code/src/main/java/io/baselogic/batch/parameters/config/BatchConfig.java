@@ -1,6 +1,5 @@
 package io.baselogic.batch.parameters.config;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.configuration.annotation.DefaultBatchConfigurer;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.launch.support.SimpleJobLauncher;
@@ -18,7 +17,6 @@ import javax.sql.DataSource;
 
 
 @Configuration
-@Slf4j
 @SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
 public class BatchConfig extends DefaultBatchConfigurer {
 

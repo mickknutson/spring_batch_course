@@ -1,7 +1,6 @@
 package io.baselogic.batch.partition.processors;
 
 import io.baselogic.batch.partition.domain.Movie;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.file.mapping.FieldSetMapper;
 import org.springframework.batch.item.file.transform.FieldSet;
 import org.springframework.validation.BindException;
@@ -17,8 +16,8 @@ import java.util.Locale;
  * title,release_date,tagline
  * Avatar,12/10/09,Enter the World of Pandora.
  */
-@Slf4j
 public class MovieFieldSetMapper implements FieldSetMapper<Movie> {
+    private org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(this.getClass());
 
     private static final DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("dd/MM/yy");
     DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)

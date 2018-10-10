@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.baselogic.batch</groupId>
-    <artifactId>spring_batch_tasklet_solution</artifactId>
+    <artifactId>spring_batch_tasklet_lab</artifactId>
     <version>1.0.0.RELEASE</version>
     <packaging>jar</packaging>
 

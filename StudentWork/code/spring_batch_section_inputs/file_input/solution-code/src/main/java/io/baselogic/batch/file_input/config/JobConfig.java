@@ -1,7 +1,6 @@
 package io.baselogic.batch.file_input.config;
 
 import io.baselogic.batch.file_input.process.BatchJobListener;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecutionListener;
 import org.springframework.batch.core.Step;
@@ -12,7 +11,6 @@ import org.springframework.context.annotation.Configuration;
 
 
 @Configuration
-@Slf4j
 @SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
 public class JobConfig {
 

@@ -1,18 +1,17 @@
 package io.baselogic.batch.listeners.listeners;
 
 import io.baselogic.batch.common.config.BatchDao;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobExecutionListener;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Slf4j
 @SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
 
 //---------------------------------------------------------------------------//
 // Lab: Create @BeforeRead and log step details
 public class JobListener implements JobExecutionListener {
+    private org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private BatchDao batchDao;

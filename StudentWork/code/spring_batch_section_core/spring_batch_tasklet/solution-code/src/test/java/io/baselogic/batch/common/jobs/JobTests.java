@@ -5,23 +5,17 @@ import io.baselogic.batch.common.config.DatabaseConfig;
 import io.baselogic.batch.common.config.TestConfig;
 import io.baselogic.batch.tasklet.config.JobConfig;
 import io.baselogic.batch.tasklet.config.StepConfig;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.batch.core.*;
 import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.batch.test.JobRepositoryTestUtils;
-import org.springframework.batch.test.JobScopeTestExecutionListener;
-import org.springframework.batch.test.StepScopeTestExecutionListener;
 import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -42,7 +36,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-@Slf4j
 @SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
 public class JobTests {
 
@@ -81,7 +74,10 @@ public class JobTests {
     @Test
     public void test__launch_job__all_steps() throws Exception {
 
-        JobExecution jobExecution = jobLauncherTestUtils.launchJob(getJobParameters());
+        jobLauncherTestUtils.setJob(job);
+        JobExecution jobExecution = jobLauncherTestUtils.launchJob(
+                getJobParameters()
+        );
 
         //-------------------------------------------------------------------//
         // Lab: Assert that the ExitStatus is COMPLETED
@@ -89,7 +85,9 @@ public class JobTests {
 
         //-------------------------------------------------------------------//
         // Lab: Assert that 4 steps where executed:
-        assertThat(jobExecution.getStepExecutions().size()).isEqualTo(4);
+        assertThat(
+                jobExecution.getStepExecutions().size()
+        ).isEqualTo(4);
     }
 
 

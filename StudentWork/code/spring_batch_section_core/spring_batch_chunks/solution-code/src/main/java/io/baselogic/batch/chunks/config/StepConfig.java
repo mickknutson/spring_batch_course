@@ -3,7 +3,6 @@ package io.baselogic.batch.chunks.config;
 import io.baselogic.batch.chunks.domain.TextLineItem;
 import io.baselogic.batch.chunks.listeners.ChunkListener;
 import io.baselogic.batch.chunks.steps.ConsoleItemWriter;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
@@ -18,7 +17,6 @@ import org.springframework.core.io.ClassPathResource;
 
 
 @Configuration
-@Slf4j
 @SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
 public class StepConfig {
 

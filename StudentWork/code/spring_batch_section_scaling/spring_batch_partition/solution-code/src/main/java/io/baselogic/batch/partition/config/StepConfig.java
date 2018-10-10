@@ -3,7 +3,6 @@ package io.baselogic.batch.partition.config;
 import io.baselogic.batch.partition.domain.Movie;
 import io.baselogic.batch.partition.processors.CustomMultiResourcePartitioner;
 import io.baselogic.batch.partition.processors.MovieFieldSetMapper;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
@@ -30,7 +29,6 @@ import java.text.ParseException;
 
 
 @Configuration
-@Slf4j
 @SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
 public class StepConfig {
 
@@ -53,8 +51,10 @@ public class StepConfig {
                               CustomMultiResourcePartitioner partitioner) {
         return stepBuilderFactory.get("partitionStep")
                 .partitioner("partitionStep.master", partitioner)
-                .step(slaveStep(stepBuilderFactory))
+                .gridSize(2)
                 .taskExecutor(taskExecutor)
+                .step(slaveStep(stepBuilderFactory))
+//                .taskExecutor(taskExecutor)
                 .build();
     }
 

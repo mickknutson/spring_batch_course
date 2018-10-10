@@ -1,96 +1,108 @@
 package io.baselogic.batch.restart.config;
 
-import lombok.extern.slf4j.Slf4j;
+import io.baselogic.batch.restart.domain.TextLineItem;
+import io.baselogic.batch.restart.listeners.ChunkListener;
+import io.baselogic.batch.restart.processor.CustomItemProcessor;
+import io.baselogic.batch.restart.steps.ConsoleItemWriter;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
-import org.springframework.batch.core.scope.context.ChunkContext;
-import org.springframework.batch.core.step.tasklet.Tasklet;
-import org.springframework.batch.repeat.RepeatStatus;
+import org.springframework.batch.item.file.FlatFileItemReader;
+import org.springframework.batch.item.file.FlatFileParseException;
+import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
+import org.springframework.batch.item.file.mapping.DefaultLineMapper;
+import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.Map;
+import org.springframework.core.io.ClassPathResource;
 
 
 @Configuration
-@Slf4j
 @SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
 public class StepConfig {
 
-
     //---------------------------------------------------------------------------//
-    // Steps
-
-    @Bean
-    public Step stepA(StepBuilderFactory stepBuilderFactory) {
-        return stepBuilderFactory.get("stepA")
-                .tasklet(restartTasklet())
-                .build();
-    }
-
-    @Bean
-    public Step stepB(StepBuilderFactory stepBuilderFactory) {
-        return stepBuilderFactory.get("stepB")
-                .tasklet(restartTasklet())
-                .build();
-    }
-
-
-    @Bean
-    public Step limitedRestartStep(StepBuilderFactory stepBuilderFactory) {
-        return stepBuilderFactory.get("limitedRestartStep")
-                .tasklet(restartTasklet())
-                .startLimit(3)
-                .build();
-    }
-
+    // Lab: Add ClassPathResource to import CSV file for ItemReader
+    @Value("products.csv")
+    private ClassPathResource inputResource;
 
 
     //---------------------------------------------------------------------------//
-    // Tasklets
+    // Lab: Add Step with chunk details
+    @Bean
+    @SuppressWarnings("unchecked")
+    public Step stepA(StepBuilderFactory stepBuilderFactory,
+                                FlatFileItemReader reader,
+                                CustomItemProcessor processor,
+                                ConsoleItemWriter writer,
+                                ChunkListener chunkListener) {
+        return stepBuilderFactory.get("stepFileReadAndAudit")
+                .<TextLineItem, TextLineItem> chunk(2)
+                .reader(reader)
+                .processor(processor)
+                .writer(writer)
+                .listener(chunkListener)
+                .faultTolerant()
+                .skipLimit(5)
+                .skip(FlatFileParseException.class)
+                .build();
+    }
 
+
+
+
+
+
+    //---------------------------------------------------------------------------//
+    // Lab: Create FlatFileItemReader
     @Bean
     @StepScope
-    public Tasklet restartTasklet() {
-        return new Tasklet() {
-            @Override
-            public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
-                Map<String, Object> stepExecutionContext = chunkContext.getStepContext().getStepExecutionContext();
+    public FlatFileItemReader<TextLineItem> reader() {
 
-                if(stepExecutionContext.containsKey("ran")) {
-                    log.info("This time we'll let it go.");
-                    return RepeatStatus.FINISHED;
-                }
-                else {
-                    log.error("I don't think so...");
-                    chunkContext.getStepContext().getStepExecution().getExecutionContext().put("ran", true);
-//                    throw new RuntimeException("Not this time...");
-                    return RepeatStatus.CONTINUABLE;
-                }
-            }
-        };
+        // FlatFileItemReader to read TextLineItem's:
+        FlatFileItemReader<TextLineItem> reader = new FlatFileItemReader<>();
+
+        // Read items from inputResource:
+        reader.setResource(inputResource);
+
+        // This CSV file does not have a header, so no need to restart items:
+        reader.setLinesToSkip(0);
+
+        // Map each line from the CSV file into a TextLineItem
+        DefaultLineMapper<TextLineItem> lineMapper = new DefaultLineMapper<>();
+        DelimitedLineTokenizer tokenizer = new DelimitedLineTokenizer();
+
+        // take the data from each line and map it to the 'id' field:
+        tokenizer.setNames("id");
+
+        // Now map the id field into a new TextLineItem.class for each line:
+        BeanWrapperFieldSetMapper<TextLineItem> fieldSetMapper = new BeanWrapperFieldSetMapper<>();
+        fieldSetMapper.setTargetType(TextLineItem.class);
+
+        lineMapper.setFieldSetMapper(fieldSetMapper);
+        lineMapper.setLineTokenizer(tokenizer);
+        reader.setLineMapper(lineMapper);
+
+        return reader;
     }
-
-
-
-    //---------------------------------------------------------------------------//
-    // Readers
-
-
-    //---------------------------------------------------------------------------//
-    // Processors
 
 
 
     //---------------------------------------------------------------------------//
     // Writers
-
+    @Bean
+    public ConsoleItemWriter consoleItemWriter(){
+        return new ConsoleItemWriter();
+    }
 
 
     //---------------------------------------------------------------------------//
     // Listeners
+    @Bean
+    public ChunkListener chunkListener(){
+        return new ChunkListener();
+    }
 
 
 } // The End...

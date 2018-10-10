@@ -1,8 +1,9 @@
 package io.baselogic.batch.split.jobs;
 
+import io.baselogic.batch.common.config.BatchConfig;
 import io.baselogic.batch.common.config.BatchDao;
+import io.baselogic.batch.common.config.DatabaseConfig;
 import io.baselogic.batch.split.config.*;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,9 +33,9 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-@Slf4j
 @SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
 public class JobTests {
+    private org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private JobLauncherTestUtils jobLauncherTestUtils;

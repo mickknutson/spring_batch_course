@@ -1,6 +1,5 @@
 package io.baselogic.batch.tasklet.steps;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
@@ -8,9 +7,10 @@ import org.springframework.batch.repeat.RepeatStatus;
 
 import java.util.Map;
 
-@Slf4j
 @SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
 public class NoOpTasklet implements Tasklet, StepExecutionListener {
+
+    private org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(this.getClass());
 
     //---------------------------------------------------------------------------//
 

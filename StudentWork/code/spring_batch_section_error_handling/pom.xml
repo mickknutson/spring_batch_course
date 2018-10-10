@@ -18,9 +18,9 @@
     </parent>
 
     <modules>
-        <module>spring_batch_section_restart</module>
-        <module>spring_batch_section_retry</module>
-        <!--<module>spring_batch_section_skip</module>-->
+        <!--<module>spring_batch_section_restart</module>-->
+        <!--<module>spring_batch_section_retry</module>-->
+        <module>spring_batch_section_skip</module>
     </modules>
 
 </project>

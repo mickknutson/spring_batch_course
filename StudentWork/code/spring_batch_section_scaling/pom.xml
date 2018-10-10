@@ -20,6 +20,7 @@
     <modules>
         <module>spring_batch_split</module>
         <module>spring_batch_partition</module>
+        <module>spring_batch_parallel</module>
         <!--
         Scaling: Multithreaded Steps
         Scaling: Parallel Steps

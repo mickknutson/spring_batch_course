@@ -1,14 +1,22 @@
 package io.baselogic.batch.chunks.domain;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
-@Getter
-@Setter
-@ToString
 public class TextLineItem {
 
     private String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "TextLineItem{" +
+                "id='" + id + '\'' +
+                '}';
+    }
 
 } // The End...

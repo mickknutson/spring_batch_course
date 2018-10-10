@@ -1,13 +1,12 @@
 package io.baselogic.batch.file_input.listeners;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.annotation.AfterChunk;
 import org.springframework.batch.core.annotation.BeforeChunk;
 import org.springframework.batch.core.scope.context.ChunkContext;
 
-@Slf4j
 @SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
 public class ChunkListener {
+    private org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(this.getClass());
 
     @BeforeChunk
     public void beforeChunk(ChunkContext context) {

@@ -6,12 +6,12 @@ debug: ${DEBUG_MODE:false}
 server:
   port: ${SERVER_PORT:8080}
 
-serviceId: ${SERVICE_ID:batch-chunks}
+serviceId: ${SERVICE_ID:batch-skip}
 
 ##---------------------------------------------------------------------------##
 spring:
   application:
-    name: batch-chunks
+    name: batch-skip
 
 ##---------------------------------------------------------------------------##
 # BATCH CONFIGURATION

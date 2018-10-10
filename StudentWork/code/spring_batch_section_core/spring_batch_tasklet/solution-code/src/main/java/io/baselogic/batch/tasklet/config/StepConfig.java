@@ -2,7 +2,6 @@ package io.baselogic.batch.tasklet.config;
 
 import io.baselogic.batch.tasklet.steps.EchoTasklet;
 import io.baselogic.batch.tasklet.steps.NoOpTasklet;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
@@ -13,7 +12,6 @@ import org.springframework.context.annotation.Configuration;
 
 
 @Configuration
-@Slf4j
 @SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
 public class StepConfig {
 

@@ -1,6 +1,5 @@
 package io.baselogic.batch.partition.processors;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.partition.support.Partitioner;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.core.io.Resource;
@@ -9,8 +8,8 @@ import org.springframework.util.Assert;
 import java.util.HashMap;
 import java.util.Map;
 
-@Slf4j
 public class CustomMultiResourcePartitioner implements Partitioner {
+    private org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(this.getClass());
 
     private static final String DEFAULT_KEY_NAME = "fileName";
 

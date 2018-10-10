@@ -1,107 +1,111 @@
 package io.baselogic.batch.retry.config;
 
-import io.baselogic.batch.retry.steps.EchoTasklet;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.batch.core.Job;
+import io.baselogic.batch.retry.domain.TextLineItem;
+import io.baselogic.batch.retry.listeners.ChunkListener;
+import io.baselogic.batch.retry.processor.CustomItemProcessor;
+import io.baselogic.batch.retry.steps.ConsoleItemWriter;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
-import org.springframework.batch.core.launch.JobLauncher;
-import org.springframework.batch.core.repository.JobRepository;
-import org.springframework.batch.core.step.builder.JobStepBuilder;
-import org.springframework.batch.core.step.builder.StepBuilder;
+import org.springframework.batch.core.configuration.annotation.StepScope;
+import org.springframework.batch.item.file.FlatFileItemReader;
+import org.springframework.batch.item.file.FlatFileParseException;
+import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
+import org.springframework.batch.item.file.mapping.DefaultLineMapper;
+import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.dao.DeadlockLoserDataAccessException;
 
 
 @Configuration
-@Slf4j
 @SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
 public class StepConfig {
 
-
     //---------------------------------------------------------------------------//
-    // Steps
-
-
-    @Bean
-    public Step childJobStep(JobRepository jobRepository,
-                             JobLauncher jobLauncher,
-                             PlatformTransactionManager transactionManager,
-                             Job childJob
-    ) {
-        return new JobStepBuilder(new StepBuilder("childJobStep"))
-                .job(childJob)
-                .launcher(jobLauncher)
-                .repository(jobRepository)
-                .transactionManager(transactionManager)
-                .build();
-    }
-
-
-
-    @Bean
-    public Step step1(StepBuilderFactory stepBuilderFactory) {
-        return stepBuilderFactory.get("step1")
-                .tasklet(new EchoTasklet("** STEP 1"))
-                .build();
-    }
-
-    @Bean
-    public Step step2(StepBuilderFactory stepBuilderFactory) {
-        return stepBuilderFactory.get("step2")
-                .tasklet(new EchoTasklet("** STEP 2"))
-                .build();
-    }
-
-    @Bean
-    public Step step3(StepBuilderFactory stepBuilderFactory) {
-        return stepBuilderFactory.get("step3")
-                .tasklet(new EchoTasklet("** STEP 3"))
-                .build();
-    }
-
-    @Bean
-    public Step stepA(StepBuilderFactory stepBuilderFactory) {
-        return stepBuilderFactory.get("stepA")
-                .tasklet(new EchoTasklet("** (child) STEP A"))
-                .build();
-    }
-
-    @Bean
-    public Step stepB(StepBuilderFactory stepBuilderFactory) {
-        return stepBuilderFactory.get("stepB")
-                .tasklet(new EchoTasklet("** (child) STEP B")).build();
-    }
-
-    @Bean
-    public Step stepC(StepBuilderFactory stepBuilderFactory) {
-        return stepBuilderFactory.get("stepC")
-                .tasklet(new EchoTasklet("** (child) STEP C")).build();
-    }
+    // Lab: Add ClassPathResource to import CSV file for ItemReader
+    @Value("products.csv")
+    private ClassPathResource inputResource;
 
 
     //---------------------------------------------------------------------------//
-    // Tasklets
+    // Lab: Add Step with chunk details
+    @Bean
+    @SuppressWarnings("unchecked")
+    public Step stepA(StepBuilderFactory stepBuilderFactory,
+                                FlatFileItemReader reader,
+                                CustomItemProcessor processor,
+                                ConsoleItemWriter writer,
+                                ChunkListener chunkListener) {
+        return stepBuilderFactory.get("stepFileReadAndAudit")
+                .<TextLineItem, TextLineItem> chunk(2)
+                .reader(reader)
+                .processor(processor)
+                .writer(writer)
+                .listener(chunkListener)
+
+                // Fault Tolerant:
+                .faultTolerant()
+                .retryLimit(3)
+                .retry(DeadlockLoserDataAccessException.class)
+                .build();
+    }
+
+
+
 
 
 
     //---------------------------------------------------------------------------//
-    // Readers
+    // Lab: Create FlatFileItemReader
+    @Bean
+    @StepScope
+    public FlatFileItemReader<TextLineItem> reader() {
 
+        // FlatFileItemReader to read TextLineItem's:
+        FlatFileItemReader<TextLineItem> reader = new FlatFileItemReader<>();
 
-    //---------------------------------------------------------------------------//
-    // Processors
+        // Read items from inputResource:
+        reader.setResource(inputResource);
+
+        // This CSV file does not have a header, so no need to retry items:
+        reader.setLinesToSkip(0);
+
+        // Map each line from the CSV file into a TextLineItem
+        DefaultLineMapper<TextLineItem> lineMapper = new DefaultLineMapper<>();
+        DelimitedLineTokenizer tokenizer = new DelimitedLineTokenizer();
+
+        // take the data from each line and map it to the 'id' field:
+        tokenizer.setNames("id");
+
+        // Now map the id field into a new TextLineItem.class for each line:
+        BeanWrapperFieldSetMapper<TextLineItem> fieldSetMapper = new BeanWrapperFieldSetMapper<>();
+        fieldSetMapper.setTargetType(TextLineItem.class);
+
+        lineMapper.setFieldSetMapper(fieldSetMapper);
+        lineMapper.setLineTokenizer(tokenizer);
+        reader.setLineMapper(lineMapper);
+
+        return reader;
+    }
 
 
 
     //---------------------------------------------------------------------------//
     // Writers
-
+    @Bean
+    public ConsoleItemWriter consoleItemWriter(){
+        return new ConsoleItemWriter();
+    }
 
 
     //---------------------------------------------------------------------------//
     // Listeners
+    @Bean
+    public ChunkListener chunkListener(){
+        return new ChunkListener();
+    }
 
 
 } // The End...

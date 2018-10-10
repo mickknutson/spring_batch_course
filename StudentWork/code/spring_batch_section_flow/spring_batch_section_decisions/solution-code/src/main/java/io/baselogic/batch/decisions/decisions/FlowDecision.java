@@ -1,13 +1,12 @@
 package io.baselogic.batch.decisions.decisions;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.job.flow.FlowExecutionStatus;
 import org.springframework.batch.core.job.flow.JobExecutionDecider;
 
-@Slf4j
 public class FlowDecision implements JobExecutionDecider {
+    private org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(this.getClass());
 
     private int count = 0;
 

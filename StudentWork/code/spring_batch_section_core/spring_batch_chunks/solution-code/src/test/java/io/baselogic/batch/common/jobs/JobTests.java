@@ -1,15 +1,17 @@
 package io.baselogic.batch.common.jobs;
 
-import io.baselogic.batch.chunks.config.*;
+import io.baselogic.batch.chunks.config.JobConfig;
+import io.baselogic.batch.chunks.config.StepConfig;
 import io.baselogic.batch.common.config.BatchConfig;
 import io.baselogic.batch.common.config.DatabaseConfig;
-import io.baselogic.batch.common.config.BatchDao;
 import io.baselogic.batch.common.config.TestConfig;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.batch.core.*;
+import org.springframework.batch.core.ExitStatus;
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobExecution;
+import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.batch.test.JobRepositoryTestUtils;
 import org.springframework.batch.test.context.SpringBatchTest;
@@ -19,7 +21,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 
 @ContextConfiguration(classes = {
@@ -34,7 +35,6 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-@Slf4j
 @SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
 public class JobTests {
 

@@ -1,20 +1,19 @@
 package io.baselogic.batch.listeners.listeners;
 
 import io.baselogic.batch.common.config.BatchDao;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Slf4j
 @SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
 
 //---------------------------------------------------------------------------//
 // Lab: Create @BeforeRead and log step details
 
 public class CustomStepExecutionListener implements StepExecutionListener {
+    private org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private BatchDao batchDao;

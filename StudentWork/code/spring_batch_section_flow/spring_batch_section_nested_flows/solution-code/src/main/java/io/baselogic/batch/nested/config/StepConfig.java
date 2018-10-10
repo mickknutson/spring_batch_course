@@ -1,7 +1,6 @@
 package io.baselogic.batch.nested.config;
 
 import io.baselogic.batch.nested.steps.EchoTasklet;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
@@ -15,7 +14,6 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 
 @Configuration
-@Slf4j
 @SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
 public class StepConfig {
 

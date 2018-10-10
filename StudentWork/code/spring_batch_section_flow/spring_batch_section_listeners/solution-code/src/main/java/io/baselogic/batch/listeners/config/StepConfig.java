@@ -1,7 +1,6 @@
 package io.baselogic.batch.listeners.config;
 
 import io.baselogic.batch.listeners.listeners.*;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.item.ItemReader;
@@ -15,9 +14,9 @@ import java.util.List;
 
 
 @Configuration
-@Slf4j
 @SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
 public class StepConfig {
+    private org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(this.getClass());
 
 
     //---------------------------------------------------------------------------//

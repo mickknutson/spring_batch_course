@@ -44,6 +44,10 @@ Login to the admin console with the following credentials:
     Password: [null]
 
 
+The Actuator Endpoints are available:
+
+    http://localhost:8080/batch
+
 ---
 
 
