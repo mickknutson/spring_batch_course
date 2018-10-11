@@ -1,12 +1,12 @@
 package io.baselogic.batch.skip.processor;
 
-public class CustomRetryableException extends Exception {
+public class CustomSkipableException extends Exception {
 
-	public CustomRetryableException() {
+	public CustomSkipableException() {
 		super();
 	}
 
-	public CustomRetryableException(String msg) {
+	public CustomSkipableException(String msg) {
 		super(msg);
 	}
 }

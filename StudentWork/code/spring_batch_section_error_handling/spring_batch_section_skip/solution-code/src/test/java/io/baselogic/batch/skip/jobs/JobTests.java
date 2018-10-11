@@ -144,11 +144,11 @@ public class JobTests {
         jobExecution.getStepExecutions().forEach(stepExecution -> {
 
             assertThat(stepExecution.getReadCount()).isEqualTo(100);
-            assertThat(stepExecution.getWriteCount()).isEqualTo(99);
+            assertThat(stepExecution.getWriteCount()).isEqualTo(98);
             assertThat(stepExecution.getCommitCount()).isEqualTo(11);
 
             assertThat(stepExecution.getReadSkipCount()).isEqualTo(0);
-            assertThat(stepExecution.getProcessSkipCount()).isEqualTo(1);
+            assertThat(stepExecution.getProcessSkipCount()).isEqualTo(2);
             assertThat(stepExecution.getWriteSkipCount()).isEqualTo(0);
 
         });
@@ -181,12 +181,12 @@ public class JobTests {
         jobExecution.getStepExecutions().forEach(stepExecution -> {
 
             assertThat(stepExecution.getReadCount()).isEqualTo(100);
-            assertThat(stepExecution.getWriteCount()).isEqualTo(99);
-            assertThat(stepExecution.getCommitCount()).isEqualTo(19);
+            assertThat(stepExecution.getWriteCount()).isEqualTo(98);
+            assertThat(stepExecution.getCommitCount()).isEqualTo(27);
 
             assertThat(stepExecution.getReadSkipCount()).isEqualTo(0);
             assertThat(stepExecution.getProcessSkipCount()).isEqualTo(0);
-            assertThat(stepExecution.getWriteSkipCount()).isEqualTo(1);
+            assertThat(stepExecution.getWriteSkipCount()).isEqualTo(2);
 
         });
 

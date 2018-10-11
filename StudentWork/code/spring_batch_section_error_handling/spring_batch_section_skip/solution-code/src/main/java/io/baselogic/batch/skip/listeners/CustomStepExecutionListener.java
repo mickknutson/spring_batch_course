@@ -51,6 +51,8 @@ public class CustomStepExecutionListener implements StepExecutionListener {
                 log.info(batchDao.logStepExecutions(stepExecution));
             }
         }
+
+
         log.info("\n" + batchDao.consoleLine(80, '<') + " (afterStep)\n");
 
         return stepExecution.getExitStatus();

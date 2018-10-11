@@ -1,37 +1,60 @@
 package io.baselogic.batch.retry.listeners;
 
-import org.springframework.batch.core.annotation.AfterWrite;
-import org.springframework.batch.core.annotation.BeforeWrite;
-import org.springframework.batch.core.annotation.OnWriteError;
+import org.springframework.batch.core.ChunkListener;
+import org.springframework.batch.core.annotation.*;
+import org.springframework.batch.core.scope.context.ChunkContext;
 
 import java.util.List;
 
 @SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
-public class CustomItemWriterListener {
+public class CustomChunkListener {
     private org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(this.getClass());
 
     //---------------------------------------------------------------------------//
-    // Lab: Create @BeforeRead and log step details
-    @BeforeWrite
-    public void beforeWrite(List<String> items){
-        log.info("______#BEFORE WRITE: [{}]", items);
-        items.forEach(log::info);
-    }
+    // Lab: Create @BeforeChunk lifecycle method
+    @BeforeChunk
+    public void beforeChunk(ChunkContext context) {
 
+        String stepName = context.getStepContext().getStepExecution().getStepName();
 
-    //---------------------------------------------------------------------------//
-    // Lab: Create @BeforeRead and log step details
-    @AfterWrite
-    public void afterWrite(List<String> items){
-        log.info("______#AFTER WRITE: [{}]", items);
-        items.forEach(log::info);
+        log.info("--> Before Chunk:");
+        log.info("\t Step Name: {}", stepName);
     }
 
     //---------------------------------------------------------------------------//
-    // Lab: Create @BeforeRead and log step details
-    @OnWriteError
-    public void onWriteError(Exception e, List<String> items){
-        log.error("______#AFTER WRITE ERROR: [{}]", e.getMessage());
+    // Lab: Create @AfterChunk lifecycle method
+    @AfterChunk
+    public void afterChunk(ChunkContext context) {
+
+        String stepName = context.getStepContext().getStepExecution().getStepName();
+
+        int readCount = context.getStepContext().getStepExecution().getReadCount();
+        int writeCount = context.getStepContext().getStepExecution().getWriteCount();
+        int writeSkipCount = context.getStepContext().getStepExecution().getWriteSkipCount();
+
+        log.info("--> After Chunk:");
+        log.info("\t Step Name: {}", stepName);
+        log.info("\t readCount: {}", readCount);
+        log.info("\t writeCount: {}", writeCount);
+        log.info("\t writeSkipCount: {}", writeSkipCount);
+    }
+
+    //---------------------------------------------------------------------------//
+    // Lab: Create @AfterChunk lifecycle method
+    @AfterChunkError
+    public void afterChunkError(ChunkContext context) {
+
+        String stepName = context.getStepContext().getStepExecution().getStepName();
+
+        int readCount = context.getStepContext().getStepExecution().getReadCount();
+        int writeCount = context.getStepContext().getStepExecution().getWriteCount();
+        int writeSkipCount = context.getStepContext().getStepExecution().getWriteSkipCount();
+
+        log.info("--> After Chunk ERROR:");
+        log.info("\t Step Name: {}", stepName);
+        log.info("\t readCount: {}", readCount);
+        log.info("\t writeCount: {}", writeCount);
+        log.info("\t writeSkipCount: {}", writeSkipCount);
     }
 
 } // The End...

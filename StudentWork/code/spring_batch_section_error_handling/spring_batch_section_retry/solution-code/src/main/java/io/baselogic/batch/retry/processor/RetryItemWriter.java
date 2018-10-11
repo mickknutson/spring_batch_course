@@ -40,7 +40,7 @@ public class RetryItemWriter implements ItemWriter<String> {
 					System.out.println(item);
 				}
 				else {
-					System.out.println("Writing of item " + item + " failed");
+					System.out.println("*** --> Writing of item " + item + " failed");
 					throw new CustomRetryableException("Write failed.  Attempt:" + attemptCount);
 				}
 			}

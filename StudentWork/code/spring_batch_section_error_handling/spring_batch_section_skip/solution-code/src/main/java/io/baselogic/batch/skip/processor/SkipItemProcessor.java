@@ -11,12 +11,17 @@ public class SkipItemProcessor implements ItemProcessor<String, String> {
 
 	@Override
 	public String process(String item) throws Exception {
+
 		System.out.println("processing item " + item);
-		if(skip && item.equalsIgnoreCase("42")) {
+
+		if(skip &&
+                (item.equalsIgnoreCase("42") ||
+                        item.equalsIgnoreCase("55"))
+        ){
 			attemptCount++;
 
-			System.out.println("*** Processing of item " + item + " failed");
-			throw new CustomRetryableException("Process failed.  Attempt:" + attemptCount);
+			System.out.println("*** --> Processing of item " + item + " failed");
+			throw new CustomSkipableException("Process failed.  Attempt:" + attemptCount);
 		}
 		else {
 			return String.valueOf(Integer.valueOf(item) * -1);

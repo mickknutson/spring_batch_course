@@ -19,7 +19,7 @@ public class JobConfig {
     @Bean
     public Job job(JobBuilderFactory jobBuilderFactory,
                               Step stepA) {
-        return jobBuilderFactory.get("chunkJobFileAuditor")
+        return jobBuilderFactory.get("retryJob")
                 .incrementer(new RunIdIncrementer())
                 .start(stepA)
                 .build();

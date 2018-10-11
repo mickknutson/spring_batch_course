@@ -32,8 +32,11 @@ public class JobEndpoint {
         enabled.set(launchJob);
 
         StringBuilder sb = new StringBuilder();
+        // Note: Run job 1st time
         sb.append("Run 1: [\n").append(startSimpleJob()).append("]\n\n");
+        // Note: Run job 2nd time
         sb.append("Run 2: [\n").append(startSimpleJob()).append("]\n\n");
+        // Note: Run job 3rd time
         sb.append("Run 3: [\n").append(startSimpleJob()).append("]\n\n");
         return sb.toString();
     }
@@ -50,9 +53,9 @@ public class JobEndpoint {
 
             JobExecution jobExecution = jobLauncher
                     .run(job,
+                            // Note: Identical Job Parameters:
                             new JobParametersBuilder()
-//                                    .addLong("timestamp", System.currentTimeMillis())
-//                                    .addDate("launchDate", new Date())
+                                    .addLong("date", new Date().getTime())
                                     .toJobParameters());
 
             result = getJobExecutionDetails(jobExecution);

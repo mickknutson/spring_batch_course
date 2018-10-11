@@ -120,9 +120,6 @@ public class JobTests {
             assertThat(stepExecution.getWriteCount()).isEqualTo(100);
             assertThat(stepExecution.getCommitCount()).isEqualTo(11);
 
-            assertThat(stepExecution.getWriteSkipCount()).isEqualTo(0);
-            assertThat(stepExecution.getProcessSkipCount()).isEqualTo(0);
-
         });
 
         assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
@@ -157,12 +154,6 @@ public class JobTests {
             assertThat(stepExecution.getReadCount()).isEqualTo(100);
             assertThat(stepExecution.getWriteCount()).isEqualTo(100);
             assertThat(stepExecution.getCommitCount()).isEqualTo(11);
-
-
-            assertThat(stepExecution.getReadSkipCount()).isEqualTo(0);
-            assertThat(stepExecution.getProcessSkipCount()).isEqualTo(0);
-            assertThat(stepExecution.getWriteSkipCount()).isEqualTo(0);
-
         });
 
         assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
@@ -212,12 +203,6 @@ public class JobTests {
             assertThat(stepExecution.getReadCount()).isEqualTo(100);
             assertThat(stepExecution.getWriteCount()).isEqualTo(100);
             assertThat(stepExecution.getCommitCount()).isEqualTo(11);
-
-
-            assertThat(stepExecution.getReadSkipCount()).isEqualTo(0);
-            assertThat(stepExecution.getProcessSkipCount()).isEqualTo(0);
-            assertThat(stepExecution.getWriteSkipCount()).isEqualTo(0);
-
         });
 
         assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);

@@ -21,7 +21,7 @@ public class JobConfig {
     public Job job(JobBuilderFactory jobBuilderFactory,
                    Step step1,
                    Step step2) {
-        return jobBuilderFactory.get("job")
+        return jobBuilderFactory.get("restartJob")
                 .start(step1)
                 .next(step2)
                 .build();

@@ -4,10 +4,9 @@ import io.baselogic.batch.skip.listeners.CustomChunkListener;
 import io.baselogic.batch.skip.listeners.CustomItemReadListener;
 import io.baselogic.batch.skip.listeners.CustomItemWriterListener;
 import io.baselogic.batch.skip.listeners.CustomStepExecutionListener;
-import io.baselogic.batch.skip.processor.CustomRetryableException;
+import io.baselogic.batch.skip.processor.CustomSkipableException;
 import io.baselogic.batch.skip.processor.SkipItemProcessor;
 import io.baselogic.batch.skip.processor.SkipItemWriter;
-import org.springframework.batch.core.ChunkListener;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
@@ -41,7 +40,7 @@ public class StepConfig {
                          CustomItemReadListener itemReadListener,
                          CustomItemWriterListener itemWriterListener) {
         return stepBuilderFactory.get("step")
-                // StepExecutionListener Must be before the Chunk
+                // NOTE: StepExecutionListener Must be before the Chunk
                 .listener(stepExecutionListener)
 
                 .<String, String>chunk(10)
@@ -51,12 +50,17 @@ public class StepConfig {
                 .listener(itemWriterListener)
 
                 .reader(reader())
-                .processor(processor(null)) // null due to late binding
+
+                // Skip Processor
+                // null due to late binding
+                .processor(processor(null))
+
+                // Skip Writer:
                 .writer(writer(null))
 
                 .faultTolerant()
-                .skip(CustomRetryableException.class)
-                .skipLimit(15)
+                .skip(CustomSkipableException.class)
+                .skipLimit(2)
 
                 .build();
     }
@@ -82,7 +86,9 @@ public class StepConfig {
     public SkipItemProcessor processor(@Value("#{jobParameters['skip']}")String skip) {
         SkipItemProcessor processor = new SkipItemProcessor();
 
-        processor.setSkip(StringUtils.hasText(skip) && skip.equalsIgnoreCase("processor"));
+        processor.setSkip(
+                StringUtils.hasText(skip)
+                && skip.equalsIgnoreCase("processor"));
 
         return processor;
     }
@@ -92,7 +98,9 @@ public class StepConfig {
     public SkipItemWriter writer(@Value("#{jobParameters['skip']}")String skip) {
         SkipItemWriter writer = new SkipItemWriter();
 
-        writer.setSkip(StringUtils.hasText(skip) && skip.equalsIgnoreCase("writer"));
+        writer.setSkip(
+                StringUtils.hasText(skip)
+                        && skip.equalsIgnoreCase("writer"));
 
         return writer;
     }

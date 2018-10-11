@@ -29,13 +29,19 @@ public class SkipItemWriter implements ItemWriter<String> {
 
 	@Override
 	public void write(List<? extends String> items) throws Exception {
+
 		for (String item : items) {
+
 			System.out.println("writing item " + item);
-			if(skip && item.equalsIgnoreCase("-84")) {
+
+			if(skip &&
+                    (item.equalsIgnoreCase("-84") ||
+                            item.equalsIgnoreCase("-90"))
+            ) {
 				attemptCount++;
 
-				System.out.println("*** Writing of item " + item + " failed");
-				throw new CustomRetryableException("Write failed.  Attempt:" + attemptCount);
+				System.out.println("*** --> Writing of item " + item + " failed");
+				throw new CustomSkipableException("Write failed.  Attempt:" + attemptCount);
 			}
 			else {
 				System.out.println(item);

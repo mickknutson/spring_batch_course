@@ -1,4 +1,4 @@
-package io.baselogic.batch.skip.listeners;
+package io.baselogic.batch.retry.listeners;
 
 import io.baselogic.batch.common.config.BatchDao;
 import org.springframework.batch.core.BatchStatus;
@@ -43,7 +43,7 @@ public class CustomStepExecutionListener implements StepExecutionListener {
 
         if(stepExecution.getStatus() == BatchStatus.COMPLETED) {
 //        if(stepExecution.getExitStatus() == ExitStatus.COMPLETED) {
-            log.info("!!! STEP COMPLETED!");
+            log.info("STEP COMPLETED!");
             log.info("ExitStatus is: {}", stepExecution.getExitStatus());
             log.info("now we will return the same ExitStatus, or change it.");
 
@@ -52,7 +52,7 @@ public class CustomStepExecutionListener implements StepExecutionListener {
             }
         } else {
 
-            log.error("!!! Failures: {}",
+            log.error("!!! FAILURE: {}",
                     stepExecution.getFailureExceptions());
         }
 

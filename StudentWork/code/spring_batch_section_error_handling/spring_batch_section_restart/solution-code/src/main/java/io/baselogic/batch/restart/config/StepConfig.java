@@ -64,7 +64,12 @@ public class StepConfig {
                 }
                 else {
                     System.out.println("I don't think so...");
+
+                    String stepName = chunkContext.getStepContext().getStepExecution().getStepName();
+                    chunkContext.getStepContext().getStepExecution().getExecutionContext().put(stepName, "step ran");
+
                     chunkContext.getStepContext().getStepExecution().getExecutionContext().put("ran", true);
+
                     throw new RuntimeException("Not this time...");
                 }
             }

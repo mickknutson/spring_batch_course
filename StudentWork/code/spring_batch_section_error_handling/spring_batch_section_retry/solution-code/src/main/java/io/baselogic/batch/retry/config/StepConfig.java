@@ -1,5 +1,8 @@
 package io.baselogic.batch.retry.config;
 
+import io.baselogic.batch.retry.listeners.CustomChunkListener;
+import io.baselogic.batch.retry.listeners.CustomItemWriterListener;
+import io.baselogic.batch.retry.listeners.CustomStepExecutionListener;
 import io.baselogic.batch.retry.processor.CustomRetryableException;
 import io.baselogic.batch.retry.processor.RetryItemProcessor;
 import io.baselogic.batch.retry.processor.RetryItemWriter;
@@ -32,19 +35,31 @@ public class StepConfig {
     //---------------------------------------------------------------------------//
     // Lab: Add Step with chunk details
     @Bean
+    @SuppressWarnings("unchecked")
     public Step stepA(StepBuilderFactory stepBuilderFactory) {
 
         return stepBuilderFactory.get("step")
+                .listener(new CustomStepExecutionListener())
+
                 .<String, String>chunk(10)
+
+                .listener(customChunkListener())
+
                 .reader(reader())
                 .processor(processor(null))
                 .writer(writer(null))
+                .listener(new CustomItemWriterListener())
 
                 .faultTolerant()
                 .retry(CustomRetryableException.class)
 
-                .retryLimit(15)
+                .retryLimit(10)
                 .build();
+    }
+
+    @Bean
+    public CustomChunkListener customChunkListener(){
+        return new CustomChunkListener();
     }
 
 
@@ -68,7 +83,9 @@ public class StepConfig {
     public RetryItemProcessor processor(@Value("#{jobParameters[retry]}") String retry) {
         RetryItemProcessor processor = new RetryItemProcessor();
 
-        processor.setRetry(StringUtils.hasText(retry) && retry.equalsIgnoreCase("processor"));
+        processor.setRetry(
+                StringUtils.hasText(retry) && retry.equalsIgnoreCase("processor")
+        );
 
         return processor;
     }
@@ -78,7 +95,9 @@ public class StepConfig {
     public RetryItemWriter writer(@Value("#{jobParameters[retry]}")String retry) {
         RetryItemWriter writer = new RetryItemWriter();
 
-        writer.setRetry(StringUtils.hasText(retry) && retry.equalsIgnoreCase("writer"));
+        writer.setRetry(
+                StringUtils.hasText(retry) && retry.equalsIgnoreCase("writer")
+        );
 
         return writer;
     }
