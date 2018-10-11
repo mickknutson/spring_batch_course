@@ -18,12 +18,16 @@ public class JobConfig {
     @Bean
     public Job job(JobBuilderFactory jobBuilderFactory,
                    FlowDecision flowDecision,
-                   Step startingStep, Step flipACoinStep, Step evenStep, Step oddStep, Step endStep) {
+                   Step startingStep,
+                   Step evenStep,
+                   Step oddStep,
+                   Step endStep) {
 
         return jobBuilderFactory.get("decisionJob")
 
                 // Step #1:
-                .start(startingStep).next(flowDecision)
+                .start(startingStep)
+                .next(flowDecision)
 
                 // Step #2:
                 .from(flowDecision).on("ODD").to(oddStep)

@@ -23,7 +23,11 @@ public class JobConfig {
     ) {
         return jobBuilderFactory.get("parentJob")
                 .start(step1)
+
+                // Set Child Job:
                 .next(childJobStep)
+
+                // Then return to parent job
                 .next(step2)
                 .next(step3)
                 .build();

@@ -25,8 +25,12 @@ public class ProductJdbcItemWriter implements ItemWriter<Product> {
 
 	public void write(List<? extends Product> items) throws Exception {
 		LOG.info("Number of products getting committed : {}", items.size());
+
 		for(Product item : items) {
 			LOG.info("Saving product : {}", item);
+
+			// Perform Database Logic:
+
 			int updated = jdbcTemplate.update(UPDATE_PRODUCT,
 				item.getName(),item.getUnitPrice(),item.getQuantity(), item.getTotalAmount(), item.getId());
 			
@@ -36,6 +40,7 @@ public class ProductJdbcItemWriter implements ItemWriter<Product> {
 					item.getId(),item.getName(),item.getUnitPrice(), item.getQuantity(), item.getTotalAmount());	
 			}			
 		}
+
 	}
 
 }

@@ -37,7 +37,7 @@ public class StepConfig {
                                 FlatFileItemReader reader,
                                 ChunkListener chunkListener) {
         return stepBuilderFactory.get("stepFileReadAndSaveToDatabase")
-                .<Product, Product> chunk(2)
+                .<Product, Product> chunk(1)
                 .reader(reader)
                 .writer(writer)
                 .listener(chunkListener)
@@ -56,6 +56,7 @@ public class StepConfig {
     @Bean
     @StepScope
     public FlatFileItemReader reader(@Value("#{jobParameters['inputResource']}") String inputResource){
+
         FlatFileItemReader<Product> reader = new FlatFileItemReader<>();
 
         DelimitedLineTokenizer tokenizer = new DelimitedLineTokenizer();

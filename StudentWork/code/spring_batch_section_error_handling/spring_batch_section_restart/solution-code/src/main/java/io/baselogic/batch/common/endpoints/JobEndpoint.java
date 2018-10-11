@@ -30,7 +30,12 @@ public class JobEndpoint {
     public String launchJob(@RequestParam(value = "launchJob", required = false, defaultValue="true") boolean launchJob)
             throws JobExecutionException {
         enabled.set(launchJob);
-        return startSimpleJob();
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("Run 1: [\n").append(startSimpleJob()).append("]\n\n");
+        sb.append("Run 2: [\n").append(startSimpleJob()).append("]\n\n");
+        sb.append("Run 3: [\n").append(startSimpleJob()).append("]\n\n");
+        return sb.toString();
     }
 
     //---------------------------------------------------------------------------//
@@ -46,8 +51,8 @@ public class JobEndpoint {
             JobExecution jobExecution = jobLauncher
                     .run(job,
                             new JobParametersBuilder()
-                                    .addLong("timestamp", System.currentTimeMillis())
-                                    .addDate("launchDate", new Date())
+//                                    .addLong("timestamp", System.currentTimeMillis())
+//                                    .addDate("launchDate", new Date())
                                     .toJobParameters());
 
             result = getJobExecutionDetails(jobExecution);

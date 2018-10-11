@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
  */
 @SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
 public class BatchDao {
+
     private org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(this.getClass());
 
     @Autowired

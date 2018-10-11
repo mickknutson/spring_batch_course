@@ -1,21 +1,18 @@
 package io.baselogic.batch.restart.config;
 
-import io.baselogic.batch.restart.domain.TextLineItem;
-import io.baselogic.batch.restart.listeners.ChunkListener;
-import io.baselogic.batch.restart.processor.CustomItemProcessor;
-import io.baselogic.batch.restart.steps.ConsoleItemWriter;
 import org.springframework.batch.core.Step;
+import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
-import org.springframework.batch.item.file.FlatFileItemReader;
-import org.springframework.batch.item.file.FlatFileParseException;
-import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
-import org.springframework.batch.item.file.mapping.DefaultLineMapper;
-import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
+import org.springframework.batch.core.scope.context.ChunkContext;
+import org.springframework.batch.core.step.tasklet.Tasklet;
+import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+
+import java.util.Map;
 
 
 @Configuration
@@ -30,22 +27,18 @@ public class StepConfig {
 
     //---------------------------------------------------------------------------//
     // Lab: Add Step with chunk details
+
     @Bean
-    @SuppressWarnings("unchecked")
-    public Step stepA(StepBuilderFactory stepBuilderFactory,
-                                FlatFileItemReader reader,
-                                CustomItemProcessor processor,
-                                ConsoleItemWriter writer,
-                                ChunkListener chunkListener) {
-        return stepBuilderFactory.get("stepFileReadAndAudit")
-                .<TextLineItem, TextLineItem> chunk(2)
-                .reader(reader)
-                .processor(processor)
-                .writer(writer)
-                .listener(chunkListener)
-                .faultTolerant()
-                .skipLimit(5)
-                .skip(FlatFileParseException.class)
+    public Step step1(StepBuilderFactory stepBuilderFactory) {
+        return stepBuilderFactory.get("step1")
+                .tasklet(restartTasklet())
+                .build();
+    }
+
+    @Bean
+    public Step step2(StepBuilderFactory stepBuilderFactory) {
+        return stepBuilderFactory.get("step2")
+                .tasklet(restartTasklet())
                 .build();
     }
 
@@ -54,55 +47,30 @@ public class StepConfig {
 
 
 
-    //---------------------------------------------------------------------------//
-    // Lab: Create FlatFileItemReader
+
+
     @Bean
     @StepScope
-    public FlatFileItemReader<TextLineItem> reader() {
+    public Tasklet restartTasklet() {
+        return new Tasklet() {
+            @Override
+            public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
 
-        // FlatFileItemReader to read TextLineItem's:
-        FlatFileItemReader<TextLineItem> reader = new FlatFileItemReader<>();
+                Map<String, Object> stepExecutionContext = chunkContext.getStepContext().getStepExecutionContext();
 
-        // Read items from inputResource:
-        reader.setResource(inputResource);
-
-        // This CSV file does not have a header, so no need to restart items:
-        reader.setLinesToSkip(0);
-
-        // Map each line from the CSV file into a TextLineItem
-        DefaultLineMapper<TextLineItem> lineMapper = new DefaultLineMapper<>();
-        DelimitedLineTokenizer tokenizer = new DelimitedLineTokenizer();
-
-        // take the data from each line and map it to the 'id' field:
-        tokenizer.setNames("id");
-
-        // Now map the id field into a new TextLineItem.class for each line:
-        BeanWrapperFieldSetMapper<TextLineItem> fieldSetMapper = new BeanWrapperFieldSetMapper<>();
-        fieldSetMapper.setTargetType(TextLineItem.class);
-
-        lineMapper.setFieldSetMapper(fieldSetMapper);
-        lineMapper.setLineTokenizer(tokenizer);
-        reader.setLineMapper(lineMapper);
-
-        return reader;
+                if(stepExecutionContext.containsKey("ran")) {
+                    System.out.println("This time we'll let it go.");
+                    return RepeatStatus.FINISHED;
+                }
+                else {
+                    System.out.println("I don't think so...");
+                    chunkContext.getStepContext().getStepExecution().getExecutionContext().put("ran", true);
+                    throw new RuntimeException("Not this time...");
+                }
+            }
+        };
     }
 
-
-
-    //---------------------------------------------------------------------------//
-    // Writers
-    @Bean
-    public ConsoleItemWriter consoleItemWriter(){
-        return new ConsoleItemWriter();
-    }
-
-
-    //---------------------------------------------------------------------------//
-    // Listeners
-    @Bean
-    public ChunkListener chunkListener(){
-        return new ChunkListener();
-    }
 
 
 } // The End...

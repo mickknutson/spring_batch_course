@@ -17,11 +17,11 @@ public class JobConfig {
     //---------------------------------------------------------------------------//
     // Lab: Configure Job
     @Bean
-    public Job jobFileAuditor(JobBuilderFactory jobBuilderFactory,
-                              Step stepFileAuditor) {
+    public Job job(JobBuilderFactory jobBuilderFactory,
+                              Step stepA) {
         return jobBuilderFactory.get("chunkJobFileAuditor")
                 .incrementer(new RunIdIncrementer())
-                .start(stepFileAuditor)
+                .start(stepA)
                 .build();
     }
 

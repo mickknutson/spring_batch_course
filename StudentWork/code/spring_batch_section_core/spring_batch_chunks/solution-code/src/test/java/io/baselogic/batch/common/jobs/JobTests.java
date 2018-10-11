@@ -86,7 +86,8 @@ public class JobTests {
         assertThat(jobExecution.getStepExecutions().size()).isEqualTo(1);
 
 
-        jobExecution.getStepExecutions().forEach(stepExecution -> {
+        jobExecution.getStepExecutions().forEach(
+                stepExecution -> {
 
             assertThat(stepExecution.getReadCount()).isEqualTo(19);
             assertThat(stepExecution.getWriteCount()).isEqualTo(19);

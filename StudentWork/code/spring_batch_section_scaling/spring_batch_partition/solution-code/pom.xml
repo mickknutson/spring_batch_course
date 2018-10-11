@@ -29,5 +29,11 @@
 
     <build>
         <!-- See 'spring_batch_parent' for dependencies & plugins -->
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
     </build>
 </project>

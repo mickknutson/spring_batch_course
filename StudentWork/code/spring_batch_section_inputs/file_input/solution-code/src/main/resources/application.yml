@@ -29,7 +29,7 @@ spring:
 ##---------------------------------------------------------------------------##
 # MODULE SPECIFIC PROPERTIES
 
-spring.batch.job.enabled: ${BATCH_JOB_ENABLED:false}
+spring.batch.job.enabled: ${BATCH_JOB_ENABLED:true}
 
 
 ##---------------------------------------------------------------------------##

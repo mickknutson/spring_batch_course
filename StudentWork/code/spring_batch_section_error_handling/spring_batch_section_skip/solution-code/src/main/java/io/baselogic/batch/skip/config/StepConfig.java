@@ -1,21 +1,25 @@
 package io.baselogic.batch.skip.config;
 
-import io.baselogic.batch.skip.domain.TextLineItem;
-import io.baselogic.batch.skip.listeners.ChunkListener;
-import io.baselogic.batch.skip.processor.CustomItemProcessor;
-import io.baselogic.batch.skip.steps.ConsoleItemWriter;
+import io.baselogic.batch.skip.listeners.CustomChunkListener;
+import io.baselogic.batch.skip.listeners.CustomItemReadListener;
+import io.baselogic.batch.skip.listeners.CustomItemWriterListener;
+import io.baselogic.batch.skip.listeners.CustomStepExecutionListener;
+import io.baselogic.batch.skip.processor.CustomRetryableException;
+import io.baselogic.batch.skip.processor.SkipItemProcessor;
+import io.baselogic.batch.skip.processor.SkipItemWriter;
+import org.springframework.batch.core.ChunkListener;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
-import org.springframework.batch.item.file.FlatFileItemReader;
-import org.springframework.batch.item.file.FlatFileParseException;
-import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
-import org.springframework.batch.item.file.mapping.DefaultLineMapper;
-import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
+import org.springframework.batch.item.support.ListItemReader;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.util.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Configuration
@@ -31,84 +35,72 @@ public class StepConfig {
     //---------------------------------------------------------------------------//
     // Lab: Add Step with chunk details
     @Bean
-    @SuppressWarnings("unchecked")
-    public Step stepA(StepBuilderFactory stepBuilderFactory,
-                                FlatFileItemReader reader,
-                                CustomItemProcessor processor,
-                                ConsoleItemWriter writer,
-                                ChunkListener chunkListener) {
-        return stepBuilderFactory.get("stepFileReadAndAudit")
-                .<TextLineItem, TextLineItem> chunk(2)
-                .reader(reader)
-                .processor(processor)
-                .writer(writer)
+    public Step skipStep(StepBuilderFactory stepBuilderFactory,
+                         CustomStepExecutionListener stepExecutionListener,
+                         CustomChunkListener chunkListener,
+                         CustomItemReadListener itemReadListener,
+                         CustomItemWriterListener itemWriterListener) {
+        return stepBuilderFactory.get("step")
+                // StepExecutionListener Must be before the Chunk
+                .listener(stepExecutionListener)
+
+                .<String, String>chunk(10)
+
                 .listener(chunkListener)
+                .listener(itemReadListener)
+                .listener(itemWriterListener)
+
+                .reader(reader())
+                .processor(processor(null)) // null due to late binding
+                .writer(writer(null))
+
                 .faultTolerant()
-                .skipLimit(10)
-                .skip(FlatFileParseException.class)
+                .skip(CustomRetryableException.class)
+                .skipLimit(15)
+
                 .build();
     }
 
 
 
 
-
-
-    //---------------------------------------------------------------------------//
-    // Lab: Create FlatFileItemReader
     @Bean
     @StepScope
-    public FlatFileItemReader<TextLineItem> reader() {
+    public ListItemReader<String> reader() {
 
-        // FlatFileItemReader to read TextLineItem's:
-        FlatFileItemReader<TextLineItem> reader = new FlatFileItemReader<>();
+        List<String> items = new ArrayList<>();
 
-        // Read items from inputResource:
-        reader.setResource(inputResource);
+        for(int i = 0; i < 100; i++) {
+            items.add(String.valueOf(i));
+        }
 
-        // This CSV file does not have a header, so no need to skip items:
-        reader.setLinesToSkip(0);
-
-        // Map each line from the CSV file into a TextLineItem
-        DefaultLineMapper<TextLineItem> lineMapper = new DefaultLineMapper<>();
-        DelimitedLineTokenizer tokenizer = new DelimitedLineTokenizer();
-
-        // take the data from each line and map it to the 'id' field:
-        tokenizer.setNames("id");
-
-        // Now map the id field into a new TextLineItem.class for each line:
-        BeanWrapperFieldSetMapper<TextLineItem> fieldSetMapper = new BeanWrapperFieldSetMapper<>();
-        fieldSetMapper.setTargetType(TextLineItem.class);
-
-        lineMapper.setFieldSetMapper(fieldSetMapper);
-        lineMapper.setLineTokenizer(tokenizer);
-        reader.setLineMapper(lineMapper);
-
-        return reader;
+        return new ListItemReader<>(items);
     }
 
-
-
-    //---------------------------------------------------------------------------//
-    // Writers
     @Bean
-    public ConsoleItemWriter consoleItemWriter(){
-        return new ConsoleItemWriter();
+    @StepScope
+    public SkipItemProcessor processor(@Value("#{jobParameters['skip']}")String skip) {
+        SkipItemProcessor processor = new SkipItemProcessor();
+
+        processor.setSkip(StringUtils.hasText(skip) && skip.equalsIgnoreCase("processor"));
+
+        return processor;
     }
 
-
-    //---------------------------------------------------------------------------//
-    // Listeners
     @Bean
-    public ChunkListener chunkListener(){
-        return new ChunkListener();
+    @StepScope
+    public SkipItemWriter writer(@Value("#{jobParameters['skip']}")String skip) {
+        SkipItemWriter writer = new SkipItemWriter();
+
+        writer.setSkip(StringUtils.hasText(skip) && skip.equalsIgnoreCase("writer"));
+
+        return writer;
     }
 
 
     @Bean
-    public CustomItemProcessor processor(){
-        return new CustomItemProcessor();
+    public CustomChunkListener chunkListener(){
+        return new CustomChunkListener();
     }
-
 
 } // The End...

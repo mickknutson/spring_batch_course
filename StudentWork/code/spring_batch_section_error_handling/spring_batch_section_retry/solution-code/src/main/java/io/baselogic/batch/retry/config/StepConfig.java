@@ -1,27 +1,27 @@
 package io.baselogic.batch.retry.config;
 
-import io.baselogic.batch.retry.domain.TextLineItem;
-import io.baselogic.batch.retry.listeners.ChunkListener;
-import io.baselogic.batch.retry.processor.CustomItemProcessor;
-import io.baselogic.batch.retry.steps.ConsoleItemWriter;
+import io.baselogic.batch.retry.processor.CustomRetryableException;
+import io.baselogic.batch.retry.processor.RetryItemProcessor;
+import io.baselogic.batch.retry.processor.RetryItemWriter;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
-import org.springframework.batch.item.file.FlatFileItemReader;
-import org.springframework.batch.item.file.FlatFileParseException;
-import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
-import org.springframework.batch.item.file.mapping.DefaultLineMapper;
-import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
+import org.springframework.batch.item.support.ListItemReader;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.dao.DeadlockLoserDataAccessException;
+import org.springframework.util.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Configuration
 @SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})
 public class StepConfig {
+
+    private org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(this.getClass());
 
     //---------------------------------------------------------------------------//
     // Lab: Add ClassPathResource to import CSV file for ItemReader
@@ -32,79 +32,55 @@ public class StepConfig {
     //---------------------------------------------------------------------------//
     // Lab: Add Step with chunk details
     @Bean
-    @SuppressWarnings("unchecked")
-    public Step stepA(StepBuilderFactory stepBuilderFactory,
-                                FlatFileItemReader reader,
-                                CustomItemProcessor processor,
-                                ConsoleItemWriter writer,
-                                ChunkListener chunkListener) {
-        return stepBuilderFactory.get("stepFileReadAndAudit")
-                .<TextLineItem, TextLineItem> chunk(2)
-                .reader(reader)
-                .processor(processor)
-                .writer(writer)
-                .listener(chunkListener)
+    public Step stepA(StepBuilderFactory stepBuilderFactory) {
 
-                // Fault Tolerant:
+        return stepBuilderFactory.get("step")
+                .<String, String>chunk(10)
+                .reader(reader())
+                .processor(processor(null))
+                .writer(writer(null))
+
                 .faultTolerant()
-                .retryLimit(3)
-                .retry(DeadlockLoserDataAccessException.class)
+                .retry(CustomRetryableException.class)
+
+                .retryLimit(15)
                 .build();
     }
 
 
-
-
-
-
-    //---------------------------------------------------------------------------//
-    // Lab: Create FlatFileItemReader
     @Bean
     @StepScope
-    public FlatFileItemReader<TextLineItem> reader() {
+    public ListItemReader reader() {
 
-        // FlatFileItemReader to read TextLineItem's:
-        FlatFileItemReader<TextLineItem> reader = new FlatFileItemReader<>();
+        List<String> items = new ArrayList<>();
 
-        // Read items from inputResource:
-        reader.setResource(inputResource);
+        for(int i = 0; i < 100; i++) {
+            items.add(String.valueOf(i));
+        }
 
-        // This CSV file does not have a header, so no need to retry items:
-        reader.setLinesToSkip(0);
-
-        // Map each line from the CSV file into a TextLineItem
-        DefaultLineMapper<TextLineItem> lineMapper = new DefaultLineMapper<>();
-        DelimitedLineTokenizer tokenizer = new DelimitedLineTokenizer();
-
-        // take the data from each line and map it to the 'id' field:
-        tokenizer.setNames("id");
-
-        // Now map the id field into a new TextLineItem.class for each line:
-        BeanWrapperFieldSetMapper<TextLineItem> fieldSetMapper = new BeanWrapperFieldSetMapper<>();
-        fieldSetMapper.setTargetType(TextLineItem.class);
-
-        lineMapper.setFieldSetMapper(fieldSetMapper);
-        lineMapper.setLineTokenizer(tokenizer);
-        reader.setLineMapper(lineMapper);
+        ListItemReader<String> reader = new ListItemReader(items);
 
         return reader;
     }
 
-
-
-    //---------------------------------------------------------------------------//
-    // Writers
     @Bean
-    public ConsoleItemWriter consoleItemWriter(){
-        return new ConsoleItemWriter();
+    @StepScope
+    public RetryItemProcessor processor(@Value("#{jobParameters[retry]}") String retry) {
+        RetryItemProcessor processor = new RetryItemProcessor();
+
+        processor.setRetry(StringUtils.hasText(retry) && retry.equalsIgnoreCase("processor"));
+
+        return processor;
     }
 
-
-    //---------------------------------------------------------------------------//
-    // Listeners
     @Bean
-    public ChunkListener chunkListener(){
-        return new ChunkListener();
+    @StepScope
+    public RetryItemWriter writer(@Value("#{jobParameters[retry]}")String retry) {
+        RetryItemWriter writer = new RetryItemWriter();
+
+        writer.setRetry(StringUtils.hasText(retry) && retry.equalsIgnoreCase("writer"));
+
+        return writer;
     }
 
 

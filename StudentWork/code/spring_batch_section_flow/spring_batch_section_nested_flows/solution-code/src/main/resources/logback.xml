@@ -4,7 +4,7 @@
 
     <jmxConfigurator/>
 
-    <logger name="org.springframework" level="DEBUG"/>
+    <logger name="org.springframework" level="INFO"/>
     <logger name="org.springframework.web" level="WARN"/>
 
     <logger name="org.springframework.jdbc.datasource.embedded" level="ERROR"/>

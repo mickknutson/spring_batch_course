@@ -17,11 +17,23 @@
         <version>1.0.0.RELEASE</version>
     </parent>
 
+    <properties>
+        <!-- The main class to start by executing "java -jar" -->
+        <start-class>io.baselogic.batch.Application</start-class>
+    </properties>
+
     <dependencies>
         <!-- See 'spring_batch_parent' for dependencies -->
     </dependencies>
 
+
     <build>
         <!-- See 'spring_batch_parent' for dependencies & plugins -->
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
     </build>
 </project>

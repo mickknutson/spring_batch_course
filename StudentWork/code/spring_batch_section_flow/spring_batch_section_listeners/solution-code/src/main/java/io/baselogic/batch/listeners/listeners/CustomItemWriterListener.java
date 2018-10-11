@@ -13,7 +13,7 @@ public class CustomItemWriterListener {
     //---------------------------------------------------------------------------//
     // Lab: Create @BeforeRead and log step details
     @BeforeWrite
-    public void beforeRead(List<String> items){
+    public void beforeWrite(List<String> items){
         log.info("______#BEFORE WRITE: [{}]", items);
         items.forEach(log::info);
     }
@@ -22,7 +22,7 @@ public class CustomItemWriterListener {
     //---------------------------------------------------------------------------//
     // Lab: Create @BeforeRead and log step details
     @AfterWrite
-    public void afterRead(List<String> items){
+    public void afterWrite(List<String> items){
         log.info("______#AFTER WRITE: [{}]", items);
         items.forEach(log::info);
     }
@@ -30,7 +30,7 @@ public class CustomItemWriterListener {
     //---------------------------------------------------------------------------//
     // Lab: Create @BeforeRead and log step details
     @OnWriteError
-    public void onReadError(Exception e, List<String> items){
+    public void onWriteError(Exception e, List<String> items){
         log.error("______#AFTER WRITE ERROR: [{}]", e.getMessage());
     }
 
