@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CustomMultiResourcePartitioner implements Partitioner {
+
     private org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(this.getClass());
 
     private static final String DEFAULT_KEY_NAME = "fileName";
@@ -54,6 +55,7 @@ public class CustomMultiResourcePartitioner implements Partitioner {
             ExecutionContext context = new ExecutionContext();
 
             Assert.state(resource.exists(), "Resource does not exist: " + resource);
+
             log.debug("keyName: {}", resource.getFilename());
             context.putString(keyName, resource.getFilename());
 
@@ -63,7 +65,9 @@ public class CustomMultiResourcePartitioner implements Partitioner {
             context.putString("outputFileName", outputFileName);
 
             log.debug("PARTITION_KEY.{}, {}", i, context);
+
             map.put(PARTITION_KEY + i, context);
+
             i++;
         }
 

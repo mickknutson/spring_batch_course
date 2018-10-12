@@ -11,8 +11,13 @@ public class ScheduledLauncher {
 	@Autowired
 	public JobOperator jobOperator;
 
-	@Scheduled(fixedDelay = 5_000l)
+
+
+	@Scheduled(fixedDelay = 5_000L)
+
 	public void runJob() throws Exception {
+
+	    // Need to have operator add instance to registrar
 		this.jobOperator.startNextInstance("scheduledJob");
 	}
 

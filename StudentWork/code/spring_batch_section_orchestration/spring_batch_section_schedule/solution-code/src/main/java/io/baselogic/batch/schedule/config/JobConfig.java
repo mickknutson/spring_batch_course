@@ -37,16 +37,22 @@ public class JobConfig implements ApplicationContextAware {
     public StepBuilderFactory stepBuilderFactory;
 
     @Autowired
-    public JobExplorer jobExplorer;
+    public JobRepository jobRepository;
 
     @Autowired
-    public JobRepository jobRepository;
+    public JobLauncher jobLauncher;
+
+
+
+
+
+    @Autowired
+    public JobExplorer jobExplorer;
+
 
     @Autowired
     public JobRegistry jobRegistry;
 
-    @Autowired
-    public JobLauncher jobLauncher;
 
     private ApplicationContext applicationContext;
 

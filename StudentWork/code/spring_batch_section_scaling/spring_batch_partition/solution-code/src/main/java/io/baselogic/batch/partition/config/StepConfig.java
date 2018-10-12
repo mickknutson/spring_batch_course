@@ -1,6 +1,10 @@
 package io.baselogic.batch.partition.config;
 
 import io.baselogic.batch.partition.domain.Movie;
+import io.baselogic.batch.partition.listeners.CustomChunkListener;
+import io.baselogic.batch.partition.listeners.CustomItemReadListener;
+import io.baselogic.batch.partition.listeners.CustomItemWriterListener;
+import io.baselogic.batch.partition.listeners.CustomStepExecutionListener;
 import io.baselogic.batch.partition.processors.CustomMultiResourcePartitioner;
 import io.baselogic.batch.partition.processors.MovieFieldSetMapper;
 import org.springframework.batch.core.Step;
@@ -50,21 +54,39 @@ public class StepConfig {
                               TaskExecutor taskExecutor,
                               CustomMultiResourcePartitioner partitioner) {
         return stepBuilderFactory.get("partitionStep")
+
                 .partitioner("partitionStep.master", partitioner)
                 .gridSize(2)
+
                 .taskExecutor(taskExecutor)
+
                 .step(slaveStep(stepBuilderFactory))
-//                .taskExecutor(taskExecutor)
                 .build();
     }
 
     @Autowired
     private JsonFileItemWriter<Movie> jsonItemWriter;
 
+    @Autowired
+    CustomStepExecutionListener stepExecutionListener;
+    @Autowired
+    CustomChunkListener chunkListener;
+    @Autowired
+    CustomItemReadListener itemReadListener;
+    @Autowired
+    CustomItemWriterListener itemWriterListener;
+
     @Bean
     public Step slaveStep(StepBuilderFactory stepBuilderFactory) {
         return stepBuilderFactory.get("slaveStep")
+                // NOTE: StepExecutionListener Must be before the Chunk
+                .listener(stepExecutionListener)
                 .<Movie, Movie>chunk(1)
+
+//                .listener(chunkListener)
+//                .listener(itemReadListener)
+//                .listener(itemWriterListener)
+
                 .reader(itemReader("movies"))
                 .writer(jsonItemWriter)
                 .build();
@@ -96,8 +118,10 @@ public class StepConfig {
 
         FlatFileItemReader<Movie> reader = new FlatFileItemReader<>();
         DelimitedLineTokenizer tokenizer = new DelimitedLineTokenizer();
+
         String[] tokens = {"title", "release_date", "tagline"};
         tokenizer.setNames(tokens);
+
         reader.setResource(new ClassPathResource("inputs/" + filename));
 
         DefaultLineMapper<Movie> lineMapper = new DefaultLineMapper<>();
@@ -132,6 +156,26 @@ public class StepConfig {
 
     //---------------------------------------------------------------------------//
     // Listeners
+
+    @Bean
+    public CustomChunkListener chunkListener(){
+        return new CustomChunkListener();
+    }
+
+    @Bean
+    public CustomStepExecutionListener customStepExecutionListener(){
+        return new CustomStepExecutionListener();
+    }
+
+    @Bean
+    public CustomItemReadListener customItemReadListener(){
+        return new CustomItemReadListener();
+    }
+
+    @Bean
+    public CustomItemWriterListener customItemWriterListener(){
+        return new CustomItemWriterListener();
+    }
 
 
 

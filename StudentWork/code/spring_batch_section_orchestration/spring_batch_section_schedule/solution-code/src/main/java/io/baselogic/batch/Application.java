@@ -12,6 +12,7 @@ import java.util.Arrays;
 
 @SpringBootApplication
 @EnableBatchProcessing
+
 @EnableScheduling
 
 @SuppressWarnings({"Duplicates", "SpringJavaInjectionPointsAutowiringInspection"})

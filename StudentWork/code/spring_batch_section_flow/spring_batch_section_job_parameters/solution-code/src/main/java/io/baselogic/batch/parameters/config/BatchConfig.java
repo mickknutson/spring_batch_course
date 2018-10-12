@@ -26,8 +26,15 @@ public class BatchConfig extends DefaultBatchConfigurer {
     @Autowired
     private DataSource dataSource;
 
+
     @Value("4")
-    public int taskSize;
+    public int CORE_POOL_SIZE;
+
+    @Value("4")
+    public int MAX_POOL_SIZE;
+
+    @Value("10")
+    public int QUEUE_CAPACITY;
 
     //---------------------------------------------------------------------------//
     // Launcher and Repository
@@ -60,15 +67,14 @@ public class BatchConfig extends DefaultBatchConfigurer {
     // Executor
 
     @Bean
-    public TaskExecutor taskExecutor() {
-        ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
-        taskExecutor.setCorePoolSize(taskSize);
-        taskExecutor.setMaxPoolSize(taskSize);
-        taskExecutor.setQueueCapacity(taskSize);
-        taskExecutor.afterPropertiesSet();
-        return taskExecutor;
+    public ThreadPoolTaskExecutor taskExecutor() {
+        ThreadPoolTaskExecutor threadPoolTaskExecutor = new ThreadPoolTaskExecutor();
+        threadPoolTaskExecutor.setCorePoolSize(CORE_POOL_SIZE);
+        threadPoolTaskExecutor.setMaxPoolSize(MAX_POOL_SIZE);
+        threadPoolTaskExecutor.setQueueCapacity(QUEUE_CAPACITY);
+        threadPoolTaskExecutor.afterPropertiesSet();
+        return threadPoolTaskExecutor;
     }
-
 
 
 } // The End...
